@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { SceneResultItemViewModel } from "@/lib/mock/scene";
+import type { SceneResultItemViewModel } from "@/lib/contracts/scene";
 
 type SceneResultsPanelProps = {
   sceneId: string;

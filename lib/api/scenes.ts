@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import type { ScenesListPageViewModel } from "@/lib/mock/scenes";
+import type { ScenesListPageViewModel } from "@/lib/contracts/scenes";
 
 async function getBaseUrl() {
   const headerStore = await headers();

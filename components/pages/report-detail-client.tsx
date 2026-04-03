@@ -20,29 +20,7 @@ import {
   Calendar,
   FileText,
 } from "lucide-react";
-
-export type ReportDetailViewModel = {
-  id: string;
-  name: string;
-  sceneId: string;
-  taskId: string;
-  analysisType: string;
-  generatedAt: string;
-  status: "Draft" | "Published" | "Archived";
-  format: "PDF" | "XLSX" | "JSON";
-  pageCount?: number;
-  fileSize?: string;
-  generatedBy?: string;
-  description?: string;
-  sections: Array<{
-    id: string;
-    title: string;
-    description?: string;
-    contentPreview?: string;
-  }>;
-  metadata?: Record<string, string>;
-  downloadUrl?: string;
-};
+import type { ReportDetailViewModel } from "@/lib/contracts/report";
 
 const statusVariant = (
   status: "Draft" | "Published" | "Archived",

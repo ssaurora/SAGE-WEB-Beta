@@ -17,7 +17,7 @@ import {
 } from "@/components/pages/maplibre-canvas";
 import { InputsPanelInteractive } from "@/components/pages/inputs-panel-interactive";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
-import type { WorkbenchPageViewModel } from "@/lib/mock/scene";
+import type { WorkbenchPageViewModel } from "@/lib/contracts/scene";
 
 type WorkbenchMapInteractiveProps = {
   vm: WorkbenchPageViewModel;

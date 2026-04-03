@@ -1,12 +1,12 @@
 import type {
-  ReportDetailViewModel as ReportDetailDto,
-  ReportListItemViewModel as ReportListDto,
-} from "@/lib/mock/report";
-import type { ReportListViewModel } from "@/components/pages/reports-list-client";
-import type { ReportDetailViewModel } from "@/components/pages/report-detail-client";
+  ReportDetailDto,
+  ReportDetailViewModel,
+  ReportListItemDto,
+  ReportListViewModel,
+} from "@/lib/contracts/report";
 
 export function toReportsListViewModel(
-  reports: ReportListDto[],
+  reports: ReportListItemDto[],
 ): ReportListViewModel {
   return {
     reports: reports.map((item) => ({

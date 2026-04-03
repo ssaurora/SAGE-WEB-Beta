@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import {
   ReportDetailClient,
-  type ReportDetailViewModel,
 } from "@/components/pages/report-detail-client";
 import { getReportDetailViewModel as getReportDetailFromApi } from "@/lib/api/report";
 import { toReportDetailViewModel } from "@/lib/adapters/report";
+import type { ReportDetailViewModel } from "@/lib/contracts/report";
 
 export async function generateMetadata({
   params,

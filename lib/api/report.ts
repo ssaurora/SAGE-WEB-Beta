@@ -1,8 +1,5 @@
 import { headers } from "next/headers";
-import type {
-  ReportDetailViewModel,
-  ReportListItemViewModel,
-} from "@/lib/mock/report";
+import type { ReportDetailDto, ReportListItemDto } from "@/lib/contracts/report";
 
 async function getBaseUrl() {
   const headerStore = await headers();
@@ -26,9 +23,9 @@ async function fetchJson<T>(path: string): Promise<T> {
 }
 
 export async function getReportListViewModel() {
-  return fetchJson<ReportListItemViewModel[]>("/api/reports");
+  return fetchJson<ReportListItemDto[]>("/api/reports");
 }
 
 export async function getReportDetailViewModel(reportId: string) {
-  return fetchJson<ReportDetailViewModel>(`/api/reports/${reportId}`);
+  return fetchJson<ReportDetailDto>(`/api/reports/${reportId}`);
 }

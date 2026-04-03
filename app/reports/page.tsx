@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import {
   ReportsListClient,
-  type ReportListViewModel,
 } from "@/components/pages/reports-list-client";
 import { getReportListViewModel } from "@/lib/api/report";
 import { toReportsListViewModel } from "@/lib/adapters/report";
+import type { ReportListViewModel } from "@/lib/contracts/report";
 
 export const metadata: Metadata = {
   title: "Reports",

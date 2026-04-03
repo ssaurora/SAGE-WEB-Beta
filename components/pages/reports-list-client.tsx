@@ -12,21 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FileText, Search, Filter, Download } from "lucide-react";
-
-export type ReportListViewModel = {
-  reports: Array<{
-    id: string;
-    name: string;
-    sceneId: string;
-    taskId: string;
-    analysisType: string;
-    generatedAt: string;
-    status: "Draft" | "Published" | "Archived";
-    format: "PDF" | "XLSX" | "JSON";
-    pageCount?: number;
-    fileSize?: string;
-  }>;
-};
+import type { ReportListViewModel } from "@/lib/contracts/report";
 
 const statusVariant = (
   status: "Draft" | "Published" | "Archived",

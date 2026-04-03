@@ -7,7 +7,7 @@ import type {
   SceneResultsPageViewModel,
   SceneTaskRunsPageViewModel,
   WorkbenchPageViewModel,
-} from "@/lib/mock/scene";
+} from "@/lib/contracts/scene";
 
 async function getBaseUrl() {
   const headerStore = await headers();

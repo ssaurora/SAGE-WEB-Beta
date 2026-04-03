@@ -1,41 +1,6 @@
-export type ReportListItemViewModel = {
-  reportId: string;
-  sceneId: string;
-  taskId?: string;
-  analysisType: string;
-  modelName: string;
-  time: string;
-  reportName?: string;
-  status?: "Draft" | "Published" | "Archived";
-  format?: "PDF" | "XLSX" | "JSON";
-  pageCount?: number;
-  fileSize?: string;
-  resultSummary: string;
-};
+import type { ReportDetailDto, ReportListItemDto } from "@/lib/contracts/report";
 
-export type ReportDetailViewModel = {
-  reportId: string;
-  sceneId: string;
-  taskId: string;
-  resultId: string;
-  analysisType: string;
-  modelName: string;
-  time: string;
-  reportName?: string;
-  status?: "Draft" | "Published" | "Archived";
-  format?: "PDF" | "XLSX" | "JSON";
-  pageCount?: number;
-  fileSize?: string;
-  generatedBy?: string;
-  downloadUrl?: string;
-  resultSummary: string;
-  metrics: Array<{ name: string; value: string }>;
-  explanation: string;
-  exports: string[];
-  manifestSummary: string;
-};
-
-export const reportListMock: ReportListItemViewModel[] = [
+export const reportListMock: ReportListItemDto[] = [
   {
     reportId: "report-2026-001",
     sceneId: "scene-001",
@@ -80,7 +45,7 @@ export const reportListMock: ReportListItemViewModel[] = [
   },
 ];
 
-export const reportDetailMockMap: Record<string, ReportDetailViewModel> = {
+export const reportDetailMockMap: Record<string, ReportDetailDto> = {
   "report-2026-001": {
     reportId: "report-2026-001",
     sceneId: "scene-001",

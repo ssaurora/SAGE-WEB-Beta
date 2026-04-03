@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { DataStateCard } from "@/components/pages/data-state-card";
-import type { ReportListItemViewModel } from "@/lib/mock/report";
+import type { ReportListItemDto } from "@/lib/contracts/report";
 
 type ReportsPanelProps = {
-  items: ReportListItemViewModel[];
+  items: ReportListItemDto[];
 };
 
 export function ReportsPanel({ items }: ReportsPanelProps) {

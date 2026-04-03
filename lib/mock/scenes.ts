@@ -1,18 +1,9 @@
-export type SceneListItemViewModel = {
-  sceneId: string;
-  name: string;
-  description: string;
-  analysisTheme: string;
-  lastModified: string;
-  taskCount: number;
-  resultCount: number;
-  status: "Active" | "Archived";
-};
+export type {
+  SceneListItemViewModel,
+  ScenesListPageViewModel,
+} from "@/lib/contracts/scenes";
 
-export type ScenesListPageViewModel = {
-  total: number;
-  items: SceneListItemViewModel[];
-};
+import type { ScenesListPageViewModel } from "@/lib/contracts/scenes";
 
 export const scenesListMock: ScenesListPageViewModel = {
   total: 5,

@@ -6,17 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { canCreateScene, useAppRole } from "@/components/pages/app-role";
-
-type SceneListItemViewModel = {
-  sceneId: string;
-  name: string;
-  description: string;
-  analysisTheme: string;
-  lastModified: string;
-  taskCount: number;
-  resultCount: number;
-  status: "Active" | "Archived";
-};
+import type { SceneListItemViewModel } from "@/lib/contracts/scenes";
 
 interface ScenesListPageProps {
   items: SceneListItemViewModel[];

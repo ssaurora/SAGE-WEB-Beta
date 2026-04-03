@@ -39,7 +39,10 @@ export function PageErrorState({
           {retryLabel}
         </button>
       ) : (
-        <Link href={actionHref} className="text-sm font-medium text-primary hover:underline">
+        <Link
+          href={actionHref}
+          className="text-sm font-medium text-primary hover:underline"
+        >
           {retryLabel}
         </Link>
       )}
