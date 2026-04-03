@@ -28,29 +28,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-
-export type RequiredInputItem = {
-  name: string;
-  expectedType: string;
-  status: "Missing" | "Bound" | "Invalid";
-  boundAssetId?: string;
-  invalidReason?: string;
-};
-
-export type OptionalInputItem = {
-  name: string;
-  expectedType: string;
-  status: "Unbound" | "Bound" | "Invalid";
-  boundAssetId?: string;
-  invalidReason?: string;
-};
-
-export type UploadedAsset = {
-  id: string;
-  name: string;
-  type: "Vector Polygon" | "Raster" | "CSV";
-  boundTo?: string;
-};
+import type {
+  OptionalInputItem,
+  RequiredInputItem,
+  UploadAssetType,
+  UploadedAsset,
+} from "@/lib/contracts/workbench-inputs";
 
 export type InputsPanelInteractiveProps = {
   requiredInputs: RequiredInputItem[];
@@ -73,9 +56,7 @@ export function InputsPanelInteractive({
 }: InputsPanelInteractiveProps) {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [uploadName, setUploadName] = useState("");
-  const [uploadType, setUploadType] = useState<
-    "Vector Polygon" | "Raster" | "CSV"
-  >("Vector Polygon");
+  const [uploadType, setUploadType] = useState<UploadAssetType>("Vector Polygon");
   const [bindDialogOpen, setBindDialogOpen] = useState(false);
   const [bindingTarget, setBindingTarget] = useState<{
     type: "required" | "optional";

@@ -18,6 +18,12 @@ import {
 import { InputsPanelInteractive } from "@/components/pages/inputs-panel-interactive";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
 import type { WorkbenchPageViewModel } from "@/lib/contracts/scene";
+import type {
+  OptionalInputItem,
+  RequiredInputItem,
+  UploadAssetType,
+  UploadedAsset,
+} from "@/lib/contracts/workbench-inputs";
 
 type WorkbenchMapInteractiveProps = {
   vm: WorkbenchPageViewModel;
@@ -30,31 +36,6 @@ type InteractiveLayer = {
   name: string;
   visible: boolean;
   opacity: number;
-};
-
-type UploadAssetType = "Vector Polygon" | "Raster" | "CSV";
-
-type UploadedAsset = {
-  id: string;
-  name: string;
-  type: UploadAssetType;
-  boundTo?: string;
-};
-
-type RequiredInputItem = {
-  name: string;
-  expectedType: string;
-  status: "Missing" | "Bound" | "Invalid";
-  boundAssetId?: string;
-  invalidReason?: string;
-};
-
-type OptionalInputItem = {
-  name: string;
-  expectedType: string;
-  status: "Unbound" | "Bound" | "Invalid";
-  boundAssetId?: string;
-  invalidReason?: string;
 };
 
 const legendColorMap: Record<string, string> = {

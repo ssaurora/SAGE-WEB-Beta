@@ -1,5 +1,8 @@
 import { headers } from "next/headers";
-import type { TaskGovernanceViewModel, TaskListItem } from "@/lib/contracts/task";
+import type {
+  TaskGovernanceViewModel,
+  TaskListItem,
+} from "@/lib/contracts/task";
 
 async function getBaseUrl() {
   const headerStore = await headers();

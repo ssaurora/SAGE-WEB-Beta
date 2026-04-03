@@ -6,7 +6,10 @@ export type {
   AssetVisibility,
 } from "@/lib/contracts/asset";
 
-import type { AssetDetailViewModel, AssetListItemViewModel } from "@/lib/contracts/asset";
+import type {
+  AssetDetailViewModel,
+  AssetListItemViewModel,
+} from "@/lib/contracts/asset";
 
 export const assetListMock: AssetListItemViewModel[] = [
   {
