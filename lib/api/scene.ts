@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import type {
   SceneAuditPageViewModel,
   SceneAssetsPageViewModel,
+  SceneResultDetailPageViewModel,
   SceneOverviewPageViewModel,
   SceneResultsPageViewModel,
   SceneTaskRunsPageViewModel,
@@ -47,6 +48,15 @@ export async function getSceneTaskRunsViewModel(sceneId: string) {
 
 export async function getSceneResultsViewModel(sceneId: string) {
   return fetchJson<SceneResultsPageViewModel>(`/api/scenes/${sceneId}/results`);
+}
+
+export async function getSceneResultDetailViewModel(
+  sceneId: string,
+  resultId: string,
+) {
+  return fetchJson<SceneResultDetailPageViewModel>(
+    `/api/scenes/${sceneId}/results/${resultId}`,
+  );
 }
 
 export async function getSceneAuditViewModel(sceneId: string) {

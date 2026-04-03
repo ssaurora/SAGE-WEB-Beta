@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -52,10 +53,15 @@ export default async function SceneOverviewPage({
           </div>
           <div className="rounded-lg border bg-muted/30 p-3">
             <p className="text-xs text-muted-foreground">Map Preview</p>
-            <p className="mt-1 text-sm font-semibold">Scene extent ready</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              后续接入真实地图预览组件
-            </p>
+            <div className="mt-2 rounded-md border bg-background p-2">
+              <div className="relative h-20 overflow-hidden rounded-sm border bg-muted/30">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,hsl(var(--primary)/0.25),transparent_45%),radial-gradient(circle_at_70%_60%,hsl(var(--accent-foreground)/0.18),transparent_40%)]" />
+                <div className="absolute left-[20%] top-[20%] h-[50%] w-[60%] rounded border border-primary/60 bg-primary/20" />
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Scene extent preview · 可进入 Workbench 查看完整地图
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -89,8 +95,16 @@ export default async function SceneOverviewPage({
                 {item}
               </p>
             ))}
-            <div className="pt-1">
-              <Button size="sm">进入 Workbench</Button>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <Link href={`/scenes/${sceneId}/workbench`}>
+                <Button size="sm">进入 Workbench</Button>
+              </Link>
+              <Link href={`/scenes/${sceneId}/task-runs`}>
+                <Button size="sm" variant="outline">查看 Task Runs</Button>
+              </Link>
+              <Link href={`/scenes/${sceneId}/results`}>
+                <Button size="sm" variant="secondary">查看 Results</Button>
+              </Link>
             </div>
           </CardContent>
         </Card>

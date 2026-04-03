@@ -7,7 +7,7 @@ export type NavItem = {
 export const primaryNav: NavItem[] = [
   {
     label: "Scenes",
-    href: "/scenes/scene-001/overview",
+    href: "/scenes",
     description: "场景入口与工作容器",
   },
   { label: "Tasks", href: "/tasks", description: "任务列表与筛选" },

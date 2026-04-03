@@ -94,6 +94,18 @@ export type SceneResultsPageViewModel = {
   items: SceneResultItemViewModel[];
 };
 
+export type SceneResultDetailPageViewModel = {
+  sceneId: string;
+  resultId: string;
+  fromTaskId: string;
+  summary: string;
+  generatedAt: string;
+  explanation: string;
+  indicators: Array<{ name: string; value: string; trend: "up" | "down" | "flat" }>;
+  inputOutputMapping: Array<{ input: string; output: string }>;
+  downloadableArtifacts: string[];
+};
+
 export type SceneAuditEventLevel = "info" | "warning" | "error";
 export type SceneAuditEventType = "input" | "runtime" | "manifest" | "result";
 
@@ -359,4 +371,49 @@ export const sceneAssetsMock: SceneAssetsPageViewModel = {
       visibility: "Public",
     },
   ],
+};
+
+export const sceneResultDetailsMock: Record<string, SceneResultDetailPageViewModel> = {
+  "result-2026-001": {
+    sceneId: "scene-001",
+    resultId: "result-2026-001",
+    fromTaskId: "task-000",
+    summary: "生成水量分布图、子流域统计表与结果解释摘要。",
+    generatedAt: "2026-04-02 17:25",
+    explanation:
+      "本次结果显示中游子流域水量贡献最高，主要受降水分布与土地覆盖类型共同影响。建议优先关注北侧坡地的地表径流抑制策略。",
+    indicators: [
+      { name: "总水量", value: "1.26e8 m³", trend: "up" },
+      { name: "高产水区占比", value: "34.2%", trend: "flat" },
+      { name: "低产水区占比", value: "18.7%", trend: "down" },
+    ],
+    inputOutputMapping: [
+      { input: "Precipitation Raster 2025", output: "Water Yield Layer" },
+      { input: "LULC Raster 2024", output: "Sub-basin Statistics" },
+    ],
+    downloadableArtifacts: [
+      "water_yield_2026_001.tif",
+      "sub_basin_stats_2026_001.csv",
+      "result_explanation_2026_001.md",
+    ],
+  },
+  "result-2026-000": {
+    sceneId: "scene-001",
+    resultId: "result-2026-000",
+    fromTaskId: "task-900",
+    summary: "历史结果快照，仅包含指标表与基础图层。",
+    generatedAt: "2026-03-28 14:09",
+    explanation:
+      "该历史快照用于对比基线，仅包含核心统计指标与基础图层，不包含完整解释包。",
+    indicators: [
+      { name: "总水量", value: "1.11e8 m³", trend: "flat" },
+      { name: "高产水区占比", value: "30.8%", trend: "down" },
+      { name: "低产水区占比", value: "21.1%", trend: "up" },
+    ],
+    inputOutputMapping: [
+      { input: "Precipitation Raster 2024", output: "Water Yield Baseline Layer" },
+      { input: "LULC Raster 2023", output: "Baseline Statistics" },
+    ],
+    downloadableArtifacts: ["baseline_stats_2026_000.csv", "baseline_layer_2026_000.tif"],
+  },
 };

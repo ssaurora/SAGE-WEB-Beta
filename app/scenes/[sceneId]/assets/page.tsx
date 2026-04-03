@@ -8,9 +8,7 @@ import {
 } from "@/components/ui/card";
 import { getSceneAssetsViewModel } from "@/lib/api/scene";
 
-function getAssetTypeColor(
-  type: "Vector" | "Raster" | "Table" | "Document",
-) {
+function getAssetTypeColor(type: "Vector" | "Raster" | "Table" | "Document") {
   switch (type) {
     case "Vector":
       return "bg-blue-100 text-blue-800";

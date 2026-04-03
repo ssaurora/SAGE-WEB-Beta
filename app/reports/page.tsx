@@ -1,11 +1,29 @@
-import { PlaceholderPage } from "@/components/pages/placeholder-page";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ReportsPanel } from "@/components/pages/reports-panel";
+import { getReportListViewModel } from "@/lib/api/report";
 
-export default function ReportsPage() {
+export default async function ReportsPage() {
+  const reports = await getReportListViewModel();
+
   return (
-    <PlaceholderPage
-      title="Reports"
-      description="结果与报告入口占位页。"
-      bullets={["后续承接结果摘要、解释与回溯入口。"]}
-    />
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Reports</CardTitle>
+          <CardDescription>
+            按 Scene / Analysis Type / Model / Time 筛选并查看结果报告
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ReportsPanel items={reports} />
+        </CardContent>
+      </Card>
+    </div>
   );
 }
