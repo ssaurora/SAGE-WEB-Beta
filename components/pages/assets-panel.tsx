@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import type {
   AssetBindStatus,
   AssetDataType,
@@ -142,8 +143,8 @@ export function AssetsPanel({
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredItems.length}</span> /{" "}
-          {items.length}
+          当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
+          / {items.length}
         </p>
         <select
           value={sortByTime}
@@ -158,9 +159,10 @@ export function AssetsPanel({
       </div>
 
       {filteredItems.length === 0 ? (
-        <div className="rounded-md border p-4 text-sm text-muted-foreground">
-          没有符合筛选条件的资产。
-        </div>
+        <DataStateCard
+          title="No assets matched"
+          description="没有符合当前筛选条件的资产，请调整筛选条件后重试。"
+        />
       ) : (
         filteredItems.map((item) => (
           <div key={item.assetId} className="rounded-md border p-4">
@@ -176,7 +178,9 @@ export function AssetsPanel({
                 <Badge variant={bindStatusVariant(item.bindStatus)}>
                   {bindStatusLabel(item.bindStatus)}
                 </Badge>
-                <Badge variant="outline">{visibilityLabel(item.visibility)}</Badge>
+                <Badge variant="outline">
+                  {visibilityLabel(item.visibility)}
+                </Badge>
               </div>
             </div>
             <div className="mt-3 flex items-center justify-between gap-3">

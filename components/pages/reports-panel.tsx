@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import type { ReportListItemViewModel } from "@/lib/mock/report";
 
 type ReportsPanelProps = {
@@ -77,9 +78,10 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
       </p>
 
       {filteredItems.length === 0 ? (
-        <div className="rounded-md border p-4 text-sm text-muted-foreground">
-          没有符合条件的报告。
-        </div>
+        <DataStateCard
+          title="No reports matched"
+          description="没有符合当前筛选条件的报告，请调整筛选项后重试。"
+        />
       ) : (
         filteredItems.map((item) => (
           <div key={item.reportId} className="rounded-md border p-4">

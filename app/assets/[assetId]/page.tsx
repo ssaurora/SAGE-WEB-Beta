@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import { getAssetDetailViewModel } from "@/lib/api/asset";
 
 function bindStatusLabel(status: "Bound" | "Unbound" | "Missing") {
@@ -31,7 +32,23 @@ export default async function AssetDetailPage({
 }) {
   const { assetId } = await params;
   const { from, sceneId } = await searchParams;
-  const vm = await getAssetDetailViewModel(assetId);
+  let vm;
+
+  try {
+    vm = await getAssetDetailViewModel(assetId);
+  } catch {
+    return (
+      <div className="space-y-4">
+        <DataStateCard
+          title="Asset detail unavailable"
+          description="当前资产详情不可用，可能不存在或加载失败。"
+          tone="error"
+          actionHref="/assets"
+          actionLabel="Back to Assets"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -45,7 +62,9 @@ export default async function AssetDetailPage({
               </CardDescription>
             </div>
             <div className="flex gap-2">
-              <Link href={`/assets${sceneId ? `?sceneId=${sceneId}&from=asset-detail` : ""}`}>
+              <Link
+                href={`/assets${sceneId ? `?sceneId=${sceneId}&from=asset-detail` : ""}`}
+              >
                 <Button size="sm" variant="outline">
                   Back to Assets
                 </Button>
@@ -127,7 +146,9 @@ export default async function AssetDetailPage({
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Checksum</p>
-            <p className="mt-1 break-all font-medium text-foreground">{vm.checksum}</p>
+            <p className="mt-1 break-all font-medium text-foreground">
+              {vm.checksum}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -140,19 +161,27 @@ export default async function AssetDetailPage({
         <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Scene</p>
-            <p className="mt-1 font-medium text-foreground">{vm.usedBy.sceneId}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.usedBy.sceneId}
+            </p>
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Task</p>
-            <p className="mt-1 font-medium text-foreground">{vm.usedBy.taskId ?? "-"}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.usedBy.taskId ?? "-"}
+            </p>
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Result</p>
-            <p className="mt-1 font-medium text-foreground">{vm.usedBy.resultId ?? "-"}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.usedBy.resultId ?? "-"}
+            </p>
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Report</p>
-            <p className="mt-1 font-medium text-foreground">{vm.usedBy.reportId ?? "-"}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.usedBy.reportId ?? "-"}
+            </p>
           </div>
         </CardContent>
       </Card>

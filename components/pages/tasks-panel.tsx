@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import type { TaskListItem } from "@/lib/mock/task";
 import {
   getTaskStateLabel,
@@ -112,9 +113,10 @@ export function TasksPanel({ tasks }: TasksPanelProps) {
       </div>
 
       {filteredTasks.length === 0 ? (
-        <div className="rounded-md border p-4 text-sm text-muted-foreground">
-          没有符合筛选条件的任务。
-        </div>
+        <DataStateCard
+          title="No tasks matched"
+          description="没有符合当前筛选条件的任务，请调整搜索或状态筛选后重试。"
+        />
       ) : (
         filteredTasks.map((task) => (
           <div key={task.id} className="rounded-md border p-4">
