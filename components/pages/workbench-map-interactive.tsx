@@ -15,6 +15,9 @@ import {
   MapLibreCanvas,
   type PickedFeature,
 } from "@/components/pages/maplibre-canvas";
+import {
+  InputsPanelInteractive,
+} from "@/components/pages/inputs-panel-interactive";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
 import type { WorkbenchPageViewModel } from "@/lib/mock/scene";
 
@@ -549,265 +552,65 @@ export function WorkbenchMapInteractive({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Inputs / Layers</CardTitle>
+          <CardTitle className="text-base">Inputs</CardTitle>
           <CardDescription>
-            输入绑定与图层状态 · Required Ready {requiredReadyCount}/
-            {requiredTotal}
+            输入绑定管理 · Required Ready {requiredReadyCount}/{requiredTotal}
           </CardDescription>
         </CardHeader>
+        <CardContent>
+          <InputsPanelInteractive
+            requiredInputs={requiredInputs}
+            optionalInputs={optionalInputs}
+            uploadedAssets={uploadedUnboundAssets}
+            isReadOnly={isInputReadOnly}
+            onRequiredInputsChange={(updated) => {
+              // Handle required inputs change
+              updated.forEach((item) => {
+                if (item.boundAssetId) {
+                  applyBinding(
+                    "required",
+                    item.name,
+                    item.expectedType,
+                    item.boundAssetId,
+                  );
+                }
+              });
+            }}
+            onOptionalInputsChange={(updated) => {
+              // Handle optional inputs change
+              updated.forEach((item) => {
+                if (item.boundAssetId) {
+                  applyBinding(
+                    "optional",
+                    item.name,
+                    item.expectedType,
+                    item.boundAssetId,
+                  );
+                }
+              });
+            }}
+            onUploadedAssetsChange={(assets) => {
+              // Handle uploaded assets change
+              assets.forEach((asset) => {
+                uploadAsset();
+              });
+            }}
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Layers</CardTitle>
+          <CardDescription>图层可见性与交互管理</CardDescription>
+        </CardHeader>
         <CardContent className="space-y-4">
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-              Required Inputs
-            </p>
-            {isInputReadOnly ? (
-              <p className="mb-2 text-xs text-muted-foreground">
-                当前状态为 {workbenchState}，输入绑定区只读。
-              </p>
-            ) : null}
-            <div className="space-y-2">
-              {requiredInputs.map((item) => {
-                const inputKey = makeInputKey("required", item.name);
-                const selectedAssetId =
-                  bindingSelection[inputKey] ?? uploadedUnboundAssets[0]?.id;
-
-                return (
-                  <div
-                    key={item.name}
-                    className={`rounded-md border p-3 ${
-                      item.status === "Invalid"
-                        ? "border-destructive/70 bg-destructive/5"
-                        : item.status === "Missing"
-                          ? "border-primary/40"
-                          : ""
-                    }`}
-                  >
-                    <p className="text-sm font-medium">{item.name}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {item.expectedType}
-                    </p>
-                    <Badge
-                      className="mt-2"
-                      variant={statusBadgeVariant(item.status)}
-                    >
-                      {item.status}
-                    </Badge>
-                    {item.invalidReason ? (
-                      <p className="mt-1 text-xs text-destructive">
-                        {item.invalidReason}
-                      </p>
-                    ) : null}
-
-                    <div className="mt-2 flex flex-wrap items-center gap-2">
-                      <select
-                        value={selectedAssetId ?? ""}
-                        onChange={(event) =>
-                          setBindingSelection((prev) => ({
-                            ...prev,
-                            [inputKey]: event.target.value,
-                          }))
-                        }
-                        disabled={isInputReadOnly}
-                        className="h-8 rounded-md border border-input bg-background px-2 text-xs"
-                      >
-                        {uploadedUnboundAssets.length === 0 ? (
-                          <option value="">No unbound asset</option>
-                        ) : (
-                          uploadedUnboundAssets.map((asset) => (
-                            <option key={asset.id} value={asset.id}>
-                              {asset.name} ({asset.type})
-                            </option>
-                          ))
-                        )}
-                      </select>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        disabled={
-                          uploadedUnboundAssets.length === 0 || isInputReadOnly
-                        }
-                        onClick={() =>
-                          applyBinding(
-                            "required",
-                            item.name,
-                            item.expectedType,
-                            selectedAssetId,
-                          )
-                        }
-                      >
-                        {item.status === "Bound" ? "Replace" : "Bind"}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        disabled={!item.boundAssetId || isInputReadOnly}
-                        onClick={() => removeBinding("required", item.name)}
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <Badge variant="outline">{visibleCount} visible</Badge>
+            <Button size="sm" variant="outline" onClick={resetMapView}>
+              Reset View
+            </Button>
           </div>
-
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-              Optional Inputs
-            </p>
-            <div className="space-y-2">
-              {optionalInputs.map((item) => {
-                const inputKey = makeInputKey("optional", item.name);
-                const selectedAssetId =
-                  bindingSelection[inputKey] ?? uploadedUnboundAssets[0]?.id;
-
-                return (
-                  <div
-                    key={item.name}
-                    className={`rounded-md border p-3 ${
-                      item.status === "Invalid"
-                        ? "border-destructive/70 bg-destructive/5"
-                        : ""
-                    }`}
-                  >
-                    <p className="text-sm font-medium">{item.name}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {item.expectedType}
-                    </p>
-                    <Badge
-                      className="mt-2"
-                      variant={statusBadgeVariant(item.status)}
-                    >
-                      {item.status}
-                    </Badge>
-                    {item.invalidReason ? (
-                      <p className="mt-1 text-xs text-destructive">
-                        {item.invalidReason}
-                      </p>
-                    ) : null}
-
-                    <div className="mt-2 flex flex-wrap items-center gap-2">
-                      <select
-                        value={selectedAssetId ?? ""}
-                        onChange={(event) =>
-                          setBindingSelection((prev) => ({
-                            ...prev,
-                            [inputKey]: event.target.value,
-                          }))
-                        }
-                        disabled={isInputReadOnly}
-                        className="h-8 rounded-md border border-input bg-background px-2 text-xs"
-                      >
-                        {uploadedUnboundAssets.length === 0 ? (
-                          <option value="">No unbound asset</option>
-                        ) : (
-                          uploadedUnboundAssets.map((asset) => (
-                            <option key={asset.id} value={asset.id}>
-                              {asset.name} ({asset.type})
-                            </option>
-                          ))
-                        )}
-                      </select>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        disabled={
-                          uploadedUnboundAssets.length === 0 || isInputReadOnly
-                        }
-                        onClick={() =>
-                          applyBinding(
-                            "optional",
-                            item.name,
-                            item.expectedType,
-                            selectedAssetId,
-                          )
-                        }
-                      >
-                        {item.status === "Bound" ? "Replace" : "Bind"}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        disabled={!item.boundAssetId || isInputReadOnly}
-                        onClick={() => removeBinding("optional", item.name)}
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-              Uploaded but Unbound
-            </p>
-            <div className="rounded-md border p-3">
-              <div className="mb-2 flex flex-wrap items-center gap-2">
-                <input
-                  value={uploadName}
-                  onChange={(event) => setUploadName(event.target.value)}
-                  placeholder="Asset name"
-                  disabled={isInputReadOnly}
-                  className="h-8 flex-1 rounded-md border border-input bg-background px-2 text-xs"
-                />
-                <select
-                  value={uploadType}
-                  onChange={(event) =>
-                    setUploadType(event.target.value as UploadAssetType)
-                  }
-                  disabled={isInputReadOnly}
-                  className="h-8 rounded-md border border-input bg-background px-2 text-xs"
-                >
-                  <option value="Raster">Raster</option>
-                  <option value="Vector Polygon">Vector Polygon</option>
-                  <option value="CSV">CSV</option>
-                </select>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={uploadAsset}
-                  disabled={isInputReadOnly}
-                >
-                  Upload
-                </Button>
-              </div>
-
-              {uploadedUnboundAssets.length === 0 ? (
-                <p className="text-xs text-muted-foreground">
-                  No uploaded unbound assets.
-                </p>
-              ) : (
-                <div className="space-y-1">
-                  {uploadedUnboundAssets.map((asset) => (
-                    <div
-                      key={asset.id}
-                      className="flex items-center justify-between rounded-md border px-2 py-1 text-xs"
-                    >
-                      <span className="truncate">{asset.name}</span>
-                      <Badge variant="outline">{asset.type}</Badge>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Layers
-              </p>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline">{visibleCount} visible</Badge>
-                <Button size="sm" variant="outline" onClick={resetMapView}>
-                  Reset View
-                </Button>
-              </div>
-            </div>
 
             <div className="space-y-3">
               <div className="rounded-md border p-2">
@@ -854,7 +657,6 @@ export function WorkbenchMapInteractive({
                 ) : null}
               </div>
             </div>
-          </div>
         </CardContent>
       </Card>
 

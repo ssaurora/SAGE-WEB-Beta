@@ -12,7 +12,8 @@ import {
   getTaskStateVariant,
 } from "@/lib/status/task-state";
 import Link from "next/link";
-import { TaskGovernanceActions } from "@/components/pages/task-governance-actions";
+import { GovernanceRecoveryPanel } from "@/components/pages/governance-recovery-panel";
+import { GovernanceManifestTab } from "@/components/pages/governance-manifest-tab";
 
 export default async function TaskGovernancePage({
   params,
@@ -29,44 +30,9 @@ export default async function TaskGovernancePage({
   const isRunning = vm.currentState === "Running";
   const isFailed = vm.currentState === "Failed";
   const isCompleted = vm.currentState === "Completed";
+  const isCancelled = vm.currentState === "Cancelled";
   const isFailedRecoverable = isFailed && vm.canResume;
   const isFailedTerminal = isFailed && !vm.canResume;
-
-  const statusTone = isFailedTerminal
-    ? "border-destructive/60 bg-destructive/5"
-    : isFailedRecoverable || isActionRequired || isWaitingInput
-      ? "border-amber-500/60 bg-amber-500/5"
-      : isRunning
-        ? "border-blue-500/50 bg-blue-500/5"
-        : "border-border bg-muted/30";
-
-  const statusTitle = isWaitingInput
-    ? "Waiting for Required Input"
-    : isActionRequired
-      ? "Action Required"
-      : isFailedRecoverable
-        ? "Recoverable Failure"
-        : isFailedTerminal
-          ? "Terminal Failure"
-          : isRunning
-            ? "Task Running"
-            : isCompleted
-              ? "Task Completed"
-              : "Task Governance";
-
-  const statusSummary = isWaitingInput
-    ? "补齐并绑定必需输入后即可恢复任务。"
-    : isActionRequired
-      ? "任务等待人工操作，请优先完成 Required Actions。"
-      : isFailedRecoverable
-        ? "运行失败但可恢复，建议先执行修复动作后 Resume。"
-        : isFailedTerminal
-          ? "当前失败不可恢复，建议新建分析任务。"
-          : isRunning
-            ? "任务正在运行，建议观察生命周期与运行日志。"
-            : isCompleted
-              ? "任务已完成，可前往结果详情和报告消费。"
-              : "查看治理建议并根据状态执行下一步操作。";
   return (
     <div className="space-y-4">
       <Card>
@@ -105,25 +71,25 @@ export default async function TaskGovernancePage({
         </Card>
       ) : null}
 
-      <Card className={statusTone}>
-        <CardHeader>
-          <CardTitle className="text-base">{statusTitle}</CardTitle>
-          <CardDescription>{statusSummary}</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <TaskGovernanceActions
+      <GovernanceRecoveryPanel
         sceneId={vm.sceneId}
         taskId={vm.taskId}
-        isCompleted={isCompleted}
-        resultAvailable={vm.resultAvailable}
+        status={
+          isCompleted
+            ? "Completed"
+            : isFailedTerminal
+              ? "Failed Terminal"
+              : isFailedRecoverable
+                ? "Failed Recoverable"
+                : isCancelled
+                  ? "Cancelled"
+                  : "Waiting"
+        }
         canResume={vm.canResume}
-        canCancel={vm.canCancel}
-        isRunning={isRunning}
-        isWaitingInput={isWaitingInput}
-        isActionRequired={isActionRequired}
-        isFailedRecoverable={isFailedRecoverable}
-        isFailedTerminal={isFailedTerminal}
+        failureReason={vm.failureSummary}
+        missingInputs={vm.missingRequiredInputs}
+        invalidBindings={vm.requiredActions}
+        suggestedFix={vm.suggestedFixes[0]}
       />
 
       <Card>
@@ -201,20 +167,6 @@ export default async function TaskGovernancePage({
                 <p className="mt-1">{vm.failureSummary}</p>
               </div>
             ) : null}
-
-            <TaskGovernanceActions
-              sceneId={vm.sceneId}
-              taskId={vm.taskId}
-              isCompleted={isCompleted}
-              resultAvailable={vm.resultAvailable}
-              canResume={vm.canResume}
-              canCancel={vm.canCancel}
-              isRunning={isRunning}
-              isWaitingInput={isWaitingInput}
-              isActionRequired={isActionRequired}
-              isFailedRecoverable={isFailedRecoverable}
-              isFailedTerminal={isFailedTerminal}
-            />
           </CardContent>
         </Card>
 
@@ -253,38 +205,49 @@ export default async function TaskGovernancePage({
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Manifest (Read-only)</CardTitle>
-          <CardDescription>分析上下文与运行配置摘要</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            <p className="text-xs">Analysis Type</p>
-            <p className="mt-1 font-medium text-foreground">
-              {vm.manifestSummary.analysisType}
-            </p>
-          </div>
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            <p className="text-xs">Model</p>
-            <p className="mt-1 font-medium text-foreground">
-              {vm.manifestSummary.modelName}
-            </p>
-          </div>
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            <p className="text-xs">Required Inputs Ready</p>
-            <p className="mt-1 font-medium text-foreground">
-              {vm.manifestSummary.requiredInputsReady}
-            </p>
-          </div>
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            <p className="text-xs">Runtime Profile</p>
-            <p className="mt-1 font-medium text-foreground">
-              {vm.manifestSummary.runtimeProfile}
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+      <GovernanceManifestTab
+        parameters={[
+          {
+            key: "analysisType",
+            value: vm.manifestSummary.analysisType,
+            type: "parameter",
+            isEditable: false,
+            description: "Analysis Type",
+            children: [],
+          },
+          {
+            key: "modelName",
+            value: vm.manifestSummary.modelName,
+            type: "parameter",
+            isEditable: false,
+            description: "Model",
+            children: [],
+          },
+          {
+            key: "requiredInputs",
+            value: vm.manifestSummary.requiredInputsReady,
+            type: "input",
+            isEditable: false,
+            description: "Required Inputs",
+            children: vm.missingRequiredInputs.map((input) => ({
+              key: `input-${input}`,
+              value: "missing",
+              type: "input",
+              isEditable: false,
+              description: input,
+              children: [],
+            })),
+          },
+          {
+            key: "runtimeProfile",
+            value: vm.manifestSummary.runtimeProfile,
+            type: "parameter",
+            isEditable: false,
+            description: "Runtime Profile",
+            children: [],
+          },
+        ]}
+      />
 
       <Card>
         <CardHeader>

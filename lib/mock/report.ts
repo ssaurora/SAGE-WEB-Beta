@@ -1,9 +1,15 @@
 export type ReportListItemViewModel = {
   reportId: string;
   sceneId: string;
+  taskId?: string;
   analysisType: string;
   modelName: string;
   time: string;
+  reportName?: string;
+  status?: "Draft" | "Published" | "Archived";
+  format?: "PDF" | "XLSX" | "JSON";
+  pageCount?: number;
+  fileSize?: string;
   resultSummary: string;
 };
 
@@ -15,6 +21,13 @@ export type ReportDetailViewModel = {
   analysisType: string;
   modelName: string;
   time: string;
+  reportName?: string;
+  status?: "Draft" | "Published" | "Archived";
+  format?: "PDF" | "XLSX" | "JSON";
+  pageCount?: number;
+  fileSize?: string;
+  generatedBy?: string;
+  downloadUrl?: string;
   resultSummary: string;
   metrics: Array<{ name: string; value: string }>;
   explanation: string;
@@ -26,25 +39,43 @@ export const reportListMock: ReportListItemViewModel[] = [
   {
     reportId: "report-2026-001",
     sceneId: "scene-001",
+    taskId: "task-000",
     analysisType: "Water Yield",
     modelName: "InVEST water_yield",
     time: "2026-04-02 17:25",
+    reportName: "Water Yield Baseline Report",
+    status: "Published",
+    format: "PDF",
+    pageCount: 22,
+    fileSize: "3.4 MB",
     resultSummary: "中游子流域水量贡献高，北侧坡地建议优先治理。",
   },
   {
     reportId: "report-2026-002",
     sceneId: "scene-002",
+    taskId: "task-003",
     analysisType: "Sediment Delivery",
     modelName: "InVEST SDR",
     time: "2026-04-01 16:10",
+    reportName: "Sediment Delivery Risk Report",
+    status: "Published",
+    format: "PDF",
+    pageCount: 18,
+    fileSize: "2.7 MB",
     resultSummary: "高侵蚀风险区集中于南部坡耕地。",
   },
   {
     reportId: "report-2026-003",
     sceneId: "scene-003",
+    taskId: "task-004",
     analysisType: "Habitat Quality",
     modelName: "InVEST habitat_quality",
     time: "2026-03-29 11:40",
+    reportName: "Habitat Quality Assessment",
+    status: "Draft",
+    format: "JSON",
+    pageCount: 12,
+    fileSize: "1.1 MB",
     resultSummary: "生态质量热点分布在湿地与林地交错区域。",
   },
 ];
@@ -58,6 +89,13 @@ export const reportDetailMockMap: Record<string, ReportDetailViewModel> = {
     analysisType: "Water Yield",
     modelName: "InVEST water_yield",
     time: "2026-04-02 17:25",
+    reportName: "Water Yield Baseline Report",
+    status: "Published",
+    format: "PDF",
+    pageCount: 22,
+    fileSize: "3.4 MB",
+    generatedBy: "system@mock",
+    downloadUrl: "/mock-downloads/report-2026-001.pdf",
     resultSummary: "中游子流域水量贡献高，北侧坡地建议优先治理。",
     metrics: [
       { name: "总水量", value: "1.26e8 m³" },
@@ -82,6 +120,13 @@ export const reportDetailMockMap: Record<string, ReportDetailViewModel> = {
     analysisType: "Sediment Delivery",
     modelName: "InVEST SDR",
     time: "2026-04-01 16:10",
+    reportName: "Sediment Delivery Risk Report",
+    status: "Published",
+    format: "PDF",
+    pageCount: 18,
+    fileSize: "2.7 MB",
+    generatedBy: "system@mock",
+    downloadUrl: "/mock-downloads/report-2026-002.pdf",
     resultSummary: "高侵蚀风险区集中于南部坡耕地。",
     metrics: [
       { name: "泥沙输出量", value: "3.7e5 t" },
@@ -102,6 +147,13 @@ export const reportDetailMockMap: Record<string, ReportDetailViewModel> = {
     analysisType: "Habitat Quality",
     modelName: "InVEST habitat_quality",
     time: "2026-03-29 11:40",
+    reportName: "Habitat Quality Assessment",
+    status: "Draft",
+    format: "JSON",
+    pageCount: 12,
+    fileSize: "1.1 MB",
+    generatedBy: "system@mock",
+    downloadUrl: "/mock-downloads/report-2026-003.json",
     resultSummary: "生态质量热点分布在湿地与林地交错区域。",
     metrics: [
       { name: "高质量栖息地占比", value: "29.5%" },
