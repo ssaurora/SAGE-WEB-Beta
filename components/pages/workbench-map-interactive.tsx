@@ -15,6 +15,7 @@ import {
   MapLibreCanvas,
   type PickedFeature,
 } from "@/components/pages/maplibre-canvas";
+import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
 import type { WorkbenchPageViewModel } from "@/lib/mock/scene";
 
 type WorkbenchMapInteractiveProps = {
@@ -67,6 +68,8 @@ export function WorkbenchMapInteractive({
   contextFrom,
   contextTaskId,
 }: WorkbenchMapInteractiveProps) {
+  const { role } = useAppRole();
+  const canEdit = canEditWorkbench(role);
   const [requiredInputs, setRequiredInputs] = useState<RequiredInputItem[]>(
     vm.inputsPanel.required.map((item) => ({
       name: item.name,
@@ -153,7 +156,7 @@ export function WorkbenchMapInteractive({
   const isActionRequired = workbenchState === "Action Required";
 
   const isInputReadOnly =
-    isQueued || isRunning || isProcessingResults || isCompleted;
+    !canEdit || isQueued || isRunning || isProcessingResults || isCompleted;
   const canRunAction = canRunByInputs && !isInputReadOnly;
 
   const primaryActionLabel = (() => {
@@ -521,6 +524,23 @@ export function WorkbenchMapInteractive({
           </CardContent>
         </Card>
       ) : null}
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Workbench Permission Scope</CardTitle>
+          <CardDescription>
+            当前角色：{role} · {canEdit ? "可编辑" : "只读"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!canEdit ? (
+            <div className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
+              Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到
+              Settings 调整角色。
+            </div>
+          ) : null}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

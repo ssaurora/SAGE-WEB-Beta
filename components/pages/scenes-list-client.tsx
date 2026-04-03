@@ -237,7 +237,8 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
           <div>
             <p className="text-sm font-medium">提示</p>
             <p className="text-xs text-muted-foreground">
-              单击任何场景卡片进入详情页；{canCreateScene(role)
+              单击任何场景卡片进入详情页；
+              {canCreateScene(role)
                 ? "当前角色可创建新场景。"
                 : "当前角色为只读，创建入口已隐藏/禁用。"}
             </p>

@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { AppRoleBanner } from "@/components/pages/app-role-banner";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { WorkbenchMapInteractive } from "@/components/pages/workbench-map-interactive";
 import { getSceneWorkbenchViewModel } from "@/lib/api/scene";
@@ -39,6 +40,7 @@ export default async function SceneWorkbenchPage({
 
   return (
     <div className="space-y-4">
+      <AppRoleBanner />
       <Card>
         <CardHeader className="pb-4">
           <div className="flex flex-wrap items-center gap-2">
