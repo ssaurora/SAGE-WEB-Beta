@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneAssetsViewModel } from "@/lib/api/scene";
 
 function getAssetTypeColor(type: "Vector" | "Raster" | "Table" | "Document") {
@@ -58,7 +59,23 @@ export default async function SceneAssetsPage({
   params: Promise<{ sceneId: string }>;
 }) {
   const { sceneId } = await params;
-  const vm = await getSceneAssetsViewModel(sceneId);
+  let vm;
+
+  try {
+    vm = await getSceneAssetsViewModel(sceneId);
+  } catch {
+    return (
+      <div className="space-y-4">
+        <DataStateCard
+          title="Scene assets load failed"
+          description="场景资产暂时不可用，请稍后重试。"
+          tone="error"
+          actionHref={`/scenes/${sceneId}/assets`}
+          actionLabel="Retry"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

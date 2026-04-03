@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneOverviewViewModel } from "@/lib/api/scene";
 import { getTaskStateVariant } from "@/lib/status/task-state";
 
@@ -17,7 +18,23 @@ export default async function SceneOverviewPage({
   params: Promise<{ sceneId: string }>;
 }) {
   const { sceneId } = await params;
-  const vm = await getSceneOverviewViewModel(sceneId);
+  let vm;
+
+  try {
+    vm = await getSceneOverviewViewModel(sceneId);
+  } catch {
+    return (
+      <div className="space-y-4">
+        <DataStateCard
+          title="Overview load failed"
+          description="场景概览暂时不可用，请稍后重试。"
+          tone="error"
+          actionHref={`/scenes/${sceneId}/overview`}
+          actionLabel="Retry"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

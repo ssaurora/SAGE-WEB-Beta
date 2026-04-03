@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneTaskRunsViewModel } from "@/lib/api/scene";
 import {
   getTaskStateLabel,
@@ -22,7 +23,23 @@ export default async function SceneTaskRunsPage({
 }) {
   const { sceneId } = await params;
   const { from } = await searchParams;
-  const vm = await getSceneTaskRunsViewModel(sceneId);
+  let vm;
+
+  try {
+    vm = await getSceneTaskRunsViewModel(sceneId);
+  } catch {
+    return (
+      <div className="space-y-4">
+        <DataStateCard
+          title="Task Runs load failed"
+          description="任务运行记录暂时不可用，请稍后重试。"
+          tone="error"
+          actionHref={`/scenes/${sceneId}/task-runs`}
+          actionLabel="Retry"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneResultsPanel } from "@/components/pages/scene-results-panel";
 import { getSceneResultsViewModel } from "@/lib/api/scene";
 import {
@@ -21,7 +22,23 @@ export default async function SceneResultsPage({
 }) {
   const { sceneId } = await params;
   const { taskId, from } = await searchParams;
-  const vm = await getSceneResultsViewModel(sceneId);
+  let vm;
+
+  try {
+    vm = await getSceneResultsViewModel(sceneId);
+  } catch {
+    return (
+      <div className="space-y-4">
+        <DataStateCard
+          title="Results load failed"
+          description="结果列表暂时不可用，请稍后重试。"
+          tone="error"
+          actionHref={`/scenes/${sceneId}/results`}
+          actionLabel="Retry"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

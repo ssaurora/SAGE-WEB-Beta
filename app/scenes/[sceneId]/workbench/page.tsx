@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import { WorkbenchMapInteractive } from "@/components/pages/workbench-map-interactive";
 import { getSceneWorkbenchViewModel } from "@/lib/api/scene";
 import { getTaskStateVariant } from "@/lib/status/task-state";
@@ -18,7 +19,23 @@ export default async function SceneWorkbenchPage({
 }) {
   const { sceneId } = await params;
   const { from, taskId } = await searchParams;
-  const vm = await getSceneWorkbenchViewModel(sceneId);
+  let vm;
+
+  try {
+    vm = await getSceneWorkbenchViewModel(sceneId);
+  } catch {
+    return (
+      <div className="space-y-4">
+        <DataStateCard
+          title="Workbench load failed"
+          description="工作台暂时不可用，请稍后重试。"
+          tone="error"
+          actionHref={`/scenes/${sceneId}/workbench`}
+          actionLabel="Retry"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
