@@ -1,7 +1,16 @@
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getTaskGovernanceViewModel } from '@/lib/api/task';
-import { getTaskStateLabel, getTaskStateVariant } from '@/lib/status/task-state';
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getTaskGovernanceViewModel } from "@/lib/api/task";
+import {
+  getTaskStateLabel,
+  getTaskStateVariant,
+} from "@/lib/status/task-state";
 
 export default async function TaskGovernancePage({
   params,
@@ -26,13 +35,13 @@ export default async function TaskGovernancePage({
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            可恢复：{vm.canResume ? '是' : '否'}
+            可恢复：{vm.canResume ? "是" : "否"}
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            可取消：{vm.canCancel ? '是' : '否'}
+            可取消：{vm.canCancel ? "是" : "否"}
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            结果可用：{vm.resultAvailable ? '是' : '否'}
+            结果可用：{vm.resultAvailable ? "是" : "否"}
           </div>
         </CardContent>
       </Card>
@@ -79,7 +88,10 @@ export default async function TaskGovernancePage({
         </CardHeader>
         <CardContent className="space-y-2">
           {vm.lifecycleEvents.map((event) => (
-            <p key={event} className="rounded-md border px-3 py-2 text-sm text-muted-foreground">
+            <p
+              key={event}
+              className="rounded-md border px-3 py-2 text-sm text-muted-foreground"
+            >
               {event}
             </p>
           ))}

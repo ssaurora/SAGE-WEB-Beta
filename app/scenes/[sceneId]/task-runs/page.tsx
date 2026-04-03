@@ -1,8 +1,17 @@
-import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getSceneTaskRunsViewModel } from '@/lib/api/scene';
-import { getTaskStateLabel, getTaskStateVariant } from '@/lib/status/task-state';
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getSceneTaskRunsViewModel } from "@/lib/api/scene";
+import {
+  getTaskStateLabel,
+  getTaskStateVariant,
+} from "@/lib/status/task-state";
 
 export default async function SceneTaskRunsPage({
   params,
@@ -17,7 +26,9 @@ export default async function SceneTaskRunsPage({
       <Card>
         <CardHeader>
           <CardTitle>Scene Task Runs</CardTitle>
-          <CardDescription>{vm.sceneId} · 场景任务运行记录与状态联动</CardDescription>
+          <CardDescription>
+            {vm.sceneId} · 场景任务运行记录与状态联动
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           {vm.items.map((task) => (
@@ -33,17 +44,24 @@ export default async function SceneTaskRunsPage({
                   <Badge variant={getTaskStateVariant(task.currentState)}>
                     {getTaskStateLabel(task.currentState)}
                   </Badge>
-                  <Badge variant={task.canResume ? 'secondary' : 'outline'}>
-                    {task.canResume ? '可恢复' : '不可恢复'}
+                  <Badge variant={task.canResume ? "secondary" : "outline"}>
+                    {task.canResume ? "可恢复" : "不可恢复"}
                   </Badge>
-                  <Badge variant={task.resultAvailable ? 'secondary' : 'outline'}>
-                    {task.resultAvailable ? '结果可用' : '无结果'}
+                  <Badge
+                    variant={task.resultAvailable ? "secondary" : "outline"}
+                  >
+                    {task.resultAvailable ? "结果可用" : "无结果"}
                   </Badge>
                 </div>
               </div>
               <div className="mt-3 flex items-center justify-between">
-                <p className="text-xs text-muted-foreground">Updated at: {task.updatedAt}</p>
-                <Link href={`/task-governance/${task.taskId}`} className="text-sm font-medium text-primary hover:underline">
+                <p className="text-xs text-muted-foreground">
+                  Updated at: {task.updatedAt}
+                </p>
+                <Link
+                  href={`/task-governance/${task.taskId}`}
+                  className="text-sm font-medium text-primary hover:underline"
+                >
                   查看治理详情
                 </Link>
               </div>

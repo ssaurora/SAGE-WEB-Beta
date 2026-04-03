@@ -1,11 +1,13 @@
-import { PlaceholderPage } from "@/components/pages/placeholder-page";
+import { SceneAuditPanel } from '@/components/pages/scene-audit-panel';
+import { getSceneAuditViewModel } from '@/lib/api/scene';
 
-export default function SceneAuditPage() {
-  return (
-    <PlaceholderPage
-      title="Scene Audit"
-      description="场景审计占位页。"
-      bullets={["审计信息保持结构化并与主流程分离。"]}
-    />
-  );
+export default async function SceneAuditPage({
+  params,
+}: {
+  params: Promise<{ sceneId: string }>;
+}) {
+  const { sceneId } = await params;
+  const vm = await getSceneAuditViewModel(sceneId);
+
+  return <SceneAuditPanel vm={vm} />;
 }

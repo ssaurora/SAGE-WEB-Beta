@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { workbenchMock } from '@/lib/mock/scene';
+import { NextResponse } from "next/server";
+import { workbenchMock } from "@/lib/mock/scene";
 
 export async function GET(
   _request: Request,

@@ -1,7 +1,16 @@
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getSceneResultsViewModel } from '@/lib/api/scene';
-import { getTaskStateLabel, getTaskStateVariant } from '@/lib/status/task-state';
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { getSceneResultsViewModel } from "@/lib/api/scene";
+import {
+  getTaskStateLabel,
+  getTaskStateVariant,
+} from "@/lib/status/task-state";
 
 export default async function SceneResultsPage({
   params,
@@ -21,7 +30,9 @@ export default async function SceneResultsPage({
               {getTaskStateLabel(vm.latestState)}
             </Badge>
           </div>
-          <CardDescription>{vm.sceneId} · 地图化、指标化与解释化结果消费</CardDescription>
+          <CardDescription>
+            {vm.sceneId} · 地图化、指标化与解释化结果消费
+          </CardDescription>
         </CardHeader>
       </Card>
 
@@ -36,18 +47,24 @@ export default async function SceneResultsPage({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold">{item.resultId}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">from {item.fromTaskId} · {item.generatedAt}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    from {item.fromTaskId} · {item.generatedAt}
+                  </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant={item.mapLayerReady ? 'secondary' : 'outline'}>
-                    {item.mapLayerReady ? '地图图层可用' : '地图图层未就绪'}
+                  <Badge variant={item.mapLayerReady ? "secondary" : "outline"}>
+                    {item.mapLayerReady ? "地图图层可用" : "地图图层未就绪"}
                   </Badge>
-                  <Badge variant={item.explanationReady ? 'secondary' : 'outline'}>
-                    {item.explanationReady ? '解释可用' : '解释待生成'}
+                  <Badge
+                    variant={item.explanationReady ? "secondary" : "outline"}
+                  >
+                    {item.explanationReady ? "解释可用" : "解释待生成"}
                   </Badge>
                 </div>
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">{item.summary}</p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                {item.summary}
+              </p>
             </div>
           ))}
         </CardContent>

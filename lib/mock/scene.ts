@@ -57,18 +57,18 @@ export type SceneTaskRunItemViewModel = {
   analysisType: string;
   modelName: string;
   currentState:
-    | 'Draft'
-    | 'Understanding'
-    | 'Planning'
-    | 'Waiting for Required Input'
-    | 'Ready to Run'
-    | 'Queued'
-    | 'Running'
-    | 'Processing Results'
-    | 'Action Required'
-    | 'Completed'
-    | 'Failed'
-    | 'Cancelled';
+    | "Draft"
+    | "Understanding"
+    | "Planning"
+    | "Waiting for Required Input"
+    | "Ready to Run"
+    | "Queued"
+    | "Running"
+    | "Processing Results"
+    | "Action Required"
+    | "Completed"
+    | "Failed"
+    | "Cancelled";
   updatedAt: string;
   canResume: boolean;
   resultAvailable: boolean;
@@ -90,8 +90,31 @@ export type SceneResultItemViewModel = {
 
 export type SceneResultsPageViewModel = {
   sceneId: string;
-  latestState: 'Processing Results' | 'Completed' | 'Failed';
+  latestState: "Processing Results" | "Completed" | "Failed";
   items: SceneResultItemViewModel[];
+};
+
+export type SceneAuditEventLevel = 'info' | 'warning' | 'error';
+export type SceneAuditEventType = 'input' | 'runtime' | 'manifest' | 'result';
+
+export type SceneAuditEvent = {
+  id: string;
+  at: string;
+  level: SceneAuditEventLevel;
+  type: SceneAuditEventType;
+  taskId: string;
+  message: string;
+};
+
+export type SceneAuditPageViewModel = {
+  sceneId: string;
+  summary: {
+    totalEvents: number;
+    warningCount: number;
+    errorCount: number;
+    latestMessage: string;
+  };
+  events: SceneAuditEvent[];
 };
 
 export const sceneOverviewMock: SceneOverviewPageViewModel = {
@@ -163,32 +186,32 @@ export const workbenchMock: WorkbenchPageViewModel = {
 };
 
 export const sceneTaskRunsMock: SceneTaskRunsPageViewModel = {
-  sceneId: 'scene-001',
+  sceneId: "scene-001",
   items: [
     {
-      taskId: 'task-001',
-      analysisType: 'Water Yield',
-      modelName: 'InVEST water_yield',
-      currentState: 'Running',
-      updatedAt: '2026-04-03 10:40',
+      taskId: "task-001",
+      analysisType: "Water Yield",
+      modelName: "InVEST water_yield",
+      currentState: "Running",
+      updatedAt: "2026-04-03 10:40",
       canResume: false,
       resultAvailable: false,
     },
     {
-      taskId: 'task-002',
-      analysisType: 'Water Yield',
-      modelName: 'InVEST water_yield',
-      currentState: 'Waiting for Required Input',
-      updatedAt: '2026-04-03 09:55',
+      taskId: "task-002",
+      analysisType: "Water Yield",
+      modelName: "InVEST water_yield",
+      currentState: "Waiting for Required Input",
+      updatedAt: "2026-04-03 09:55",
       canResume: true,
       resultAvailable: false,
     },
     {
-      taskId: 'task-000',
-      analysisType: 'Water Yield',
-      modelName: 'InVEST water_yield',
-      currentState: 'Completed',
-      updatedAt: '2026-04-02 17:20',
+      taskId: "task-000",
+      analysisType: "Water Yield",
+      modelName: "InVEST water_yield",
+      currentState: "Completed",
+      updatedAt: "2026-04-02 17:20",
       canResume: false,
       resultAvailable: true,
     },
@@ -196,24 +219,92 @@ export const sceneTaskRunsMock: SceneTaskRunsPageViewModel = {
 };
 
 export const sceneResultsMock: SceneResultsPageViewModel = {
-  sceneId: 'scene-001',
-  latestState: 'Completed',
+  sceneId: "scene-001",
+  latestState: "Completed",
   items: [
     {
-      resultId: 'result-2026-001',
-      fromTaskId: 'task-000',
-      summary: '生成水量分布图、子流域统计表与结果解释摘要。',
-      generatedAt: '2026-04-02 17:25',
+      resultId: "result-2026-001",
+      fromTaskId: "task-000",
+      summary: "生成水量分布图、子流域统计表与结果解释摘要。",
+      generatedAt: "2026-04-02 17:25",
       mapLayerReady: true,
       explanationReady: true,
     },
     {
-      resultId: 'result-2026-000',
-      fromTaskId: 'task-900',
-      summary: '历史结果快照，仅包含指标表与基础图层。',
-      generatedAt: '2026-03-28 14:09',
+      resultId: "result-2026-000",
+      fromTaskId: "task-900",
+      summary: "历史结果快照，仅包含指标表与基础图层。",
+      generatedAt: "2026-03-28 14:09",
       mapLayerReady: true,
       explanationReady: false,
+    },
+  ],
+};
+
+export const sceneAuditMock: SceneAuditPageViewModel = {
+  sceneId: 'scene-001',
+  summary: {
+    totalEvents: 7,
+    warningCount: 2,
+    errorCount: 1,
+    latestMessage: '10:44 · Manifest check completed with 1 warning',
+  },
+  events: [
+    {
+      id: 'audit-001',
+      at: '10:44',
+      level: 'warning',
+      type: 'manifest',
+      taskId: 'task-001',
+      message: 'Manifest checksum drift detected on optional metadata.',
+    },
+    {
+      id: 'audit-002',
+      at: '10:40',
+      level: 'info',
+      type: 'runtime',
+      taskId: 'task-001',
+      message: 'Runtime checks passed for preprocessing stage.',
+    },
+    {
+      id: 'audit-003',
+      at: '10:31',
+      level: 'error',
+      type: 'input',
+      taskId: 'task-002',
+      message: 'Required input LULC Raster missing at validation.',
+    },
+    {
+      id: 'audit-004',
+      at: '10:22',
+      level: 'info',
+      type: 'input',
+      taskId: 'task-001',
+      message: 'Asset uploaded and bound: precip_2025.tif',
+    },
+    {
+      id: 'audit-005',
+      at: '10:18',
+      level: 'info',
+      type: 'runtime',
+      taskId: 'task-001',
+      message: 'Task submitted to execution queue.',
+    },
+    {
+      id: 'audit-006',
+      at: '09:56',
+      level: 'warning',
+      type: 'result',
+      taskId: 'task-000',
+      message: 'Result explanation package partially generated.',
+    },
+    {
+      id: 'audit-007',
+      at: '09:48',
+      level: 'info',
+      type: 'result',
+      taskId: 'task-000',
+      message: 'Map layer package published for result-2026-001.',
     },
   ],
 };
