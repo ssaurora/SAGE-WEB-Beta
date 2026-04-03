@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { DataStateCard } from "@/components/pages/data-state-card";
+import { PageErrorState } from "@/components/pages/page-error-state";
 
 type TaskGovernanceErrorProps = {
   error: Error & { digest?: string };
@@ -17,21 +17,12 @@ export default function TaskGovernanceError({
   }, [error]);
 
   return (
-    <div className="space-y-4">
-      <DataStateCard
-        title="Governance load failed"
-        description="任务治理页暂时不可用，请稍后重试。"
-        tone="error"
-        actionHref="/tasks"
-        actionLabel="Back to Tasks"
-      />
-      <button
-        type="button"
-        onClick={reset}
-        className="text-sm font-medium text-primary hover:underline"
-      >
-        Retry
-      </button>
-    </div>
+    <PageErrorState
+      title="Governance load failed"
+      description="任务治理页暂时不可用，请稍后重试。"
+      actionHref="/tasks"
+      actionLabel="Back to Tasks"
+      onRetry={reset}
+    />
   );
 }

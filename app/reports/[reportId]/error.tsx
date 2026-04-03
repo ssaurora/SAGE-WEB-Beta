@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { DataStateCard } from "@/components/pages/data-state-card";
+import { PageErrorState } from "@/components/pages/page-error-state";
 
 type ReportDetailErrorProps = {
   error: Error & { digest?: string };
@@ -17,21 +17,12 @@ export default function ReportDetailError({
   }, [error]);
 
   return (
-    <div className="space-y-4">
-      <DataStateCard
-        title="Report detail failed"
-        description="报告详情暂时不可用，请稍后重试。"
-        tone="error"
-        actionLabel="Back to Reports"
-        actionHref="/reports"
-      />
-      <button
-        type="button"
-        onClick={reset}
-        className="text-sm font-medium text-primary hover:underline"
-      >
-        Retry
-      </button>
-    </div>
+    <PageErrorState
+      title="Report detail failed"
+      description="报告详情暂时不可用，请稍后重试。"
+      actionHref="/reports"
+      actionLabel="Back to Reports"
+      onRetry={reset}
+    />
   );
 }

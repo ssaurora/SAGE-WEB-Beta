@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { DataStateCard } from "@/components/pages/data-state-card";
+import { PageErrorState } from "@/components/pages/page-error-state";
 
 type TaskRunsErrorProps = {
   error: Error & { digest?: string };
@@ -14,21 +14,12 @@ export default function TaskRunsError({ error, reset }: TaskRunsErrorProps) {
   }, [error]);
 
   return (
-    <div className="space-y-4">
-      <DataStateCard
-        title="Task Runs load failed"
-        description="任务运行记录暂时不可用，请稍后重试。"
-        tone="error"
-        actionHref="/tasks"
-        actionLabel="Back to Tasks"
-      />
-      <button
-        type="button"
-        onClick={reset}
-        className="text-sm font-medium text-primary hover:underline"
-      >
-        Retry
-      </button>
-    </div>
+    <PageErrorState
+      title="Task Runs load failed"
+      description="任务运行记录暂时不可用，请稍后重试。"
+      actionHref="/tasks"
+      actionLabel="Back to Tasks"
+      onRetry={reset}
+    />
   );
 }
