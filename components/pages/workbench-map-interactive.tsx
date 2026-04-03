@@ -164,6 +164,7 @@ export function WorkbenchMapInteractive({
     if (isProcessingResults) return "Processing Results";
     if (isRunning) return "Running";
     if (isQueued) return "Queued";
+    if (!canEdit) return "Read Only";
     if (isFailed || isActionRequired) return "Fix and Resume";
     if (canRunAction) return "Run Analysis";
     if (isWaitingInput) return "Waiting for Required Input";
@@ -176,6 +177,8 @@ export function WorkbenchMapInteractive({
       return "任务运行中，本轮输入不可修改，可进入治理页查看事件流。";
     if (isProcessingResults) return "结果处理中，最终产物尚未全部可下载。";
     if (isCompleted) return "任务已完成，可查看结果并进入报告消费链路。";
+    if (!canEdit)
+      return "当前角色为只读，若需执行上传、绑定或运行，请前往 Settings 切换角色。";
     if (isFailed || isActionRequired)
       return "当前任务需要修复后恢复，建议先处理缺失输入或无效绑定。";
     if (isWaitingInput) return "等待必需输入，请先完成绑定后再运行。";
@@ -1022,7 +1025,7 @@ export function WorkbenchMapInteractive({
           ) : (
             <Button
               className="w-full"
-              disabled={!canRunAction && !(isFailed || isActionRequired)}
+              disabled={!canEdit || (!canRunAction && !(isFailed || isActionRequired))}
               variant={isFailed || isActionRequired ? "outline" : "default"}
             >
               {primaryActionLabel}
