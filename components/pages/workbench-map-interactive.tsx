@@ -830,7 +830,10 @@ export function WorkbenchMapInteractive({
             {vm.taskPanel.lifecycleSummary}
           </div>
 
-          {(isUnderstanding || isQueued || isRunning || isProcessingResults) && (
+          {(isUnderstanding ||
+            isQueued ||
+            isRunning ||
+            isProcessingResults) && (
             <div className="rounded-md border bg-muted/20 p-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">
                 Runtime Progress
@@ -842,23 +845,20 @@ export function WorkbenchMapInteractive({
                 />
               </div>
               <div className="mt-2 grid grid-cols-4 gap-2 text-[11px]">
-                {[
-                  "Understanding",
-                  "Queued",
-                  "Running",
-                  "Processing",
-                ].map((stage, index) => (
-                  <span
-                    key={stage}
-                    className={
-                      index <= runtimeStageIndex
-                        ? "font-semibold text-foreground"
-                        : "text-muted-foreground"
-                    }
-                  >
-                    {stage}
-                  </span>
-                ))}
+                {["Understanding", "Queued", "Running", "Processing"].map(
+                  (stage, index) => (
+                    <span
+                      key={stage}
+                      className={
+                        index <= runtimeStageIndex
+                          ? "font-semibold text-foreground"
+                          : "text-muted-foreground"
+                      }
+                    >
+                      {stage}
+                    </span>
+                  ),
+                )}
               </div>
             </div>
           )}
