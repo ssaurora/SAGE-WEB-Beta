@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
 
 type TaskGovernanceActionsProps = {
@@ -39,12 +45,14 @@ export function TaskGovernanceActions({
     if (!canEdit) return "Read Only";
     if (isCompleted) return "View Results";
     if (isFailedTerminal) return "Start New Analysis";
-    if (isWaitingInput || isActionRequired || isFailedRecoverable) return "Fix and Resume";
+    if (isWaitingInput || isActionRequired || isFailedRecoverable)
+      return "Fix and Resume";
     return "Resume";
   })();
 
   const primaryActionDisabled =
-    !canEdit || (!canResume && (isWaitingInput || isActionRequired || isFailedRecoverable));
+    !canEdit ||
+    (!canResume && (isWaitingInput || isActionRequired || isFailedRecoverable));
 
   return (
     <>
@@ -83,7 +91,11 @@ export function TaskGovernanceActions({
             </Button>
           )}
 
-          <Button size="sm" variant="outline" disabled={!canEdit || !canCancel || isCompleted}>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={!canEdit || !canCancel || isCompleted}
+          >
             Cancel Task
           </Button>
 

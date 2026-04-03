@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useAppRole } from "@/components/pages/app-role";
 
 type VisibilityPreset = "Public" | "Scene" | "Task";
@@ -20,7 +26,9 @@ export function VisibilityPolicyCard() {
   const [preset, setPreset] = useState<VisibilityPreset>("Scene");
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY) as VisibilityPreset | null;
+    const saved = window.localStorage.getItem(
+      STORAGE_KEY,
+    ) as VisibilityPreset | null;
     if (saved === "Public" || saved === "Scene" || saved === "Task") {
       setPreset(saved);
     }
@@ -49,11 +57,15 @@ export function VisibilityPolicyCard() {
               type="button"
               onClick={() => setPreset(item)}
               className={`rounded-md border px-3 py-2 text-left text-sm transition-colors ${
-                preset === item ? "border-primary bg-primary/5" : "hover:bg-muted/50"
+                preset === item
+                  ? "border-primary bg-primary/5"
+                  : "hover:bg-muted/50"
               }`}
             >
               <p className="font-medium">{item}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{presetDescriptions[item]}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {presetDescriptions[item]}
+              </p>
             </button>
           ))}
         </div>

@@ -67,7 +67,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="min-w-0">
         <header className="flex items-center gap-3 border-b bg-background/90 px-6 py-3 backdrop-blur lg:px-8">
           <Package className="h-5 w-5 text-muted-foreground" />
-          <span className="text-sm font-semibold text-foreground">{getPageTitle(pathname)}</span>
+          <span className="text-sm font-semibold text-foreground">
+            {getPageTitle(pathname)}
+          </span>
         </header>
 
         <main className="p-6 lg:p-8">{children}</main>

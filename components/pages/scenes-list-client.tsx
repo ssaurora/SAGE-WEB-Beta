@@ -50,7 +50,8 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
     if (sortBy === "recent") {
       result = [...result].sort(
         (a, b) =>
-          new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime(),
+          new Date(b.lastModified).getTime() -
+          new Date(a.lastModified).getTime(),
       );
     } else {
       result = [...result].sort((a, b) => a.name.localeCompare(b.name));
@@ -60,7 +61,9 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
   }, [items, searchQuery, filterStatus, sortBy]);
 
   const activeCount = items.filter((item) => item.status === "Active").length;
-  const archivedCount = items.filter((item) => item.status === "Archived").length;
+  const archivedCount = items.filter(
+    (item) => item.status === "Archived",
+  ).length;
   const totalTasks = items.reduce((sum, item) => sum + item.taskCount, 0);
   const totalResults = items.reduce((sum, item) => sum + item.resultCount, 0);
 
@@ -143,7 +146,9 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
             </div>
             <div className="rounded-md border bg-muted/20 px-3 py-2 text-sm">
               <p className="text-xs text-muted-foreground">Access</p>
-              <p className="font-semibold">{canCreateScene(role) ? "Editable" : "Read Only"}</p>
+              <p className="font-semibold">
+                {canCreateScene(role) ? "Editable" : "Read Only"}
+              </p>
             </div>
           </div>
         </CardContent>
@@ -174,7 +179,11 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
                         {scene.description}
                       </p>
                     </div>
-                    <Badge variant={scene.status === "Active" ? "secondary" : "outline"}>
+                    <Badge
+                      variant={
+                        scene.status === "Active" ? "secondary" : "outline"
+                      }
+                    >
                       {scene.status === "Active" ? "活跃" : "归档"}
                     </Badge>
                   </div>
@@ -183,17 +192,23 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
                     <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       分析主题
                     </p>
-                    <p className="mt-1 text-sm font-medium">{scene.analysisTheme}</p>
+                    <p className="mt-1 text-sm font-medium">
+                      {scene.analysisTheme}
+                    </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="rounded-md bg-muted p-3">
                       <p className="text-xs text-muted-foreground">任务数</p>
-                      <p className="mt-1 text-xl font-semibold">{scene.taskCount}</p>
+                      <p className="mt-1 text-xl font-semibold">
+                        {scene.taskCount}
+                      </p>
                     </div>
                     <div className="rounded-md bg-muted p-3">
                       <p className="text-xs text-muted-foreground">结果数</p>
-                      <p className="mt-1 text-xl font-semibold">{scene.resultCount}</p>
+                      <p className="mt-1 text-xl font-semibold">
+                        {scene.resultCount}
+                      </p>
                     </div>
                   </div>
 

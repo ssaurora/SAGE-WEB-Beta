@@ -135,7 +135,8 @@ export default async function TaskGovernancePage({
         </CardHeader>
         <CardContent>
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-            Viewer 模式下建议仅查看治理信息并跳转至 Settings 调整角色；Editor / Admin 模式可继续执行恢复和取消。
+            Viewer 模式下建议仅查看治理信息并跳转至 Settings 调整角色；Editor /
+            Admin 模式可继续执行恢复和取消。
           </div>
         </CardContent>
       </Card>
