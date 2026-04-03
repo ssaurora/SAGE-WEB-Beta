@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import {
   Card,
   CardContent,
@@ -170,25 +171,32 @@ export function SceneAuditPanel({ vm }: { vm: SceneAuditPageViewModel }) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-          {filteredEvents.map((event: SceneAuditEvent) => (
-            <div key={event.id} className="rounded-md border p-3">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge variant={levelVariant(event.level)}>
-                  {levelLabel(event.level)}
-                </Badge>
-                <Badge variant="outline">{typeLabel(event.type)}</Badge>
-                <span className="text-xs text-muted-foreground">
-                  {event.at}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {event.taskId}
-                </span>
+          {filteredEvents.length === 0 ? (
+            <DataStateCard
+              title="No audit events matched"
+              description="当前筛选条件下没有审计事件，请调整级别或类型筛选。"
+            />
+          ) : (
+            filteredEvents.map((event: SceneAuditEvent) => (
+              <div key={event.id} className="rounded-md border p-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant={levelVariant(event.level)}>
+                    {levelLabel(event.level)}
+                  </Badge>
+                  <Badge variant="outline">{typeLabel(event.type)}</Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {event.at}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {event.taskId}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {event.message}
+                </p>
               </div>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {event.message}
-              </p>
-            </div>
-          ))}
+            ))
+          )}
         </CardContent>
       </Card>
     </div>

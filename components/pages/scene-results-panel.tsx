@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { DataStateCard } from "@/components/pages/data-state-card";
 import {
   Card,
   CardContent,
@@ -98,9 +99,10 @@ export function SceneResultsPanel({
         </p>
 
         {filteredItems.length === 0 ? (
-          <div className="rounded-md border p-4 text-sm text-muted-foreground">
-            没有符合筛选条件的结果。
-          </div>
+          <DataStateCard
+            title="No results matched"
+            description="当前筛选条件下没有结果包，请调整任务筛选或时间排序。"
+          />
         ) : (
           filteredItems.map((item) => (
             <div key={item.resultId} className="rounded-md border p-4">
