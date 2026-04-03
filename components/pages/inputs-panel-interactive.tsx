@@ -56,7 +56,8 @@ export function InputsPanelInteractive({
 }: InputsPanelInteractiveProps) {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [uploadName, setUploadName] = useState("");
-  const [uploadType, setUploadType] = useState<UploadAssetType>("Vector Polygon");
+  const [uploadType, setUploadType] =
+    useState<UploadAssetType>("Vector Polygon");
   const [bindDialogOpen, setBindDialogOpen] = useState(false);
   const [bindingTarget, setBindingTarget] = useState<{
     type: "required" | "optional";
