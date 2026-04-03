@@ -15,9 +15,7 @@ import {
   MapLibreCanvas,
   type PickedFeature,
 } from "@/components/pages/maplibre-canvas";
-import {
-  InputsPanelInteractive,
-} from "@/components/pages/inputs-panel-interactive";
+import { InputsPanelInteractive } from "@/components/pages/inputs-panel-interactive";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
 import type { WorkbenchPageViewModel } from "@/lib/mock/scene";
 
@@ -612,51 +610,51 @@ export function WorkbenchMapInteractive({
             </Button>
           </div>
 
-            <div className="space-y-3">
-              <div className="rounded-md border p-2">
-                <button
-                  type="button"
-                  onClick={() => toggleGroupCollapse("inputs")}
-                  className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                >
-                  <span>Input Layers</span>
-                  <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
-                </button>
-                {!collapsedGroups.inputs ? (
-                  <div className="mt-2 space-y-2">
-                    {groupedLayers.inputs.map((layer) =>
-                      renderLayerRow(
-                        layer,
-                        layers.findIndex((item) => item.name === layer.name),
-                        layers.length,
-                      ),
-                    )}
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="rounded-md border p-2">
-                <button
-                  type="button"
-                  onClick={() => toggleGroupCollapse("results")}
-                  className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                >
-                  <span>Result Layers</span>
-                  <span>{collapsedGroups.results ? "展开" : "收起"}</span>
-                </button>
-                {!collapsedGroups.results ? (
-                  <div className="mt-2 space-y-2">
-                    {groupedLayers.results.map((layer) =>
-                      renderLayerRow(
-                        layer,
-                        layers.findIndex((item) => item.name === layer.name),
-                        layers.length,
-                      ),
-                    )}
-                  </div>
-                ) : null}
-              </div>
+          <div className="space-y-3">
+            <div className="rounded-md border p-2">
+              <button
+                type="button"
+                onClick={() => toggleGroupCollapse("inputs")}
+                className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+              >
+                <span>Input Layers</span>
+                <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
+              </button>
+              {!collapsedGroups.inputs ? (
+                <div className="mt-2 space-y-2">
+                  {groupedLayers.inputs.map((layer) =>
+                    renderLayerRow(
+                      layer,
+                      layers.findIndex((item) => item.name === layer.name),
+                      layers.length,
+                    ),
+                  )}
+                </div>
+              ) : null}
             </div>
+
+            <div className="rounded-md border p-2">
+              <button
+                type="button"
+                onClick={() => toggleGroupCollapse("results")}
+                className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+              >
+                <span>Result Layers</span>
+                <span>{collapsedGroups.results ? "展开" : "收起"}</span>
+              </button>
+              {!collapsedGroups.results ? (
+                <div className="mt-2 space-y-2">
+                  {groupedLayers.results.map((layer) =>
+                    renderLayerRow(
+                      layer,
+                      layers.findIndex((item) => item.name === layer.name),
+                      layers.length,
+                    ),
+                  )}
+                </div>
+              ) : null}
+            </div>
+          </div>
         </CardContent>
       </Card>
 

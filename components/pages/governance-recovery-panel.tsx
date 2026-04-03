@@ -3,12 +3,23 @@
 import Link from "next/link";
 import { AlertCircle, CheckCircle2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export type GovernanceRecoveryPanelProps = {
   sceneId: string;
   taskId: string;
-  status: "Waiting" | "Failed Recoverable" | "Failed Terminal" | "Cancelled" | "Completed";
+  status:
+    | "Waiting"
+    | "Failed Recoverable"
+    | "Failed Terminal"
+    | "Cancelled"
+    | "Completed";
   canResume: boolean;
   failureReason?: string;
   missingInputs?: string[];
@@ -39,9 +50,12 @@ export function GovernanceRecoveryPanel({
           <div className="flex items-start gap-3">
             <RefreshCw className="h-5 w-5 text-blue-600 mt-0.5" />
             <div>
-              <CardTitle className="text-base text-blue-900">In Progress or Waiting</CardTitle>
+              <CardTitle className="text-base text-blue-900">
+                In Progress or Waiting
+              </CardTitle>
               <CardDescription className="text-blue-800">
-                The task is waiting for input/action or still running. You can review context and continue in Workbench.
+                The task is waiting for input/action or still running. You can
+                review context and continue in Workbench.
               </CardDescription>
             </div>
           </div>
@@ -65,9 +79,12 @@ export function GovernanceRecoveryPanel({
           <div className="flex items-start gap-3">
             <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
             <div>
-              <CardTitle className="text-base text-green-900">Analysis Completed</CardTitle>
+              <CardTitle className="text-base text-green-900">
+                Analysis Completed
+              </CardTitle>
               <CardDescription className="text-green-800">
-                The analysis has finished successfully. Results are available for review.
+                The analysis has finished successfully. Results are available
+                for review.
               </CardDescription>
             </div>
           </div>
@@ -92,7 +109,8 @@ export function GovernanceRecoveryPanel({
                 Recoverable Failure
               </CardTitle>
               <CardDescription className="text-amber-800">
-                The analysis failed but can be recovered by fixing the issues below.
+                The analysis failed but can be recovered by fixing the issues
+                below.
               </CardDescription>
             </div>
           </div>
@@ -100,14 +118,18 @@ export function GovernanceRecoveryPanel({
         <CardContent className="space-y-4">
           {failureReason && (
             <div className="rounded-md border border-amber-200 bg-white p-3">
-              <p className="text-xs font-semibold text-amber-950">Failure Reason</p>
+              <p className="text-xs font-semibold text-amber-950">
+                Failure Reason
+              </p>
               <p className="mt-1 text-sm text-amber-900">{failureReason}</p>
             </div>
           )}
 
           {missingInputs.length > 0 && (
             <div className="rounded-md border border-amber-200 bg-white p-3">
-              <p className="text-xs font-semibold text-amber-950">Missing Required Inputs</p>
+              <p className="text-xs font-semibold text-amber-950">
+                Missing Required Inputs
+              </p>
               <ul className="mt-2 space-y-1">
                 {missingInputs.map((input) => (
                   <li key={input} className="text-sm text-amber-900">
@@ -120,7 +142,9 @@ export function GovernanceRecoveryPanel({
 
           {invalidBindings.length > 0 && (
             <div className="rounded-md border border-red-300 bg-red-50 p-3">
-              <p className="text-xs font-semibold text-red-950">Invalid Bindings</p>
+              <p className="text-xs font-semibold text-red-950">
+                Invalid Bindings
+              </p>
               <ul className="mt-2 space-y-1">
                 {invalidBindings.map((binding) => (
                   <li key={binding} className="text-sm text-red-900">
@@ -133,7 +157,9 @@ export function GovernanceRecoveryPanel({
 
           {suggestedFix && (
             <div className="rounded-md border border-blue-200 bg-blue-50 p-3">
-              <p className="text-xs font-semibold text-blue-950">Suggested Fix</p>
+              <p className="text-xs font-semibold text-blue-950">
+                Suggested Fix
+              </p>
               <p className="mt-1 text-sm text-blue-900">{suggestedFix}</p>
             </div>
           )}
@@ -148,9 +174,7 @@ export function GovernanceRecoveryPanel({
               </Link>
             )}
             <Link href={`/scenes/${sceneId}/workbench`}>
-              <Button variant="outline">
-                Start New Analysis
-              </Button>
+              <Button variant="outline">Start New Analysis</Button>
             </Link>
           </div>
         </CardContent>
@@ -177,28 +201,30 @@ export function GovernanceRecoveryPanel({
         <CardContent className="space-y-4">
           {failureReason && (
             <div className="rounded-md border border-destructive/30 bg-white p-3">
-              <p className="text-xs font-semibold text-destructive">Failure Reason</p>
-              <p className="mt-1 text-sm text-destructive/80">{failureReason}</p>
+              <p className="text-xs font-semibold text-destructive">
+                Failure Reason
+              </p>
+              <p className="mt-1 text-sm text-destructive/80">
+                {failureReason}
+              </p>
             </div>
           )}
 
           {suggestedFix && (
             <div className="rounded-md border border-orange-200 bg-orange-50 p-3">
-              <p className="text-xs font-semibold text-orange-950">Recommendation</p>
+              <p className="text-xs font-semibold text-orange-950">
+                Recommendation
+              </p>
               <p className="mt-1 text-sm text-orange-900">{suggestedFix}</p>
             </div>
           )}
 
           <div className="flex flex-wrap gap-2 pt-2">
             <Link href={`/scenes/${sceneId}/workbench`}>
-              <Button variant="default">
-                Start New Analysis
-              </Button>
+              <Button variant="default">Start New Analysis</Button>
             </Link>
             <Link href={`/task-governance/${taskId}`}>
-              <Button variant="outline">
-                View Task Details
-              </Button>
+              <Button variant="outline">View Task Details</Button>
             </Link>
           </div>
         </CardContent>
@@ -210,7 +236,9 @@ export function GovernanceRecoveryPanel({
     return (
       <Card className="border-slate-300 bg-slate-50">
         <CardHeader>
-          <CardTitle className="text-base text-slate-900">Analysis Cancelled</CardTitle>
+          <CardTitle className="text-base text-slate-900">
+            Analysis Cancelled
+          </CardTitle>
           <CardDescription className="text-slate-700">
             This analysis was cancelled and can be re-run if needed.
           </CardDescription>
@@ -223,9 +251,7 @@ export function GovernanceRecoveryPanel({
             </Button>
           </Link>
           <Link href={`/scenes/${sceneId}/workbench`}>
-            <Button variant="outline">
-              Start New Analysis
-            </Button>
+            <Button variant="outline">Start New Analysis</Button>
           </Link>
         </CardContent>
       </Card>

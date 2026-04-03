@@ -57,7 +57,9 @@ function ParameterTree({
 
   return (
     <div style={{ marginLeft: `${depth * 16}px` }}>
-      <div className={`rounded-md border p-3 mb-2 transition ${getTypeColor(param.type)}`}>
+      <div
+        className={`rounded-md border p-3 mb-2 transition ${getTypeColor(param.type)}`}
+      >
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2">
@@ -75,7 +77,10 @@ function ParameterTree({
               )}
               {!hasChildren && <div className="w-5" />}
               <p className="font-medium text-sm">{param.key}</p>
-              <Badge variant={getTypeBadgeVariant(param.type)} className="text-xs">
+              <Badge
+                variant={getTypeBadgeVariant(param.type)}
+                className="text-xs"
+              >
                 {param.type}
               </Badge>
               {param.isEditable && (
@@ -125,21 +130,17 @@ export function GovernanceManifestTab({
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">{title}</h3>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline">
-            Inputs: {counts.inputs}
-          </Badge>
-          <Badge variant="secondary">
-            Parameters: {counts.parameters}
-          </Badge>
-          <Badge variant="default">
-            Outputs: {counts.outputs}
-          </Badge>
+          <Badge variant="outline">Inputs: {counts.inputs}</Badge>
+          <Badge variant="secondary">Parameters: {counts.parameters}</Badge>
+          <Badge variant="default">Outputs: {counts.outputs}</Badge>
         </div>
       </div>
 
       <div className="space-y-3">
         {parameters.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No manifest data available.</p>
+          <p className="text-sm text-muted-foreground">
+            No manifest data available.
+          </p>
         ) : (
           parameters.map((param) => (
             <ParameterTree key={param.key} param={param} />

@@ -29,7 +29,7 @@ export type ReportListViewModel = {
 };
 
 const statusVariant = (
-  status: "Draft" | "Published" | "Archived"
+  status: "Draft" | "Published" | "Archived",
 ): "default" | "secondary" | "destructive" | "outline" => {
   switch (status) {
     case "Published":
@@ -73,7 +73,7 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
           r.name.toLowerCase().includes(query) ||
           r.sceneId.toLowerCase().includes(query) ||
           r.taskId.toLowerCase().includes(query) ||
-          r.analysisType.toLowerCase().includes(query)
+          r.analysisType.toLowerCase().includes(query),
       );
     }
 
@@ -91,8 +91,7 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
     if (sortBy === "date") {
       filtered.sort(
         (a, b) =>
-          new Date(b.generatedAt).getTime() -
-          new Date(a.generatedAt).getTime()
+          new Date(b.generatedAt).getTime() - new Date(a.generatedAt).getTime(),
       );
     } else {
       filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -272,7 +271,9 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <FileText className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                          <h3 className="font-medium truncate">{report.name}</h3>
+                          <h3 className="font-medium truncate">
+                            {report.name}
+                          </h3>
                           <Badge variant={statusVariant(report.status)}>
                             {statusLabel(report.status)}
                           </Badge>
@@ -282,17 +283,21 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
                         </div>
                         <div className="mt-2 grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
                           <div>
-                            <span className="font-medium">Scene:</span> {report.sceneId}
+                            <span className="font-medium">Scene:</span>{" "}
+                            {report.sceneId}
                           </div>
                           <div>
-                            <span className="font-medium">Task:</span> {report.taskId}
+                            <span className="font-medium">Task:</span>{" "}
+                            {report.taskId}
                           </div>
                           <div>
-                            <span className="font-medium">Type:</span> {report.analysisType}
+                            <span className="font-medium">Type:</span>{" "}
+                            {report.analysisType}
                           </div>
                         </div>
                         <div className="mt-1 text-xs text-muted-foreground">
-                          Generated: {new Date(report.generatedAt).toLocaleString()}
+                          Generated:{" "}
+                          {new Date(report.generatedAt).toLocaleString()}
                           {report.pageCount && ` · ${report.pageCount} pages`}
                           {report.fileSize && ` · ${report.fileSize}`}
                         </div>

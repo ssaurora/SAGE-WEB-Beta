@@ -1,6 +1,10 @@
 import { Metadata } from "next";
-import { ReportsListClient, type ReportListViewModel } from "@/components/pages/reports-list-client";
+import {
+  ReportsListClient,
+  type ReportListViewModel,
+} from "@/components/pages/reports-list-client";
 import { getReportListViewModel } from "@/lib/api/report";
+import { toReportsListViewModel } from "@/lib/adapters/report";
 
 export const metadata: Metadata = {
   title: "Reports",
@@ -9,21 +13,7 @@ export const metadata: Metadata = {
 
 async function getReportsViewModel(): Promise<ReportListViewModel> {
   const reports = await getReportListViewModel();
-
-  return {
-    reports: reports.map((item) => ({
-      id: item.reportId,
-      name: item.reportName ?? `${item.analysisType} Report`,
-      sceneId: item.sceneId,
-      taskId: item.taskId ?? "task-unknown",
-      analysisType: item.analysisType,
-      generatedAt: item.time,
-      status: item.status ?? "Published",
-      format: item.format ?? "PDF",
-      pageCount: item.pageCount,
-      fileSize: item.fileSize,
-    })),
-  };
+  return toReportsListViewModel(reports);
 }
 
 export default async function ReportsPage() {

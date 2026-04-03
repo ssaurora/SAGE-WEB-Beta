@@ -45,7 +45,7 @@ export type ReportDetailViewModel = {
 };
 
 const statusVariant = (
-  status: "Draft" | "Published" | "Archived"
+  status: "Draft" | "Published" | "Archived",
 ): "default" | "secondary" | "destructive" | "outline" => {
   switch (status) {
     case "Published":
@@ -224,9 +224,7 @@ export function ReportDetailClient({ vm }: { vm: ReportDetailViewModel }) {
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Report Sections</CardTitle>
-            <CardDescription>
-              {vm.sections.length} sections
-            </CardDescription>
+            <CardDescription>{vm.sections.length} sections</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {vm.sections.map((section) => (
