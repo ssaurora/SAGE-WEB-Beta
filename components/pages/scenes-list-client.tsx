@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { canCreateScene, useAppRole } from "@/components/pages/app-role";
 
 type SceneListItemViewModel = {
   sceneId: string;
@@ -28,6 +29,7 @@ interface ScenesListPageProps {
 }
 
 export function ScenesListClient({ items }: ScenesListPageProps) {
+  const { role } = useAppRole();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<
     "All" | "Active" | "Archived"
@@ -76,12 +78,22 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
           <p className="text-muted-foreground">
             管理您的分析场景与项目工作空间
           </p>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <Badge variant="outline">Role: {role}</Badge>
+            <Badge variant={canCreateScene(role) ? "secondary" : "outline"}>
+              {canCreateScene(role) ? "Can Create Scene" : "Read Only"}
+            </Badge>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href="/scenes/scene-001/overview" className="inline-block">
-            <Button>+ Create Scene</Button>
-          </Link>
+          {canCreateScene(role) ? (
+            <Link href="/scenes/scene-001/overview" className="inline-block">
+              <Button>+ Create Scene</Button>
+            </Link>
+          ) : (
+            <Button disabled>+ Create Scene</Button>
+          )}
         </div>
       </div>
 
@@ -225,7 +237,9 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
           <div>
             <p className="text-sm font-medium">提示</p>
             <p className="text-xs text-muted-foreground">
-              单击任何场景卡片进入详情页，或使用顶部"Create Scene"按钮创建新项目
+              单击任何场景卡片进入详情页；{canCreateScene(role)
+                ? "当前角色可创建新场景。"
+                : "当前角色为只读，创建入口已隐藏/禁用。"}
             </p>
           </div>
           <Link href="/scenes/scene-001/overview" className="inline-block">
