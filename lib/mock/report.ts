@@ -66,7 +66,11 @@ export const reportDetailMockMap: Record<string, ReportDetailViewModel> = {
     ],
     explanation:
       "结果显示中游区域对总产水贡献显著，建议优先在北侧坡地实施地表径流抑制与植被恢复策略。",
-    exports: ["report-2026-001.pdf", "water_yield_2026_001.tif", "sub_basin_stats_2026_001.csv"],
+    exports: [
+      "report-2026-001.pdf",
+      "water_yield_2026_001.tif",
+      "sub_basin_stats_2026_001.csv",
+    ],
     manifestSummary:
       "analysisType=Water Yield; model=InVEST water_yield; inputs=3/3 ready; runtimeProfile=standard-cpu",
   },
@@ -104,8 +108,7 @@ export const reportDetailMockMap: Record<string, ReportDetailViewModel> = {
       { name: "中质量栖息地占比", value: "46.1%" },
       { name: "低质量栖息地占比", value: "24.4%" },
     ],
-    explanation:
-      "湿地与林地交错带形成连续生态廊道，应优先纳入保护与修复规划。",
+    explanation: "湿地与林地交错带形成连续生态廊道，应优先纳入保护与修复规划。",
     exports: ["report-2026-003.pdf", "habitat_quality_2026_003.tif"],
     manifestSummary:
       "analysisType=Habitat Quality; model=InVEST habitat_quality; inputs=5/5 ready; runtimeProfile=standard-cpu",

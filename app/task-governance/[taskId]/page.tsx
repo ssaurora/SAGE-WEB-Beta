@@ -99,7 +99,7 @@ export default async function TaskGovernancePage({
         <CardContent className="flex flex-wrap gap-2">
           {isCompleted && vm.resultAvailable ? (
             <Link
-              href={`/scenes/${vm.sceneId}/results`}
+              href={`/scenes/${vm.sceneId}/results?taskId=${vm.taskId}&from=governance`}
               className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Open Result Detail
@@ -108,7 +108,8 @@ export default async function TaskGovernancePage({
             <Button
               size="sm"
               disabled={
-                (isWaitingInput || isActionRequired || isFailedRecoverable) && !vm.canResume
+                (isWaitingInput || isActionRequired || isFailedRecoverable) &&
+                !vm.canResume
               }
             >
               {isFailedTerminal
@@ -118,11 +119,15 @@ export default async function TaskGovernancePage({
                   : "Resume"}
             </Button>
           )}
-          <Button size="sm" variant="outline" disabled={!vm.canCancel || isCompleted}>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={!vm.canCancel || isCompleted}
+          >
             Cancel Task
           </Button>
           <Link
-            href={`/scenes/${vm.sceneId}/workbench`}
+            href={`/scenes/${vm.sceneId}/workbench?from=governance&taskId=${vm.taskId}`}
             className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
           >
             Back to Workbench
@@ -134,7 +139,9 @@ export default async function TaskGovernancePage({
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Governance Panel</CardTitle>
-            <CardDescription>required actions / suggested fixes</CardDescription>
+            <CardDescription>
+              required actions / suggested fixes
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -162,7 +169,9 @@ export default async function TaskGovernancePage({
                 Suggested Fixes
               </p>
               {vm.suggestedFixes.length === 0 ? (
-                <p className="text-sm text-muted-foreground">当前无建议修复项</p>
+                <p className="text-sm text-muted-foreground">
+                  当前无建议修复项
+                </p>
               ) : (
                 <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
                   {vm.suggestedFixes.map((fix) => (
@@ -199,7 +208,11 @@ export default async function TaskGovernancePage({
                     ? "Fix and Resume"
                     : "Resume"}
               </Button>
-              <Button size="sm" variant="outline" disabled={!vm.canCancel || isCompleted}>
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={!vm.canCancel || isCompleted}
+              >
                 Cancel Task
               </Button>
               <Button size="sm" variant="outline" disabled={isRunning}>
@@ -252,19 +265,27 @@ export default async function TaskGovernancePage({
         <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Analysis Type</p>
-            <p className="mt-1 font-medium text-foreground">{vm.manifestSummary.analysisType}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.manifestSummary.analysisType}
+            </p>
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Model</p>
-            <p className="mt-1 font-medium text-foreground">{vm.manifestSummary.modelName}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.manifestSummary.modelName}
+            </p>
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Required Inputs Ready</p>
-            <p className="mt-1 font-medium text-foreground">{vm.manifestSummary.requiredInputsReady}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.manifestSummary.requiredInputsReady}
+            </p>
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Runtime Profile</p>
-            <p className="mt-1 font-medium text-foreground">{vm.manifestSummary.runtimeProfile}</p>
+            <p className="mt-1 font-medium text-foreground">
+              {vm.manifestSummary.runtimeProfile}
+            </p>
           </div>
         </CardContent>
       </Card>

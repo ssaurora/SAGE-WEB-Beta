@@ -100,10 +100,14 @@ export default async function SceneOverviewPage({
                 <Button size="sm">进入 Workbench</Button>
               </Link>
               <Link href={`/scenes/${sceneId}/task-runs`}>
-                <Button size="sm" variant="outline">查看 Task Runs</Button>
+                <Button size="sm" variant="outline">
+                  查看 Task Runs
+                </Button>
               </Link>
               <Link href={`/scenes/${sceneId}/results`}>
-                <Button size="sm" variant="secondary">查看 Results</Button>
+                <Button size="sm" variant="secondary">
+                  查看 Results
+                </Button>
               </Link>
             </div>
           </CardContent>

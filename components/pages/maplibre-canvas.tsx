@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import maplibregl, { type Map as MapLibreMap, type MapMouseEvent } from "maplibre-gl";
+import maplibregl, {
+  type Map as MapLibreMap,
+  type MapMouseEvent,
+} from "maplibre-gl";
 import type { MapLayerMouseEvent } from "maplibre-gl";
 
 type MapLibreCanvasProps = {
@@ -177,8 +180,7 @@ function toBounds(featureCollection: {
 
 function estimateScaleDenominator(zoom: number, latitude: number) {
   const metersPerPixel =
-    (156543.03392 * Math.cos((latitude * Math.PI) / 180)) /
-    Math.pow(2, zoom);
+    (156543.03392 * Math.cos((latitude * Math.PI) / 180)) / Math.pow(2, zoom);
   const denominator = metersPerPixel * 39.37 * 96;
   return Math.max(1, Math.round(denominator));
 }
@@ -209,8 +211,14 @@ export function MapLibreCanvas({
       zoom: defaultCursor.zoom,
     });
 
-    map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
-    map.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-left");
+    map.addControl(
+      new maplibregl.NavigationControl({ visualizePitch: true }),
+      "top-right",
+    );
+    map.addControl(
+      new maplibregl.ScaleControl({ unit: "metric" }),
+      "bottom-left",
+    );
 
     map.on("load", () => {
       for (const layer of layers) {
@@ -239,7 +247,8 @@ export function MapLibreCanvas({
                   : layer.name === "Precipitation 2025"
                     ? "#22C55E"
                     : "#A855F7",
-              "fill-opacity": Math.max(0.05, Math.min(1, layer.opacity ?? 0.6)) * 0.38,
+              "fill-opacity":
+                Math.max(0.05, Math.min(1, layer.opacity ?? 0.6)) * 0.38,
             },
             layout: {
               visibility: layer.visible ? "visible" : "none",
@@ -411,7 +420,10 @@ export function MapLibreCanvas({
 
   return (
     <div className="space-y-2">
-      <div ref={containerRef} className="h-[420px] w-full overflow-hidden rounded-md border" />
+      <div
+        ref={containerRef}
+        className="h-[420px] w-full overflow-hidden rounded-md border"
+      />
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
         <div className="flex flex-wrap items-center gap-3">
           <span>
@@ -422,7 +434,9 @@ export function MapLibreCanvas({
           <span>CRS: EPSG:3857</span>
           <span>Active Layer: {activeLayerName ?? "None"}</span>
         </div>
-        <span>Layers: {layers.filter((layer) => layer.visible).length} visible</span>
+        <span>
+          Layers: {layers.filter((layer) => layer.visible).length} visible
+        </span>
       </div>
     </div>
   );

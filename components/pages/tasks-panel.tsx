@@ -68,16 +68,47 @@ export function TasksPanel({ tasks }: TasksPanelProps) {
           />
         </div>
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredTasks.length}</span> / {tasks.length}
+          当前显示 <span className="font-semibold">{filteredTasks.length}</span>{" "}
+          / {tasks.length}
         </p>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Button size="sm" variant={quickFilter === "all" ? "secondary" : "outline"} onClick={() => setQuickFilter("all")}>All</Button>
-        <Button size="sm" variant={quickFilter === "waiting" ? "secondary" : "outline"} onClick={() => setQuickFilter("waiting")}>Waiting</Button>
-        <Button size="sm" variant={quickFilter === "running" ? "secondary" : "outline"} onClick={() => setQuickFilter("running")}>Running</Button>
-        <Button size="sm" variant={quickFilter === "failed" ? "secondary" : "outline"} onClick={() => setQuickFilter("failed")}>Failed</Button>
-        <Button size="sm" variant={quickFilter === "succeeded" ? "secondary" : "outline"} onClick={() => setQuickFilter("succeeded")}>Succeeded</Button>
+        <Button
+          size="sm"
+          variant={quickFilter === "all" ? "secondary" : "outline"}
+          onClick={() => setQuickFilter("all")}
+        >
+          All
+        </Button>
+        <Button
+          size="sm"
+          variant={quickFilter === "waiting" ? "secondary" : "outline"}
+          onClick={() => setQuickFilter("waiting")}
+        >
+          Waiting
+        </Button>
+        <Button
+          size="sm"
+          variant={quickFilter === "running" ? "secondary" : "outline"}
+          onClick={() => setQuickFilter("running")}
+        >
+          Running
+        </Button>
+        <Button
+          size="sm"
+          variant={quickFilter === "failed" ? "secondary" : "outline"}
+          onClick={() => setQuickFilter("failed")}
+        >
+          Failed
+        </Button>
+        <Button
+          size="sm"
+          variant={quickFilter === "succeeded" ? "secondary" : "outline"}
+          onClick={() => setQuickFilter("succeeded")}
+        >
+          Succeeded
+        </Button>
       </div>
 
       {filteredTasks.length === 0 ? (
@@ -108,7 +139,9 @@ export function TasksPanel({ tasks }: TasksPanelProps) {
             </div>
 
             <div className="mt-3 flex items-center justify-between">
-              <p className="text-xs text-muted-foreground">Updated at: {task.updatedAt}</p>
+              <p className="text-xs text-muted-foreground">
+                Updated at: {task.updatedAt}
+              </p>
               <Link
                 href={`/task-governance/${task.id}`}
                 className="text-sm font-medium text-primary hover:underline"

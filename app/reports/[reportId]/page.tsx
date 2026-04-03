@@ -11,10 +11,13 @@ import { getReportDetailViewModel } from "@/lib/api/report";
 
 export default async function ReportDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ reportId: string }>;
+  searchParams: Promise<{ from?: string; taskId?: string; resultId?: string }>;
 }) {
   const { reportId } = await params;
+  const { from, taskId, resultId } = await searchParams;
   const vm = await getReportDetailViewModel(reportId);
 
   return (
@@ -30,15 +33,38 @@ export default async function ReportDetailPage({
             </div>
             <div className="flex gap-2">
               <Link href="/reports">
-                <Button size="sm" variant="outline">Back to Reports</Button>
+                <Button size="sm" variant="outline">
+                  Back to Reports
+                </Button>
+              </Link>
+              <Link
+                href={`/scenes/${vm.sceneId}/results/${resultId ?? vm.resultId}?from=report-detail&taskId=${taskId ?? vm.taskId}&reportId=${vm.reportId}`}
+              >
+                <Button size="sm" variant="outline">
+                  Open Result Detail
+                </Button>
               </Link>
               <Link href={`/task-governance/${vm.taskId}`}>
-                <Button size="sm" variant="secondary">Open Task Governance</Button>
+                <Button size="sm" variant="secondary">
+                  Open Task Governance
+                </Button>
               </Link>
             </div>
           </div>
         </CardHeader>
       </Card>
+
+      {from ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Navigation Context</CardTitle>
+            <CardDescription>
+              当前报告由 {from} 进入
+              {taskId ? ` · task ${taskId}` : ""}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      ) : null}
 
       <Card>
         <CardHeader>

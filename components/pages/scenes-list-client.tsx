@@ -29,7 +29,9 @@ interface ScenesListPageProps {
 
 export function ScenesListClient({ items }: ScenesListPageProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState<"All" | "Active" | "Archived">("Active");
+  const [filterStatus, setFilterStatus] = useState<
+    "All" | "Active" | "Archived"
+  >("Active");
   const [sortBy, setSortBy] = useState<"recent" | "name">("recent");
 
   const filteredItems = useMemo(() => {
@@ -55,7 +57,8 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
     if (sortBy === "recent") {
       result = [...result].sort(
         (a, b) =>
-          new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime(),
+          new Date(b.lastModified).getTime() -
+          new Date(a.lastModified).getTime(),
       );
     } else if (sortBy === "name") {
       result = [...result].sort((a, b) => a.name.localeCompare(b.name));
@@ -108,7 +111,9 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
               <select
                 value={filterStatus}
                 onChange={(e) =>
-                  setFilterStatus(e.target.value as "All" | "Active" | "Archived")
+                  setFilterStatus(
+                    e.target.value as "All" | "Active" | "Archived",
+                  )
                 }
                 className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
               >
@@ -135,7 +140,8 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
           </div>
 
           <div className="mt-4 text-sm text-muted-foreground">
-            找到 <span className="font-semibold">{filteredItems.length}</span> 个场景
+            找到 <span className="font-semibold">{filteredItems.length}</span>{" "}
+            个场景
           </div>
         </CardContent>
       </Card>
@@ -167,7 +173,9 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
                       </CardDescription>
                     </div>
                     <Badge
-                      variant={scene.status === "Active" ? "secondary" : "outline"}
+                      variant={
+                        scene.status === "Active" ? "secondary" : "outline"
+                      }
                     >
                       {scene.status === "Active" ? "活跃" : "归档"}
                     </Badge>
@@ -179,18 +187,24 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
                     <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       分析主题
                     </p>
-                    <p className="mt-1 text-sm font-medium">{scene.analysisTheme}</p>
+                    <p className="mt-1 text-sm font-medium">
+                      {scene.analysisTheme}
+                    </p>
                   </div>
 
                   {/* Stats */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="rounded-md bg-muted p-3">
                       <p className="text-xs text-muted-foreground">任务数</p>
-                      <p className="mt-1 text-xl font-semibold">{scene.taskCount}</p>
+                      <p className="mt-1 text-xl font-semibold">
+                        {scene.taskCount}
+                      </p>
                     </div>
                     <div className="rounded-md bg-muted p-3">
                       <p className="text-xs text-muted-foreground">结果数</p>
-                      <p className="mt-1 text-xl font-semibold">{scene.resultCount}</p>
+                      <p className="mt-1 text-xl font-semibold">
+                        {scene.resultCount}
+                      </p>
                     </div>
                   </div>
 

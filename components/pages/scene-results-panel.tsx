@@ -15,10 +15,17 @@ import type { SceneResultItemViewModel } from "@/lib/mock/scene";
 type SceneResultsPanelProps = {
   sceneId: string;
   items: SceneResultItemViewModel[];
+  initialTaskFilter?: string;
+  contextFrom?: string;
 };
 
-export function SceneResultsPanel({ sceneId, items }: SceneResultsPanelProps) {
-  const [taskFilter, setTaskFilter] = useState("");
+export function SceneResultsPanel({
+  sceneId,
+  items,
+  initialTaskFilter,
+  contextFrom,
+}: SceneResultsPanelProps) {
+  const [taskFilter, setTaskFilter] = useState(initialTaskFilter ?? "");
   const [sortBy, setSortBy] = useState<"latest" | "oldest">("latest");
 
   const filteredItems = useMemo(() => {
@@ -26,7 +33,9 @@ export function SceneResultsPanel({ sceneId, items }: SceneResultsPanelProps) {
 
     if (taskFilter.trim()) {
       const query = taskFilter.trim().toLowerCase();
-      next = next.filter((item) => item.fromTaskId.toLowerCase().includes(query));
+      next = next.filter((item) =>
+        item.fromTaskId.toLowerCase().includes(query),
+      );
     }
 
     next = [...next].sort((left, right) => {
@@ -45,6 +54,15 @@ export function SceneResultsPanel({ sceneId, items }: SceneResultsPanelProps) {
         <CardDescription>结果包、来源任务与解释可用性</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
+        {initialTaskFilter ? (
+          <div className="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+            当前由 {contextFrom ?? "external"} 带入任务上下文筛选：
+            <span className="ml-1 font-semibold text-foreground">
+              {initialTaskFilter}
+            </span>
+          </div>
+        ) : null}
+
         <div className="grid gap-3 md:grid-cols-2">
           <div>
             <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -63,7 +81,9 @@ export function SceneResultsPanel({ sceneId, items }: SceneResultsPanelProps) {
             </label>
             <select
               value={sortBy}
-              onChange={(event) => setSortBy(event.target.value as "latest" | "oldest")}
+              onChange={(event) =>
+                setSortBy(event.target.value as "latest" | "oldest")
+              }
               className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
             >
               <option value="latest">最新优先</option>
@@ -73,7 +93,8 @@ export function SceneResultsPanel({ sceneId, items }: SceneResultsPanelProps) {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredItems.length}</span> 条结果
+          当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
+          条结果
         </p>
 
         {filteredItems.length === 0 ? (
@@ -97,12 +118,16 @@ export function SceneResultsPanel({ sceneId, items }: SceneResultsPanelProps) {
                   <Badge variant={item.mapLayerReady ? "secondary" : "outline"}>
                     {item.mapLayerReady ? "地图图层可用" : "地图图层未就绪"}
                   </Badge>
-                  <Badge variant={item.explanationReady ? "secondary" : "outline"}>
+                  <Badge
+                    variant={item.explanationReady ? "secondary" : "outline"}
+                  >
                     {item.explanationReady ? "解释可用" : "解释待生成"}
                   </Badge>
                 </div>
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">{item.summary}</p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                {item.summary}
+              </p>
             </div>
           ))
         )}

@@ -17,10 +17,15 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
 
   const filteredItems = useMemo(() => {
     let next = items.filter((item) => {
-      const sceneOk = !sceneFilter || item.sceneId.toLowerCase().includes(sceneFilter.toLowerCase());
+      const sceneOk =
+        !sceneFilter ||
+        item.sceneId.toLowerCase().includes(sceneFilter.toLowerCase());
       const analysisOk =
-        !analysisFilter || item.analysisType.toLowerCase().includes(analysisFilter.toLowerCase());
-      const modelOk = !modelFilter || item.modelName.toLowerCase().includes(modelFilter.toLowerCase());
+        !analysisFilter ||
+        item.analysisType.toLowerCase().includes(analysisFilter.toLowerCase());
+      const modelOk =
+        !modelFilter ||
+        item.modelName.toLowerCase().includes(modelFilter.toLowerCase());
       return sceneOk && analysisOk && modelOk;
     });
 
@@ -56,7 +61,9 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
         />
         <select
           value={sortByTime}
-          onChange={(event) => setSortByTime(event.target.value as "latest" | "oldest")}
+          onChange={(event) =>
+            setSortByTime(event.target.value as "latest" | "oldest")
+          }
           className="h-9 rounded-md border border-input bg-background px-3 text-sm"
         >
           <option value="latest">Time: latest first</option>
@@ -65,7 +72,8 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
       </div>
 
       <p className="text-xs text-muted-foreground">
-        当前显示 <span className="font-semibold">{filteredItems.length}</span> 条报告
+        当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
+        条报告
       </p>
 
       {filteredItems.length === 0 ? (
@@ -79,14 +87,17 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
               <div>
                 <p className="text-sm font-semibold">{item.reportId}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {item.sceneId} · {item.analysisType} · {item.modelName} · {item.time}
+                  {item.sceneId} · {item.analysisType} · {item.modelName} ·{" "}
+                  {item.time}
                 </p>
               </div>
               <Link href={`/reports/${item.reportId}`}>
                 <Badge variant="outline">Open Report Detail</Badge>
               </Link>
             </div>
-            <p className="mt-3 text-sm text-muted-foreground">{item.resultSummary}</p>
+            <p className="mt-3 text-sm text-muted-foreground">
+              {item.resultSummary}
+            </p>
           </div>
         ))
       )}

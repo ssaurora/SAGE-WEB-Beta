@@ -14,10 +14,13 @@ import {
 
 export default async function SceneResultsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ sceneId: string }>;
+  searchParams: Promise<{ taskId?: string; from?: string }>;
 }) {
   const { sceneId } = await params;
+  const { taskId, from } = await searchParams;
   const vm = await getSceneResultsViewModel(sceneId);
 
   return (
@@ -36,7 +39,24 @@ export default async function SceneResultsPage({
         </CardHeader>
       </Card>
 
-      <SceneResultsPanel sceneId={vm.sceneId} items={vm.items} />
+      {taskId ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Context Filter Applied</CardTitle>
+            <CardDescription>
+              已按任务 {taskId} 预筛选
+              {from ? ` · from ${from}` : ""}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      ) : null}
+
+      <SceneResultsPanel
+        sceneId={vm.sceneId}
+        items={vm.items}
+        initialTaskFilter={taskId ?? ""}
+        contextFrom={from}
+      />
     </div>
   );
 }

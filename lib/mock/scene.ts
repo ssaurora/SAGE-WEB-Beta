@@ -101,7 +101,11 @@ export type SceneResultDetailPageViewModel = {
   summary: string;
   generatedAt: string;
   explanation: string;
-  indicators: Array<{ name: string; value: string; trend: "up" | "down" | "flat" }>;
+  indicators: Array<{
+    name: string;
+    value: string;
+    trend: "up" | "down" | "flat";
+  }>;
   inputOutputMapping: Array<{ input: string; output: string }>;
   downloadableArtifacts: string[];
 };
@@ -373,7 +377,10 @@ export const sceneAssetsMock: SceneAssetsPageViewModel = {
   ],
 };
 
-export const sceneResultDetailsMock: Record<string, SceneResultDetailPageViewModel> = {
+export const sceneResultDetailsMock: Record<
+  string,
+  SceneResultDetailPageViewModel
+> = {
   "result-2026-001": {
     sceneId: "scene-001",
     resultId: "result-2026-001",
@@ -411,9 +418,15 @@ export const sceneResultDetailsMock: Record<string, SceneResultDetailPageViewMod
       { name: "低产水区占比", value: "21.1%", trend: "up" },
     ],
     inputOutputMapping: [
-      { input: "Precipitation Raster 2024", output: "Water Yield Baseline Layer" },
+      {
+        input: "Precipitation Raster 2024",
+        output: "Water Yield Baseline Layer",
+      },
       { input: "LULC Raster 2023", output: "Baseline Statistics" },
     ],
-    downloadableArtifacts: ["baseline_stats_2026_000.csv", "baseline_layer_2026_000.tif"],
+    downloadableArtifacts: [
+      "baseline_stats_2026_000.csv",
+      "baseline_layer_2026_000.tif",
+    ],
   },
 };

@@ -24,10 +24,13 @@ function trendVariant(trend: "up" | "down" | "flat") {
 
 export default async function SceneResultDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ sceneId: string; resultId: string }>;
+  searchParams: Promise<{ from?: string; taskId?: string; reportId?: string }>;
 }) {
   const { sceneId, resultId } = await params;
+  const { from, taskId, reportId } = await searchParams;
   const vm = await getSceneResultDetailViewModel(sceneId, resultId);
 
   return (
@@ -43,18 +46,40 @@ export default async function SceneResultDetailPage({
             </div>
             <div className="flex gap-2">
               <Link href={`/task-governance/${vm.fromTaskId}`}>
-                <Button size="sm" variant="outline">Open Task Governance</Button>
+                <Button size="sm" variant="outline">
+                  Open Task Governance
+                </Button>
               </Link>
-              <Link href="/reports/report-2026-001">
-                <Button size="sm" variant="outline">Open Report Detail</Button>
+              <Link
+                href={`/reports/${reportId ?? "report-2026-001"}?from=result-detail&taskId=${vm.fromTaskId}&resultId=${vm.resultId}`}
+              >
+                <Button size="sm" variant="outline">
+                  Open Report Detail
+                </Button>
               </Link>
-              <Link href={`/scenes/${vm.sceneId}/results`}>
-                <Button size="sm" variant="secondary">Back to Results</Button>
+              <Link
+                href={`/scenes/${vm.sceneId}/results${taskId ? `?taskId=${taskId}&from=${from ?? "result-detail"}` : ""}`}
+              >
+                <Button size="sm" variant="secondary">
+                  Back to Results
+                </Button>
               </Link>
             </div>
           </div>
         </CardHeader>
       </Card>
+
+      {from ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Navigation Context</CardTitle>
+            <CardDescription>
+              当前详情页由 {from} 进入
+              {taskId ? ` · task ${taskId}` : ""}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      ) : null}
 
       <Card>
         <CardHeader>
@@ -84,7 +109,9 @@ export default async function SceneResultDetailPage({
                   <p className="text-sm font-medium">{item.name}</p>
                   <p className="text-xs text-muted-foreground">{item.value}</p>
                 </div>
-                <Badge variant={trendVariant(item.trend)}>{trendLabel(item.trend)}</Badge>
+                <Badge variant={trendVariant(item.trend)}>
+                  {trendLabel(item.trend)}
+                </Badge>
               </div>
             ))}
           </CardContent>

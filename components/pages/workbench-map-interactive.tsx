@@ -20,6 +20,8 @@ import type { WorkbenchPageViewModel } from "@/lib/mock/scene";
 type WorkbenchMapInteractiveProps = {
   vm: WorkbenchPageViewModel;
   sceneId: string;
+  contextFrom?: string;
+  contextTaskId?: string;
 };
 
 type InteractiveLayer = {
@@ -62,6 +64,8 @@ const legendColorMap: Record<string, string> = {
 export function WorkbenchMapInteractive({
   vm,
   sceneId,
+  contextFrom,
+  contextTaskId,
 }: WorkbenchMapInteractiveProps) {
   const [requiredInputs, setRequiredInputs] = useState<RequiredInputItem[]>(
     vm.inputsPanel.required.map((item) => ({
@@ -98,7 +102,9 @@ export function WorkbenchMapInteractive({
   ]);
   const [uploadName, setUploadName] = useState("");
   const [uploadType, setUploadType] = useState<UploadAssetType>("Raster");
-  const [bindingSelection, setBindingSelection] = useState<Record<string, string>>({});
+  const [bindingSelection, setBindingSelection] = useState<
+    Record<string, string>
+  >({});
 
   const [layers, setLayers] = useState<InteractiveLayer[]>(
     vm.layersPanel.map((layer) => ({
@@ -110,7 +116,9 @@ export function WorkbenchMapInteractive({
   const [focusSignal, setFocusSignal] = useState(0);
   const [resetSignal, setResetSignal] = useState(0);
   const [activeLayerName, setActiveLayerName] = useState<string | null>(null);
-  const [pickedFeature, setPickedFeature] = useState<PickedFeature | null>(null);
+  const [pickedFeature, setPickedFeature] = useState<PickedFeature | null>(
+    null,
+  );
   const [collapsedGroups, setCollapsedGroups] = useState({
     inputs: false,
     results: false,
@@ -132,7 +140,8 @@ export function WorkbenchMapInteractive({
   );
 
   const requiredTotal = requiredInputs.length;
-  const canRunByInputs = requiredReadyCount === requiredTotal && requiredTotal > 0;
+  const canRunByInputs =
+    requiredReadyCount === requiredTotal && requiredTotal > 0;
   const workbenchState = vm.header.currentState;
 
   const isQueued = workbenchState === "Queued";
@@ -143,7 +152,8 @@ export function WorkbenchMapInteractive({
   const isWaitingInput = workbenchState === "Waiting for Required Input";
   const isActionRequired = workbenchState === "Action Required";
 
-  const isInputReadOnly = isQueued || isRunning || isProcessingResults || isCompleted;
+  const isInputReadOnly =
+    isQueued || isRunning || isProcessingResults || isCompleted;
   const canRunAction = canRunByInputs && !isInputReadOnly;
 
   const primaryActionLabel = (() => {
@@ -159,18 +169,24 @@ export function WorkbenchMapInteractive({
 
   const stateHint = (() => {
     if (isQueued) return "任务已排队，本轮输入与参数切换为只读快照。";
-    if (isRunning) return "任务运行中，本轮输入不可修改，可进入治理页查看事件流。";
+    if (isRunning)
+      return "任务运行中，本轮输入不可修改，可进入治理页查看事件流。";
     if (isProcessingResults) return "结果处理中，最终产物尚未全部可下载。";
     if (isCompleted) return "任务已完成，可查看结果并进入报告消费链路。";
-    if (isFailed || isActionRequired) return "当前任务需要修复后恢复，建议先处理缺失输入或无效绑定。";
+    if (isFailed || isActionRequired)
+      return "当前任务需要修复后恢复，建议先处理缺失输入或无效绑定。";
     if (isWaitingInput) return "等待必需输入，请先完成绑定后再运行。";
     return "可在当前工作台继续分析与治理。";
   })();
 
   const groupedLayers = useMemo(
     () => ({
-      inputs: layers.filter((layer) => !layer.name.toLowerCase().includes("result")),
-      results: layers.filter((layer) => layer.name.toLowerCase().includes("result")),
+      inputs: layers.filter(
+        (layer) => !layer.name.toLowerCase().includes("result"),
+      ),
+      results: layers.filter((layer) =>
+        layer.name.toLowerCase().includes("result"),
+      ),
     }),
     [layers],
   );
@@ -194,7 +210,10 @@ export function WorkbenchMapInteractive({
     if (normalizedExpected.includes("raster")) {
       return assetType === "Raster";
     }
-    if (normalizedExpected.includes("csv") || normalizedExpected.includes("table")) {
+    if (
+      normalizedExpected.includes("csv") ||
+      normalizedExpected.includes("table")
+    ) {
       return assetType === "CSV";
     }
     return true;
@@ -233,14 +252,15 @@ export function WorkbenchMapInteractive({
     expectedType: string,
     selectedAssetId?: string,
   ) => {
-    const targetAssetId =
-      selectedAssetId ?? uploadedUnboundAssets[0]?.id;
+    const targetAssetId = selectedAssetId ?? uploadedUnboundAssets[0]?.id;
 
     if (!targetAssetId) {
       return;
     }
 
-    const selectedAsset = uploadedAssets.find((asset) => asset.id === targetAssetId);
+    const selectedAsset = uploadedAssets.find(
+      (asset) => asset.id === targetAssetId,
+    );
     if (!selectedAsset) {
       return;
     }
@@ -295,7 +315,10 @@ export function WorkbenchMapInteractive({
     );
   };
 
-  const removeBinding = (inputType: "required" | "optional", inputName: string) => {
+  const removeBinding = (
+    inputType: "required" | "optional",
+    inputName: string,
+  ) => {
     if (inputType === "required") {
       let oldAssetId: string | undefined;
       setRequiredInputs((prev) =>
@@ -334,7 +357,9 @@ export function WorkbenchMapInteractive({
     releaseOldBinding(oldAssetId);
   };
 
-  const statusBadgeVariant = (status: "Missing" | "Unbound" | "Bound" | "Invalid") => {
+  const statusBadgeVariant = (
+    status: "Missing" | "Unbound" | "Bound" | "Invalid",
+  ) => {
     if (status === "Bound") {
       return "secondary" as const;
     }
@@ -353,9 +378,7 @@ export function WorkbenchMapInteractive({
   const updateLayerOpacity = (layerName: string, opacity: number) => {
     setLayers((prev) =>
       prev.map((layer) =>
-        layer.name === layerName
-          ? { ...layer, opacity }
-          : layer,
+        layer.name === layerName ? { ...layer, opacity } : layer,
       ),
     );
   };
@@ -371,7 +394,11 @@ export function WorkbenchMapInteractive({
     }));
   };
 
-  const renderLayerRow = (layer: InteractiveLayer, index: number, totalCount: number) => (
+  const renderLayerRow = (
+    layer: InteractiveLayer,
+    index: number,
+    totalCount: number,
+  ) => (
     <div
       key={layer.name}
       className={`rounded-md border px-3 py-2 text-sm ${
@@ -465,11 +492,40 @@ export function WorkbenchMapInteractive({
 
   return (
     <>
+      {contextFrom || contextTaskId ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Navigation Context</CardTitle>
+            <CardDescription>
+              当前工作台由 {contextFrom ?? "external"} 进入
+              {contextTaskId ? ` · task ${contextTaskId}` : ""}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-wrap gap-2">
+            {contextTaskId ? (
+              <Link href={`/task-governance/${contextTaskId}`}>
+                <Button size="sm" variant="outline">
+                  Open Task Governance
+                </Button>
+              </Link>
+            ) : null}
+            <Link
+              href={`/scenes/${sceneId}/results${contextTaskId ? `?taskId=${contextTaskId}&from=workbench` : ""}`}
+            >
+              <Button size="sm" variant="secondary">
+                Open Scene Results
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ) : null}
+
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Inputs / Layers</CardTitle>
           <CardDescription>
-            输入绑定与图层状态 · Required Ready {requiredReadyCount}/{requiredTotal}
+            输入绑定与图层状态 · Required Ready {requiredReadyCount}/
+            {requiredTotal}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -485,76 +541,87 @@ export function WorkbenchMapInteractive({
             <div className="space-y-2">
               {requiredInputs.map((item) => {
                 const inputKey = makeInputKey("required", item.name);
-                const selectedAssetId = bindingSelection[inputKey] ?? uploadedUnboundAssets[0]?.id;
+                const selectedAssetId =
+                  bindingSelection[inputKey] ?? uploadedUnboundAssets[0]?.id;
 
                 return (
-                <div
-                  key={item.name}
-                  className={`rounded-md border p-3 ${
-                    item.status === "Invalid"
-                      ? "border-destructive/70 bg-destructive/5"
-                      : item.status === "Missing"
-                        ? "border-primary/40"
-                        : ""
-                  }`}
-                >
-                  <p className="text-sm font-medium">{item.name}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {item.expectedType}
-                  </p>
-                  <Badge
-                    className="mt-2"
-                    variant={statusBadgeVariant(item.status)}
+                  <div
+                    key={item.name}
+                    className={`rounded-md border p-3 ${
+                      item.status === "Invalid"
+                        ? "border-destructive/70 bg-destructive/5"
+                        : item.status === "Missing"
+                          ? "border-primary/40"
+                          : ""
+                    }`}
                   >
-                    {item.status}
-                  </Badge>
-                  {item.invalidReason ? (
-                    <p className="mt-1 text-xs text-destructive">{item.invalidReason}</p>
-                  ) : null}
+                    <p className="text-sm font-medium">{item.name}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {item.expectedType}
+                    </p>
+                    <Badge
+                      className="mt-2"
+                      variant={statusBadgeVariant(item.status)}
+                    >
+                      {item.status}
+                    </Badge>
+                    {item.invalidReason ? (
+                      <p className="mt-1 text-xs text-destructive">
+                        {item.invalidReason}
+                      </p>
+                    ) : null}
 
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <select
-                      value={selectedAssetId ?? ""}
-                      onChange={(event) =>
-                        setBindingSelection((prev) => ({
-                          ...prev,
-                          [inputKey]: event.target.value,
-                        }))
-                      }
-                      disabled={isInputReadOnly}
-                      className="h-8 rounded-md border border-input bg-background px-2 text-xs"
-                    >
-                      {uploadedUnboundAssets.length === 0 ? (
-                        <option value="">No unbound asset</option>
-                      ) : (
-                        uploadedUnboundAssets.map((asset) => (
-                          <option key={asset.id} value={asset.id}>
-                            {asset.name} ({asset.type})
-                          </option>
-                        ))
-                      )}
-                    </select>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      disabled={uploadedUnboundAssets.length === 0 || isInputReadOnly}
-                      onClick={() =>
-                        applyBinding("required", item.name, item.expectedType, selectedAssetId)
-                      }
-                    >
-                      {item.status === "Bound" ? "Replace" : "Bind"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={!item.boundAssetId || isInputReadOnly}
-                      onClick={() => removeBinding("required", item.name)}
-                    >
-                      Remove
-                    </Button>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <select
+                        value={selectedAssetId ?? ""}
+                        onChange={(event) =>
+                          setBindingSelection((prev) => ({
+                            ...prev,
+                            [inputKey]: event.target.value,
+                          }))
+                        }
+                        disabled={isInputReadOnly}
+                        className="h-8 rounded-md border border-input bg-background px-2 text-xs"
+                      >
+                        {uploadedUnboundAssets.length === 0 ? (
+                          <option value="">No unbound asset</option>
+                        ) : (
+                          uploadedUnboundAssets.map((asset) => (
+                            <option key={asset.id} value={asset.id}>
+                              {asset.name} ({asset.type})
+                            </option>
+                          ))
+                        )}
+                      </select>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        disabled={
+                          uploadedUnboundAssets.length === 0 || isInputReadOnly
+                        }
+                        onClick={() =>
+                          applyBinding(
+                            "required",
+                            item.name,
+                            item.expectedType,
+                            selectedAssetId,
+                          )
+                        }
+                      >
+                        {item.status === "Bound" ? "Replace" : "Bind"}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={!item.boundAssetId || isInputReadOnly}
+                        onClick={() => removeBinding("required", item.name)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              )})}
+                );
+              })}
             </div>
           </div>
 
@@ -565,67 +632,85 @@ export function WorkbenchMapInteractive({
             <div className="space-y-2">
               {optionalInputs.map((item) => {
                 const inputKey = makeInputKey("optional", item.name);
-                const selectedAssetId = bindingSelection[inputKey] ?? uploadedUnboundAssets[0]?.id;
+                const selectedAssetId =
+                  bindingSelection[inputKey] ?? uploadedUnboundAssets[0]?.id;
 
                 return (
-                <div
-                  key={item.name}
-                  className={`rounded-md border p-3 ${
-                    item.status === "Invalid" ? "border-destructive/70 bg-destructive/5" : ""
-                  }`}
-                >
-                  <p className="text-sm font-medium">{item.name}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">{item.expectedType}</p>
-                  <Badge className="mt-2" variant={statusBadgeVariant(item.status)}>
-                    {item.status}
-                  </Badge>
-                  {item.invalidReason ? (
-                    <p className="mt-1 text-xs text-destructive">{item.invalidReason}</p>
-                  ) : null}
+                  <div
+                    key={item.name}
+                    className={`rounded-md border p-3 ${
+                      item.status === "Invalid"
+                        ? "border-destructive/70 bg-destructive/5"
+                        : ""
+                    }`}
+                  >
+                    <p className="text-sm font-medium">{item.name}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {item.expectedType}
+                    </p>
+                    <Badge
+                      className="mt-2"
+                      variant={statusBadgeVariant(item.status)}
+                    >
+                      {item.status}
+                    </Badge>
+                    {item.invalidReason ? (
+                      <p className="mt-1 text-xs text-destructive">
+                        {item.invalidReason}
+                      </p>
+                    ) : null}
 
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <select
-                      value={selectedAssetId ?? ""}
-                      onChange={(event) =>
-                        setBindingSelection((prev) => ({
-                          ...prev,
-                          [inputKey]: event.target.value,
-                        }))
-                      }
-                      disabled={isInputReadOnly}
-                      className="h-8 rounded-md border border-input bg-background px-2 text-xs"
-                    >
-                      {uploadedUnboundAssets.length === 0 ? (
-                        <option value="">No unbound asset</option>
-                      ) : (
-                        uploadedUnboundAssets.map((asset) => (
-                          <option key={asset.id} value={asset.id}>
-                            {asset.name} ({asset.type})
-                          </option>
-                        ))
-                      )}
-                    </select>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      disabled={uploadedUnboundAssets.length === 0 || isInputReadOnly}
-                      onClick={() =>
-                        applyBinding("optional", item.name, item.expectedType, selectedAssetId)
-                      }
-                    >
-                      {item.status === "Bound" ? "Replace" : "Bind"}
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={!item.boundAssetId || isInputReadOnly}
-                      onClick={() => removeBinding("optional", item.name)}
-                    >
-                      Remove
-                    </Button>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <select
+                        value={selectedAssetId ?? ""}
+                        onChange={(event) =>
+                          setBindingSelection((prev) => ({
+                            ...prev,
+                            [inputKey]: event.target.value,
+                          }))
+                        }
+                        disabled={isInputReadOnly}
+                        className="h-8 rounded-md border border-input bg-background px-2 text-xs"
+                      >
+                        {uploadedUnboundAssets.length === 0 ? (
+                          <option value="">No unbound asset</option>
+                        ) : (
+                          uploadedUnboundAssets.map((asset) => (
+                            <option key={asset.id} value={asset.id}>
+                              {asset.name} ({asset.type})
+                            </option>
+                          ))
+                        )}
+                      </select>
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        disabled={
+                          uploadedUnboundAssets.length === 0 || isInputReadOnly
+                        }
+                        onClick={() =>
+                          applyBinding(
+                            "optional",
+                            item.name,
+                            item.expectedType,
+                            selectedAssetId,
+                          )
+                        }
+                      >
+                        {item.status === "Bound" ? "Replace" : "Bind"}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={!item.boundAssetId || isInputReadOnly}
+                        onClick={() => removeBinding("optional", item.name)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              )})}
+                );
+              })}
             </div>
           </div>
 
@@ -644,7 +729,9 @@ export function WorkbenchMapInteractive({
                 />
                 <select
                   value={uploadType}
-                  onChange={(event) => setUploadType(event.target.value as UploadAssetType)}
+                  onChange={(event) =>
+                    setUploadType(event.target.value as UploadAssetType)
+                  }
                   disabled={isInputReadOnly}
                   className="h-8 rounded-md border border-input bg-background px-2 text-xs"
                 >
@@ -652,13 +739,20 @@ export function WorkbenchMapInteractive({
                   <option value="Vector Polygon">Vector Polygon</option>
                   <option value="CSV">CSV</option>
                 </select>
-                <Button size="sm" variant="secondary" onClick={uploadAsset} disabled={isInputReadOnly}>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={uploadAsset}
+                  disabled={isInputReadOnly}
+                >
                   Upload
                 </Button>
               </div>
 
               {uploadedUnboundAssets.length === 0 ? (
-                <p className="text-xs text-muted-foreground">No uploaded unbound assets.</p>
+                <p className="text-xs text-muted-foreground">
+                  No uploaded unbound assets.
+                </p>
               ) : (
                 <div className="space-y-1">
                   {uploadedUnboundAssets.map((asset) => (
@@ -741,7 +835,9 @@ export function WorkbenchMapInteractive({
         <CardHeader>
           <div className="flex flex-wrap items-center gap-2">
             <CardTitle className="text-base">Map Canvas</CardTitle>
-            {activeLayerName ? <Badge variant="outline">Active: {activeLayerName}</Badge> : null}
+            {activeLayerName ? (
+              <Badge variant="outline">Active: {activeLayerName}</Badge>
+            ) : null}
           </div>
           <CardDescription>GIS-first 主画布（MapLibre）</CardDescription>
         </CardHeader>
@@ -808,9 +904,12 @@ export function WorkbenchMapInteractive({
                   <p className="mt-1">{pickedFeature.updatedAt}</p>
                 </div>
                 <div className="rounded-md border bg-background p-2 sm:col-span-2">
-                  <p className="font-medium text-foreground">Clicked Coordinate</p>
+                  <p className="font-medium text-foreground">
+                    Clicked Coordinate
+                  </p>
                   <p className="mt-1">
-                    Lng {pickedFeature.lng.toFixed(5)} · Lat {pickedFeature.lat.toFixed(5)}
+                    Lng {pickedFeature.lng.toFixed(5)} · Lat{" "}
+                    {pickedFeature.lat.toFixed(5)}
                   </p>
                 </div>
               </div>
@@ -825,9 +924,7 @@ export function WorkbenchMapInteractive({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
-            Analysis / Task / Context
-          </CardTitle>
+          <CardTitle className="text-base">Analysis / Task / Context</CardTitle>
           <CardDescription>结构化事实优先于聊天流</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -838,23 +935,28 @@ export function WorkbenchMapInteractive({
               </p>
               <p className="mt-2 font-medium">{pickedFeature.objectName}</p>
               <p className="mt-1 text-xs text-muted-foreground">
-                {pickedFeature.objectType} · {pickedFeature.status} · {pickedFeature.layerName}
+                {pickedFeature.objectType} · {pickedFeature.status} ·{" "}
+                {pickedFeature.layerName}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {pickedFeature.taskId ? (
                   <Link
-                    href={`/task-governance/${pickedFeature.taskId}`}
+                    href={`/task-governance/${pickedFeature.taskId}?from=workbench&taskId=${pickedFeature.taskId}`}
                     className="inline-block"
                   >
-                    <Button size="sm" variant="outline">Open Task Governance</Button>
+                    <Button size="sm" variant="outline">
+                      Open Task Governance
+                    </Button>
                   </Link>
                 ) : null}
                 {pickedFeature.resultId ? (
                   <Link
-                    href={`/scenes/${sceneId}/results/${pickedFeature.resultId}`}
+                    href={`/scenes/${sceneId}/results/${pickedFeature.resultId}?from=workbench&taskId=${pickedFeature.taskId ?? ""}`}
                     className="inline-block"
                   >
-                    <Button size="sm" variant="secondary">Open Result Detail</Button>
+                    <Button size="sm" variant="secondary">
+                      Open Result Detail
+                    </Button>
                   </Link>
                 ) : null}
               </div>
@@ -881,7 +983,9 @@ export function WorkbenchMapInteractive({
           </div>
 
           <div className="rounded-md border bg-muted/20 p-3 text-xs text-muted-foreground">
-            <p className="font-semibold text-foreground">State Hint · {workbenchState}</p>
+            <p className="font-semibold text-foreground">
+              State Hint · {workbenchState}
+            </p>
             <p className="mt-1">{stateHint}</p>
           </div>
 

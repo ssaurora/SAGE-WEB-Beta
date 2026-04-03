@@ -11,10 +11,13 @@ import { getTaskStateVariant } from "@/lib/status/task-state";
 
 export default async function SceneWorkbenchPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ sceneId: string }>;
+  searchParams: Promise<{ from?: string; taskId?: string }>;
 }) {
   const { sceneId } = await params;
+  const { from, taskId } = await searchParams;
   const vm = await getSceneWorkbenchViewModel(sceneId);
 
   return (
@@ -36,7 +39,12 @@ export default async function SceneWorkbenchPage({
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-[320px_1fr_340px]">
-        <WorkbenchMapInteractive vm={vm} sceneId={sceneId} />
+        <WorkbenchMapInteractive
+          vm={vm}
+          sceneId={sceneId}
+          contextFrom={from}
+          contextTaskId={taskId}
+        />
       </div>
     </div>
   );
