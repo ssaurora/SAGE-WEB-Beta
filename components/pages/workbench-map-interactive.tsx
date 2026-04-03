@@ -151,6 +151,7 @@ export function WorkbenchMapInteractive({
   const isQueued = workbenchState === "Queued";
   const isRunning = workbenchState === "Running";
   const isProcessingResults = workbenchState === "Processing Results";
+  const isUnderstanding = workbenchState === "Understanding";
   const isCompleted = workbenchState === "Completed";
   const isFailed = workbenchState === "Failed";
   const isWaitingInput = workbenchState === "Waiting for Required Input";
@@ -165,6 +166,7 @@ export function WorkbenchMapInteractive({
     if (isProcessingResults) return "Processing Results";
     if (isRunning) return "Running";
     if (isQueued) return "Queued";
+    if (isUnderstanding) return "Understanding";
     if (!canEdit) return "Read Only";
     if (isFailed || isActionRequired) return "Fix and Resume";
     if (canRunAction) return "Run Analysis";
@@ -173,6 +175,8 @@ export function WorkbenchMapInteractive({
   })();
 
   const stateHint = (() => {
+    if (isUnderstanding)
+      return "需求理解中，系统正在整理分析目标与输入约束，请稍候进入参数规划阶段。";
     if (isQueued) return "任务已排队，本轮输入与参数切换为只读快照。";
     if (isRunning)
       return "任务运行中，本轮输入不可修改，可进入治理页查看事件流。";
@@ -184,6 +188,23 @@ export function WorkbenchMapInteractive({
       return "当前任务需要修复后恢复，建议先处理缺失输入或无效绑定。";
     if (isWaitingInput) return "等待必需输入，请先完成绑定后再运行。";
     return "可在当前工作台继续分析与治理。";
+  })();
+
+  const runtimeProgressPercent = (() => {
+    if (isUnderstanding) return 20;
+    if (isQueued) return 40;
+    if (isRunning) return 70;
+    if (isProcessingResults) return 90;
+    if (isCompleted) return 100;
+    return 0;
+  })();
+
+  const runtimeStageIndex = (() => {
+    if (isUnderstanding) return 0;
+    if (isQueued) return 1;
+    if (isRunning) return 2;
+    if (isProcessingResults || isCompleted) return 3;
+    return -1;
   })();
 
   const groupedLayers = useMemo(
@@ -808,6 +829,39 @@ export function WorkbenchMapInteractive({
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             {vm.taskPanel.lifecycleSummary}
           </div>
+
+          {(isUnderstanding || isQueued || isRunning || isProcessingResults) && (
+            <div className="rounded-md border bg-muted/20 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                Runtime Progress
+              </p>
+              <div className="mt-2 h-2 w-full rounded-full bg-muted">
+                <div
+                  className="h-2 rounded-full bg-primary transition-all duration-500"
+                  style={{ width: `${runtimeProgressPercent}%` }}
+                />
+              </div>
+              <div className="mt-2 grid grid-cols-4 gap-2 text-[11px]">
+                {[
+                  "Understanding",
+                  "Queued",
+                  "Running",
+                  "Processing",
+                ].map((stage, index) => (
+                  <span
+                    key={stage}
+                    className={
+                      index <= runtimeStageIndex
+                        ? "font-semibold text-foreground"
+                        : "text-muted-foreground"
+                    }
+                  >
+                    {stage}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="rounded-md border bg-muted/20 p-3 text-xs text-muted-foreground">
             <p className="font-semibold text-foreground">

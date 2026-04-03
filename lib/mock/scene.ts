@@ -2,6 +2,12 @@ export type SceneOverviewPageViewModel = {
   sceneName: string;
   analysisTheme: string;
   updatedAt: string;
+  extent: {
+    minLng: number;
+    minLat: number;
+    maxLng: number;
+    maxLat: number;
+  };
   latestTask: {
     id: string;
     state:
@@ -151,6 +157,12 @@ export const sceneOverviewMock: SceneOverviewPageViewModel = {
   sceneName: "scene-001 · Watershed analysis",
   analysisTheme: "Water Yield",
   updatedAt: "2026-04-03 10:30",
+  extent: {
+    minLng: 116.05,
+    minLat: 39.75,
+    maxLng: 116.75,
+    maxLat: 40.2,
+  },
   latestTask: {
     id: "task-001",
     state: "Running",

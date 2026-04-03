@@ -5,7 +5,9 @@ import type {
 import type { ReportListViewModel } from "@/components/pages/reports-list-client";
 import type { ReportDetailViewModel } from "@/components/pages/report-detail-client";
 
-export function toReportsListViewModel(reports: ReportListDto[]): ReportListViewModel {
+export function toReportsListViewModel(
+  reports: ReportListDto[],
+): ReportListViewModel {
   return {
     reports: reports.map((item) => ({
       id: item.reportId,
@@ -22,7 +24,9 @@ export function toReportsListViewModel(reports: ReportListDto[]): ReportListView
   };
 }
 
-export function toReportDetailViewModel(detail: ReportDetailDto): ReportDetailViewModel {
+export function toReportDetailViewModel(
+  detail: ReportDetailDto,
+): ReportDetailViewModel {
   return {
     id: detail.reportId,
     name: detail.reportName ?? `${detail.analysisType} Report`,

@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
+import { SceneOverviewMiniMap } from "@/components/pages/scene-overview-mini-map";
 import { getSceneOverviewViewModel } from "@/lib/api/scene";
 import { getTaskStateVariant } from "@/lib/status/task-state";
 
@@ -71,10 +72,7 @@ export default async function SceneOverviewPage({
           <div className="rounded-lg border bg-muted/30 p-3">
             <p className="text-xs text-muted-foreground">Map Preview</p>
             <div className="mt-2 rounded-md border bg-background p-2">
-              <div className="relative h-20 overflow-hidden rounded-sm border bg-muted/30">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,hsl(var(--primary)/0.25),transparent_45%),radial-gradient(circle_at_70%_60%,hsl(var(--accent-foreground)/0.18),transparent_40%)]" />
-                <div className="absolute left-[20%] top-[20%] h-[50%] w-[60%] rounded border border-primary/60 bg-primary/20" />
-              </div>
+              <SceneOverviewMiniMap extent={vm.extent} />
               <p className="mt-2 text-xs text-muted-foreground">
                 Scene extent preview · 可进入 Workbench 查看完整地图
               </p>

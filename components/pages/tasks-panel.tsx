@@ -34,12 +34,22 @@ function matchesQuickFilter(task: TaskListItem, quickFilter: QuickFilter) {
 export function TasksPanel({ tasks }: TasksPanelProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [quickFilter, setQuickFilter] = useState<QuickFilter>("all");
+  const [sceneFilter, setSceneFilter] = useState<string>("all");
+
+  const sceneOptions = useMemo(
+    () => Array.from(new Set(tasks.map((task) => task.sceneId))).sort(),
+    [tasks],
+  );
 
   const filteredTasks = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
 
     return tasks.filter((task) => {
       if (!matchesQuickFilter(task, quickFilter)) {
+        return false;
+      }
+
+      if (sceneFilter !== "all" && task.sceneId !== sceneFilter) {
         return false;
       }
 
@@ -52,7 +62,7 @@ export function TasksPanel({ tasks }: TasksPanelProps) {
         .toLowerCase()
         .includes(normalizedQuery);
     });
-  }, [tasks, searchQuery, quickFilter]);
+  }, [tasks, searchQuery, quickFilter, sceneFilter]);
 
   return (
     <div className="space-y-3">
@@ -110,6 +120,26 @@ export function TasksPanel({ tasks }: TasksPanelProps) {
         >
           Succeeded
         </Button>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Button
+          size="sm"
+          variant={sceneFilter === "all" ? "secondary" : "outline"}
+          onClick={() => setSceneFilter("all")}
+        >
+          All Scenes
+        </Button>
+        {sceneOptions.map((sceneId) => (
+          <Button
+            key={sceneId}
+            size="sm"
+            variant={sceneFilter === sceneId ? "secondary" : "outline"}
+            onClick={() => setSceneFilter(sceneId)}
+          >
+            {sceneId}
+          </Button>
+        ))}
       </div>
 
       {filteredTasks.length === 0 ? (
