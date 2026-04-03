@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { canCreateScene, canEditWorkbench, canManageSystem, useAppRole } from "@/components/pages/app-role";
+import {
+  canCreateScene,
+  canEditWorkbench,
+  canManageSystem,
+  useAppRole,
+} from "@/components/pages/app-role";
 
 export function AppRoleBanner() {
   const { role } = useAppRole();
@@ -33,7 +38,10 @@ export function AppRoleBanner() {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Link href="/settings" className="text-sm font-medium text-primary hover:underline">
+          <Link
+            href="/settings"
+            className="text-sm font-medium text-primary hover:underline"
+          >
             Adjust Role
           </Link>
           <Badge variant={canCreateScene(role) ? "secondary" : "outline"}>

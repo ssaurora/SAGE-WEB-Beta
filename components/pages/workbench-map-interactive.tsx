@@ -527,7 +527,9 @@ export function WorkbenchMapInteractive({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Workbench Permission Scope</CardTitle>
+          <CardTitle className="text-base">
+            Workbench Permission Scope
+          </CardTitle>
           <CardDescription>
             当前角色：{role} · {canEdit ? "可编辑" : "只读"}
           </CardDescription>
@@ -535,8 +537,8 @@ export function WorkbenchMapInteractive({
         <CardContent>
           {!canEdit ? (
             <div className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
-              Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到
-              Settings 调整角色。
+              Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到 Settings
+              调整角色。
             </div>
           ) : null}
         </CardContent>

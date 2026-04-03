@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { AppRoleBanner } from "@/components/pages/app-role-banner";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneResultsPanel } from "@/components/pages/scene-results-panel";
 import { getSceneResultsViewModel } from "@/lib/api/scene";
@@ -42,6 +43,7 @@ export default async function SceneResultsPage({
 
   return (
     <div className="space-y-4">
+      <AppRoleBanner />
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center gap-2">

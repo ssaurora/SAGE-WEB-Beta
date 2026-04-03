@@ -1,4 +1,5 @@
 import { SceneAuditPanel } from "@/components/pages/scene-audit-panel";
+import { AppRoleBanner } from "@/components/pages/app-role-banner";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneAuditViewModel } from "@/lib/api/scene";
 
@@ -26,5 +27,10 @@ export default async function SceneAuditPage({
     );
   }
 
-  return <SceneAuditPanel vm={vm} />;
+  return (
+    <div className="space-y-4">
+      <AppRoleBanner />
+      <SceneAuditPanel vm={vm} />
+    </div>
+  );
 }
