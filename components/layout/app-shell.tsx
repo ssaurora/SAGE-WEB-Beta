@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { primaryNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Package } from "lucide-react";
 
 function getPageTitle(pathname: string): string {
   if (pathname.includes("/workbench")) return "Scene Workbench";
@@ -65,20 +65,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="min-w-0">
-        <header className="flex items-start justify-between gap-4 border-b bg-background/90 px-6 py-5 backdrop-blur lg:px-8">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              {getPageTitle(pathname)}
-            </h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              AI-guided analysis workbench with structured tasks, inputs, maps
-              and results.
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Badge variant="secondary">Phase 0</Badge>
-            <Badge variant="outline">Shell ready</Badge>
-          </div>
+        <header className="flex items-center gap-3 border-b bg-background/90 px-6 py-3 backdrop-blur lg:px-8">
+          <Package className="h-5 w-5 text-muted-foreground" />
+          <span className="text-sm font-semibold text-foreground">{getPageTitle(pathname)}</span>
         </header>
 
         <main className="p-6 lg:p-8">{children}</main>

@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AppRoleBanner } from "@/components/pages/app-role-banner";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneAssetsViewModel } from "@/lib/api/scene";
 
@@ -80,7 +79,6 @@ export default async function SceneAssetsPage({
 
   return (
     <div className="space-y-4">
-      <AppRoleBanner />
       <Card>
         <CardHeader>
           <CardTitle>Scene Assets</CardTitle>

@@ -1025,7 +1025,9 @@ export function WorkbenchMapInteractive({
           ) : (
             <Button
               className="w-full"
-              disabled={!canEdit || (!canRunAction && !(isFailed || isActionRequired))}
+              disabled={
+                !canEdit || (!canRunAction && !(isFailed || isActionRequired))
+              }
               variant={isFailed || isActionRequired ? "outline" : "default"}
             >
               {primaryActionLabel}

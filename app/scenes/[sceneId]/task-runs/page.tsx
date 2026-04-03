@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AppRoleBanner } from "@/components/pages/app-role-banner";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneTaskRunsViewModel } from "@/lib/api/scene";
 import {
@@ -44,7 +43,6 @@ export default async function SceneTaskRunsPage({
 
   return (
     <div className="space-y-4">
-      <AppRoleBanner />
       <Card>
         <CardHeader>
           <CardTitle>Scene Task Runs</CardTitle>

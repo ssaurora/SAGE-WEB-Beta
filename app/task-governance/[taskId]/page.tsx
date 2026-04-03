@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,6 +12,7 @@ import {
   getTaskStateVariant,
 } from "@/lib/status/task-state";
 import Link from "next/link";
+import { TaskGovernanceActions } from "@/components/pages/task-governance-actions";
 
 export default async function TaskGovernancePage({
   params,
@@ -67,7 +67,6 @@ export default async function TaskGovernancePage({
             : isCompleted
               ? "任务已完成，可前往结果详情和报告消费。"
               : "查看治理建议并根据状态执行下一步操作。";
-
   return (
     <div className="space-y-4">
       <Card>
@@ -111,42 +110,33 @@ export default async function TaskGovernancePage({
           <CardTitle className="text-base">{statusTitle}</CardTitle>
           <CardDescription>{statusSummary}</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-2">
-          {isCompleted && vm.resultAvailable ? (
-            <Link
-              href={`/scenes/${vm.sceneId}/results?taskId=${vm.taskId}&from=governance`}
-              className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              Open Result Detail
-            </Link>
-          ) : (
-            <Button
-              size="sm"
-              disabled={
-                (isWaitingInput || isActionRequired || isFailedRecoverable) &&
-                !vm.canResume
-              }
-            >
-              {isFailedTerminal
-                ? "Start New Analysis"
-                : isWaitingInput || isActionRequired || isFailedRecoverable
-                  ? "Fix and Resume"
-                  : "Resume"}
-            </Button>
-          )}
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={!vm.canCancel || isCompleted}
-          >
-            Cancel Task
-          </Button>
-          <Link
-            href={`/scenes/${vm.sceneId}/workbench?from=governance&taskId=${vm.taskId}`}
-            className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
-          >
-            Back to Workbench
-          </Link>
+      </Card>
+
+      <TaskGovernanceActions
+        sceneId={vm.sceneId}
+        taskId={vm.taskId}
+        isCompleted={isCompleted}
+        resultAvailable={vm.resultAvailable}
+        canResume={vm.canResume}
+        canCancel={vm.canCancel}
+        isRunning={isRunning}
+        isWaitingInput={isWaitingInput}
+        isActionRequired={isActionRequired}
+        isFailedRecoverable={isFailedRecoverable}
+        isFailedTerminal={isFailedTerminal}
+      />
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Governance Access</CardTitle>
+          <CardDescription>
+            当前页面用于查看任务治理状态、建议与执行上下文；编辑类操作仍受角色与任务状态共同约束。
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+            Viewer 模式下建议仅查看治理信息并跳转至 Settings 调整角色；Editor / Admin 模式可继续执行恢复和取消。
+          </div>
         </CardContent>
       </Card>
 
@@ -211,29 +201,19 @@ export default async function TaskGovernancePage({
               </div>
             ) : null}
 
-            <div className="flex flex-wrap gap-2">
-              <Button
-                size="sm"
-                variant="secondary"
-                disabled={!vm.canResume || isCompleted || isRunning}
-              >
-                {isWaitingInput || isActionRequired
-                  ? "Fix and Resume"
-                  : isFailedRecoverable
-                    ? "Fix and Resume"
-                    : "Resume"}
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={!vm.canCancel || isCompleted}
-              >
-                Cancel Task
-              </Button>
-              <Button size="sm" variant="outline" disabled={isRunning}>
-                Start New Analysis
-              </Button>
-            </div>
+            <TaskGovernanceActions
+              sceneId={vm.sceneId}
+              taskId={vm.taskId}
+              isCompleted={isCompleted}
+              resultAvailable={vm.resultAvailable}
+              canResume={vm.canResume}
+              canCancel={vm.canCancel}
+              isRunning={isRunning}
+              isWaitingInput={isWaitingInput}
+              isActionRequired={isActionRequired}
+              isFailedRecoverable={isFailedRecoverable}
+              isFailedTerminal={isFailedTerminal}
+            />
           </CardContent>
         </Card>
 

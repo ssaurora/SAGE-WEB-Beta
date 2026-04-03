@@ -5,7 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AppRoleBanner } from "@/components/pages/app-role-banner";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { AssetsPanel } from "@/components/pages/assets-panel";
 import { getAssetListViewModel } from "@/lib/api/asset";
@@ -21,7 +20,6 @@ export default async function AssetsPage({
 
     return (
       <div className="space-y-4">
-        <AppRoleBanner />
         <Card>
           <CardHeader>
             <CardTitle>Assets</CardTitle>
