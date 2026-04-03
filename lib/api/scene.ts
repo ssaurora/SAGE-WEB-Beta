@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import type {
   SceneAuditPageViewModel,
+  SceneAssetsPageViewModel,
   SceneOverviewPageViewModel,
   SceneResultsPageViewModel,
   SceneTaskRunsPageViewModel,
@@ -50,4 +51,8 @@ export async function getSceneResultsViewModel(sceneId: string) {
 
 export async function getSceneAuditViewModel(sceneId: string) {
   return fetchJson<SceneAuditPageViewModel>(`/api/scenes/${sceneId}/audit`);
+}
+
+export async function getSceneAssetsViewModel(sceneId: string) {
+  return fetchJson<SceneAssetsPageViewModel>(`/api/scenes/${sceneId}/assets`);
 }

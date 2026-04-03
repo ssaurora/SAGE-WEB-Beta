@@ -94,8 +94,8 @@ export type SceneResultsPageViewModel = {
   items: SceneResultItemViewModel[];
 };
 
-export type SceneAuditEventLevel = 'info' | 'warning' | 'error';
-export type SceneAuditEventType = 'input' | 'runtime' | 'manifest' | 'result';
+export type SceneAuditEventLevel = "info" | "warning" | "error";
+export type SceneAuditEventType = "input" | "runtime" | "manifest" | "result";
 
 export type SceneAuditEvent = {
   id: string;
@@ -115,6 +115,20 @@ export type SceneAuditPageViewModel = {
     latestMessage: string;
   };
   events: SceneAuditEvent[];
+};
+
+export type SceneAssetViewModel = {
+  assetId: string;
+  name: string;
+  type: "Vector" | "Raster" | "Table" | "Document";
+  bindStatus: "Bound" | "Unbound" | "Missing";
+  uploadedAt: string;
+  visibility: "Public" | "Scene" | "Task";
+};
+
+export type SceneAssetsPageViewModel = {
+  sceneId: string;
+  items: SceneAssetViewModel[];
 };
 
 export const sceneOverviewMock: SceneOverviewPageViewModel = {
@@ -242,69 +256,107 @@ export const sceneResultsMock: SceneResultsPageViewModel = {
 };
 
 export const sceneAuditMock: SceneAuditPageViewModel = {
-  sceneId: 'scene-001',
+  sceneId: "scene-001",
   summary: {
     totalEvents: 7,
     warningCount: 2,
     errorCount: 1,
-    latestMessage: '10:44 · Manifest check completed with 1 warning',
+    latestMessage: "10:44 · Manifest check completed with 1 warning",
   },
   events: [
     {
-      id: 'audit-001',
-      at: '10:44',
-      level: 'warning',
-      type: 'manifest',
-      taskId: 'task-001',
-      message: 'Manifest checksum drift detected on optional metadata.',
+      id: "audit-001",
+      at: "10:44",
+      level: "warning",
+      type: "manifest",
+      taskId: "task-001",
+      message: "Manifest checksum drift detected on optional metadata.",
     },
     {
-      id: 'audit-002',
-      at: '10:40',
-      level: 'info',
-      type: 'runtime',
-      taskId: 'task-001',
-      message: 'Runtime checks passed for preprocessing stage.',
+      id: "audit-002",
+      at: "10:40",
+      level: "info",
+      type: "runtime",
+      taskId: "task-001",
+      message: "Runtime checks passed for preprocessing stage.",
     },
     {
-      id: 'audit-003',
-      at: '10:31',
-      level: 'error',
-      type: 'input',
-      taskId: 'task-002',
-      message: 'Required input LULC Raster missing at validation.',
+      id: "audit-003",
+      at: "10:31",
+      level: "error",
+      type: "input",
+      taskId: "task-002",
+      message: "Required input LULC Raster missing at validation.",
     },
     {
-      id: 'audit-004',
-      at: '10:22',
-      level: 'info',
-      type: 'input',
-      taskId: 'task-001',
-      message: 'Asset uploaded and bound: precip_2025.tif',
+      id: "audit-004",
+      at: "10:22",
+      level: "info",
+      type: "input",
+      taskId: "task-001",
+      message: "Asset uploaded and bound: precip_2025.tif",
     },
     {
-      id: 'audit-005',
-      at: '10:18',
-      level: 'info',
-      type: 'runtime',
-      taskId: 'task-001',
-      message: 'Task submitted to execution queue.',
+      id: "audit-005",
+      at: "10:18",
+      level: "info",
+      type: "runtime",
+      taskId: "task-001",
+      message: "Task submitted to execution queue.",
     },
     {
-      id: 'audit-006',
-      at: '09:56',
-      level: 'warning',
-      type: 'result',
-      taskId: 'task-000',
-      message: 'Result explanation package partially generated.',
+      id: "audit-006",
+      at: "09:56",
+      level: "warning",
+      type: "result",
+      taskId: "task-000",
+      message: "Result explanation package partially generated.",
     },
     {
-      id: 'audit-007',
-      at: '09:48',
-      level: 'info',
-      type: 'result',
-      taskId: 'task-000',
-      message: 'Map layer package published for result-2026-001.',
+      id: "audit-007",
+      at: "09:48",
+      level: "info",
+      type: "result",
+      taskId: "task-000",
+      message: "Map layer package published for result-2026-001.",
+    },
+  ],
+};
+
+export const sceneAssetsMock: SceneAssetsPageViewModel = {
+  sceneId: "scene-001",
+  items: [
+    {
+      assetId: "asset-001",
+      name: "watershed_boundary.geojson",
+      type: "Vector",
+      bindStatus: "Bound",
+      uploadedAt: "2026-04-02 14:30",
+      visibility: "Scene",
+    },
+    {
+      assetId: "asset-002",
+      name: "precip_2025.tif",
+      type: "Raster",
+      bindStatus: "Bound",
+      uploadedAt: "2026-04-03 10:22",
+      visibility: "Task",
+    },
+    {
+      assetId: "asset-003",
+      name: "lulc_2024.tif",
+      type: "Raster",
+      bindStatus: "Missing",
+      uploadedAt: "2026-03-28 09:15",
+      visibility: "Scene",
+    },
+    {
+      assetId: "asset-004",
+      name: "biophysical_table_v2.csv",
+      type: "Table",
+      bindStatus: "Unbound",
+      uploadedAt: "2026-04-01 16:45",
+      visibility: "Public",
     },
   ],
 };

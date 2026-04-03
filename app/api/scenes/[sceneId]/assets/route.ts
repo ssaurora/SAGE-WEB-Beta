@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sceneAuditMock } from "@/lib/mock/scene";
+import { sceneAssetsMock } from "@/lib/mock/scene";
 
 export async function GET(
   _request: Request,
@@ -8,7 +8,7 @@ export async function GET(
   const { sceneId } = await context.params;
 
   return NextResponse.json({
-    ...sceneAuditMock,
+    ...sceneAssetsMock,
     sceneId,
   });
 }
