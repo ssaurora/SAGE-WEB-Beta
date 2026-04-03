@@ -16,10 +16,13 @@ import Link from "next/link";
 
 export default async function TaskGovernancePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ taskId: string }>;
+  searchParams: Promise<{ from?: string; taskId?: string }>;
 }) {
   const { taskId } = await params;
+  const { from, taskId: contextTaskId } = await searchParams;
   const vm = await getTaskGovernanceViewModel(taskId);
   const isWaitingInput = vm.currentState === "Waiting for Required Input";
   const isActionRequired = vm.currentState === "Action Required";
@@ -90,6 +93,18 @@ export default async function TaskGovernancePage({
           </div>
         </CardContent>
       </Card>
+
+      {from ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Navigation Context</CardTitle>
+            <CardDescription>
+              当前治理页由 {from} 进入
+              {contextTaskId ? ` · task ${contextTaskId}` : ""}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      ) : null}
 
       <Card className={statusTone}>
         <CardHeader>

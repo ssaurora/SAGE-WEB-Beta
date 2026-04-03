@@ -96,15 +96,19 @@ export default async function SceneOverviewPage({
               </p>
             ))}
             <div className="flex flex-wrap gap-2 pt-1">
-              <Link href={`/scenes/${sceneId}/workbench`}>
+              <Link
+                href={`/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`}
+              >
                 <Button size="sm">进入 Workbench</Button>
               </Link>
-              <Link href={`/scenes/${sceneId}/task-runs`}>
+              <Link href={`/scenes/${sceneId}/task-runs?from=overview`}>
                 <Button size="sm" variant="outline">
                   查看 Task Runs
                 </Button>
               </Link>
-              <Link href={`/scenes/${sceneId}/results`}>
+              <Link
+                href={`/scenes/${sceneId}/results?from=overview&taskId=${vm.latestTask.id}`}
+              >
                 <Button size="sm" variant="secondary">
                   查看 Results
                 </Button>

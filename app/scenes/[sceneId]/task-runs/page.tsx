@@ -15,10 +15,13 @@ import {
 
 export default async function SceneTaskRunsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ sceneId: string }>;
+  searchParams: Promise<{ from?: string }>;
 }) {
   const { sceneId } = await params;
+  const { from } = await searchParams;
   const vm = await getSceneTaskRunsViewModel(sceneId);
 
   return (
@@ -30,6 +33,13 @@ export default async function SceneTaskRunsPage({
             {vm.sceneId} · 场景任务运行记录与状态联动
           </CardDescription>
         </CardHeader>
+        {from ? (
+          <CardContent className="pt-0">
+            <div className="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+              当前页面由 {from} 进入
+            </div>
+          </CardContent>
+        ) : null}
         <CardContent className="space-y-3">
           {vm.items.map((task) => (
             <div key={task.taskId} className="rounded-md border p-4">
@@ -59,7 +69,7 @@ export default async function SceneTaskRunsPage({
                   Updated at: {task.updatedAt}
                 </p>
                 <Link
-                  href={`/task-governance/${task.taskId}`}
+                  href={`/task-governance/${task.taskId}?from=task-runs&taskId=${task.taskId}`}
                   className="text-sm font-medium text-primary hover:underline"
                 >
                   查看治理详情
