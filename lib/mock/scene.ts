@@ -52,6 +52,48 @@ export type WorkbenchPageViewModel = {
   };
 };
 
+export type SceneTaskRunItemViewModel = {
+  taskId: string;
+  analysisType: string;
+  modelName: string;
+  currentState:
+    | 'Draft'
+    | 'Understanding'
+    | 'Planning'
+    | 'Waiting for Required Input'
+    | 'Ready to Run'
+    | 'Queued'
+    | 'Running'
+    | 'Processing Results'
+    | 'Action Required'
+    | 'Completed'
+    | 'Failed'
+    | 'Cancelled';
+  updatedAt: string;
+  canResume: boolean;
+  resultAvailable: boolean;
+};
+
+export type SceneTaskRunsPageViewModel = {
+  sceneId: string;
+  items: SceneTaskRunItemViewModel[];
+};
+
+export type SceneResultItemViewModel = {
+  resultId: string;
+  fromTaskId: string;
+  summary: string;
+  generatedAt: string;
+  mapLayerReady: boolean;
+  explanationReady: boolean;
+};
+
+export type SceneResultsPageViewModel = {
+  sceneId: string;
+  latestState: 'Processing Results' | 'Completed' | 'Failed';
+  items: SceneResultItemViewModel[];
+};
+
 export const sceneOverviewMock: SceneOverviewPageViewModel = {
   sceneName: "scene-001 · Watershed analysis",
   analysisTheme: "Water Yield",
@@ -118,4 +160,60 @@ export const workbenchMock: WorkbenchPageViewModel = {
     lifecycleSummary:
       "Draft → Waiting for Required Input → Ready to Run → Running",
   },
+};
+
+export const sceneTaskRunsMock: SceneTaskRunsPageViewModel = {
+  sceneId: 'scene-001',
+  items: [
+    {
+      taskId: 'task-001',
+      analysisType: 'Water Yield',
+      modelName: 'InVEST water_yield',
+      currentState: 'Running',
+      updatedAt: '2026-04-03 10:40',
+      canResume: false,
+      resultAvailable: false,
+    },
+    {
+      taskId: 'task-002',
+      analysisType: 'Water Yield',
+      modelName: 'InVEST water_yield',
+      currentState: 'Waiting for Required Input',
+      updatedAt: '2026-04-03 09:55',
+      canResume: true,
+      resultAvailable: false,
+    },
+    {
+      taskId: 'task-000',
+      analysisType: 'Water Yield',
+      modelName: 'InVEST water_yield',
+      currentState: 'Completed',
+      updatedAt: '2026-04-02 17:20',
+      canResume: false,
+      resultAvailable: true,
+    },
+  ],
+};
+
+export const sceneResultsMock: SceneResultsPageViewModel = {
+  sceneId: 'scene-001',
+  latestState: 'Completed',
+  items: [
+    {
+      resultId: 'result-2026-001',
+      fromTaskId: 'task-000',
+      summary: '生成水量分布图、子流域统计表与结果解释摘要。',
+      generatedAt: '2026-04-02 17:25',
+      mapLayerReady: true,
+      explanationReady: true,
+    },
+    {
+      resultId: 'result-2026-000',
+      fromTaskId: 'task-900',
+      summary: '历史结果快照，仅包含指标表与基础图层。',
+      generatedAt: '2026-03-28 14:09',
+      mapLayerReady: true,
+      explanationReady: false,
+    },
+  ],
 };

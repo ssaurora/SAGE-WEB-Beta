@@ -7,10 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { workbenchMock } from "@/lib/mock/scene";
+import { getSceneWorkbenchViewModel } from "@/lib/api/scene";
+import { getTaskStateVariant } from "@/lib/status/task-state";
 
-export default function SceneWorkbenchPage() {
-  const vm = workbenchMock;
+export default async function SceneWorkbenchPage({
+  params,
+}: {
+  params: Promise<{ sceneId: string }>;
+}) {
+  const { sceneId } = await params;
+  const vm = await getSceneWorkbenchViewModel(sceneId);
 
   return (
     <div className="space-y-4">
@@ -19,7 +25,9 @@ export default function SceneWorkbenchPage() {
           <div className="flex flex-wrap items-center gap-2">
             <CardTitle className="text-lg">{vm.header.analysisType}</CardTitle>
             <Badge variant="outline">{vm.header.modelName}</Badge>
-            <Badge variant="secondary">{vm.header.currentState}</Badge>
+            <Badge variant={getTaskStateVariant(vm.header.currentState)}>
+              {vm.header.currentState}
+            </Badge>
           </div>
           <CardDescription>
             {vm.header.sceneName} · Required Inputs Ready:{" "}

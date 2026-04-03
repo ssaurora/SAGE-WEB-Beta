@@ -7,10 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { sceneOverviewMock } from "@/lib/mock/scene";
+import { getSceneOverviewViewModel } from "@/lib/api/scene";
+import { getTaskStateVariant } from "@/lib/status/task-state";
 
-export default function SceneOverviewPage() {
-  const vm = sceneOverviewMock;
+export default async function SceneOverviewPage({
+  params,
+}: {
+  params: Promise<{ sceneId: string }>;
+}) {
+  const { sceneId } = await params;
+  const vm = await getSceneOverviewViewModel(sceneId);
 
   return (
     <div className="space-y-4">
@@ -25,9 +31,14 @@ export default function SceneOverviewPage() {
         <CardContent className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-lg border bg-muted/30 p-3">
             <p className="text-xs text-muted-foreground">Latest Task</p>
-            <p className="mt-1 text-sm font-semibold">{vm.latestTask.id}</p>
+            <div className="mt-1 flex items-center gap-2">
+              <p className="text-sm font-semibold">{vm.latestTask.id}</p>
+              <Badge variant={getTaskStateVariant(vm.latestTask.state)}>
+                {vm.latestTask.state}
+              </Badge>
+            </div>
             <p className="mt-1 text-xs text-muted-foreground">
-              {vm.latestTask.state} · {vm.latestTask.progressText}
+              {vm.latestTask.progressText}
             </p>
           </div>
           <div className="rounded-lg border bg-muted/30 p-3">
