@@ -45,7 +45,9 @@ export default async function SceneResultDetailPage({
               </CardDescription>
             </div>
             <div className="flex gap-2">
-              <Link href={`/task-governance/${vm.fromTaskId}`}>
+              <Link
+                href={`/task-governance/${vm.fromTaskId}?from=result-detail&taskId=${vm.fromTaskId}`}
+              >
                 <Button size="sm" variant="outline">
                   Open Task Governance
                 </Button>

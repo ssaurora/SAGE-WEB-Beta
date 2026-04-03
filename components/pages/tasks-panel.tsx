@@ -143,7 +143,7 @@ export function TasksPanel({ tasks }: TasksPanelProps) {
                 Updated at: {task.updatedAt}
               </p>
               <Link
-                href={`/task-governance/${task.id}`}
+                href={`/task-governance/${task.id}?from=tasks&taskId=${task.id}`}
                 className="text-sm font-medium text-primary hover:underline"
               >
                 查看治理详情

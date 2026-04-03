@@ -44,7 +44,9 @@ export default async function ReportDetailPage({
                   Open Result Detail
                 </Button>
               </Link>
-              <Link href={`/task-governance/${vm.taskId}`}>
+              <Link
+                href={`/task-governance/${vm.taskId}?from=report-detail&taskId=${vm.taskId}`}
+              >
                 <Button size="sm" variant="secondary">
                   Open Task Governance
                 </Button>

@@ -503,7 +503,9 @@ export function WorkbenchMapInteractive({
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
             {contextTaskId ? (
-              <Link href={`/task-governance/${contextTaskId}`}>
+              <Link
+                href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
+              >
                 <Button size="sm" variant="outline">
                   Open Task Governance
                 </Button>
