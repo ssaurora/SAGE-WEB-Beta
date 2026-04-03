@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import type {
   AssetDetailViewModel,
   AssetListItemViewModel,
-} from "@/lib/mock/asset";
+} from "@/lib/contracts/asset";
 
 async function getBaseUrl() {
   const headerStore = await headers();

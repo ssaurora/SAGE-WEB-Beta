@@ -1,7 +1,5 @@
 import { Metadata } from "next";
-import {
-  ReportsListClient,
-} from "@/components/pages/reports-list-client";
+import { ReportsListClient } from "@/components/pages/reports-list-client";
 import { getReportListViewModel } from "@/lib/api/report";
 import { toReportsListViewModel } from "@/lib/adapters/report";
 import type { ReportListViewModel } from "@/lib/contracts/report";

@@ -11,7 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { SceneAuditEvent, SceneAuditEventLevel, SceneAuditEventType, SceneAuditPageViewModel } from "@/lib/contracts/scene";
+import type {
+  SceneAuditEvent,
+  SceneAuditEventLevel,
+  SceneAuditEventType,
+  SceneAuditPageViewModel,
+} from "@/lib/contracts/scene";
 
 type LevelFilter = "all" | SceneAuditEventLevel;
 type TypeFilter = "all" | SceneAuditEventType;

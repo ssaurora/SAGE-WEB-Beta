@@ -9,7 +9,7 @@ import type {
   AssetDataType,
   AssetListItemViewModel,
   AssetVisibility,
-} from "@/lib/mock/asset";
+} from "@/lib/contracts/asset";
 
 type AssetsPanelProps = {
   items: AssetListItemViewModel[];

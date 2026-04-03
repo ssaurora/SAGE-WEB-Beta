@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DataStateCard } from "@/components/pages/data-state-card";
-import type { TaskListItem } from "@/lib/mock/task";
+import type { TaskListItem } from "@/lib/contracts/task";
 import {
   getTaskStateLabel,
   getTaskStateVariant,

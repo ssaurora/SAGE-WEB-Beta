@@ -1,5 +1,8 @@
 import { headers } from "next/headers";
-import type { ReportDetailDto, ReportListItemDto } from "@/lib/contracts/report";
+import type {
+  ReportDetailDto,
+  ReportListItemDto,
+} from "@/lib/contracts/report";
 
 async function getBaseUrl() {
   const headerStore = await headers();
