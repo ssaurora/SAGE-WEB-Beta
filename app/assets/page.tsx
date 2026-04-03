@@ -1,11 +1,38 @@
-import { PlaceholderPage } from "@/components/pages/placeholder-page";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { AssetsPanel } from "@/components/pages/assets-panel";
+import { getAssetListViewModel } from "@/lib/api/asset";
 
-export default function AssetsPage() {
+export default async function AssetsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sceneId?: string; from?: string }>;
+}) {
+  const { sceneId, from } = await searchParams;
+  const assets = await getAssetListViewModel();
+
   return (
-    <PlaceholderPage
-      title="Assets"
-      description="全局资产入口占位页。"
-      bullets={["后续承接输入资产、绑定状态与可见性规则。"]}
-    />
+    <div className="space-y-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Assets</CardTitle>
+          <CardDescription>
+            全局资产清册、绑定状态与跨场景复用视图
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AssetsPanel
+            items={assets}
+            initialSceneFilter={sceneId}
+            contextFrom={from}
+          />
+        </CardContent>
+      </Card>
+    </div>
   );
 }

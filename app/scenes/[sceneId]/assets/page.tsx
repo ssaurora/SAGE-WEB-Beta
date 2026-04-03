@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -68,6 +69,14 @@ export default async function SceneAssetsPage({
             {vm.sceneId} · 场景资产管理与绑定状态
           </CardDescription>
         </CardHeader>
+        <CardContent className="pt-0">
+          <Link
+            href={`/assets?sceneId=${vm.sceneId}&from=scene-assets`}
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            Open Global Assets (prefilled by scene)
+          </Link>
+        </CardContent>
       </Card>
 
       <Card>
@@ -101,6 +110,15 @@ export default async function SceneAssetsPage({
                     {getVisibilityBadgeText(item.visibility)}
                   </Badge>
                 </div>
+              </div>
+              <div className="mt-3 flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">Asset detail</p>
+                <Link
+                  href={`/assets/${item.assetId}?from=scene-assets&sceneId=${vm.sceneId}`}
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  Open Asset Detail
+                </Link>
               </div>
             </div>
           ))}

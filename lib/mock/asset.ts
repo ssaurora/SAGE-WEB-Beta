@@ -1,0 +1,219 @@
+export type AssetDataType = "Vector" | "Raster" | "Table" | "Document";
+export type AssetBindStatus = "Bound" | "Unbound" | "Missing";
+export type AssetVisibility = "Public" | "Scene" | "Task";
+
+export type AssetListItemViewModel = {
+  assetId: string;
+  name: string;
+  type: AssetDataType;
+  bindStatus: AssetBindStatus;
+  uploadedAt: string;
+  visibility: AssetVisibility;
+  sceneId: string;
+  lastTaskId?: string;
+};
+
+export type AssetDetailViewModel = AssetListItemViewModel & {
+  source: string;
+  format: string;
+  size: string;
+  checksum: string;
+  tags: string[];
+  usedBy: {
+    sceneId: string;
+    taskId?: string;
+    resultId?: string;
+    reportId?: string;
+  };
+  auditSummary: string;
+};
+
+export const assetListMock: AssetListItemViewModel[] = [
+  {
+    assetId: "asset-001",
+    name: "watershed_boundary.geojson",
+    type: "Vector",
+    bindStatus: "Bound",
+    uploadedAt: "2026-04-02 14:30",
+    visibility: "Scene",
+    sceneId: "scene-001",
+    lastTaskId: "task-001",
+  },
+  {
+    assetId: "asset-002",
+    name: "precip_2025.tif",
+    type: "Raster",
+    bindStatus: "Bound",
+    uploadedAt: "2026-04-03 10:22",
+    visibility: "Task",
+    sceneId: "scene-001",
+    lastTaskId: "task-001",
+  },
+  {
+    assetId: "asset-003",
+    name: "lulc_2024.tif",
+    type: "Raster",
+    bindStatus: "Missing",
+    uploadedAt: "2026-03-28 09:15",
+    visibility: "Scene",
+    sceneId: "scene-001",
+    lastTaskId: "task-002",
+  },
+  {
+    assetId: "asset-004",
+    name: "biophysical_table_v2.csv",
+    type: "Table",
+    bindStatus: "Unbound",
+    uploadedAt: "2026-04-01 16:45",
+    visibility: "Public",
+    sceneId: "scene-001",
+  },
+  {
+    assetId: "asset-101",
+    name: "soil_erodibility_kfactor.tif",
+    type: "Raster",
+    bindStatus: "Bound",
+    uploadedAt: "2026-04-01 11:05",
+    visibility: "Task",
+    sceneId: "scene-002",
+    lastTaskId: "task-003",
+  },
+  {
+    assetId: "asset-201",
+    name: "habitat_threats.xlsx",
+    type: "Document",
+    bindStatus: "Unbound",
+    uploadedAt: "2026-03-29 10:05",
+    visibility: "Public",
+    sceneId: "scene-003",
+    lastTaskId: "task-004",
+  },
+];
+
+export const assetDetailMockMap: Record<string, AssetDetailViewModel> = {
+  "asset-001": {
+    assetId: "asset-001",
+    name: "watershed_boundary.geojson",
+    type: "Vector",
+    bindStatus: "Bound",
+    uploadedAt: "2026-04-02 14:30",
+    visibility: "Scene",
+    sceneId: "scene-001",
+    lastTaskId: "task-001",
+    source: "Uploaded by user",
+    format: "GeoJSON",
+    size: "2.4 MB",
+    checksum: "sha256:9f3e...1a4c",
+    tags: ["boundary", "watershed", "required-input"],
+    usedBy: {
+      sceneId: "scene-001",
+      taskId: "task-001",
+      resultId: "result-2026-001",
+      reportId: "report-2026-001",
+    },
+    auditSummary: "边界数据校验通过，坐标系与场景配置一致。",
+  },
+  "asset-002": {
+    assetId: "asset-002",
+    name: "precip_2025.tif",
+    type: "Raster",
+    bindStatus: "Bound",
+    uploadedAt: "2026-04-03 10:22",
+    visibility: "Task",
+    sceneId: "scene-001",
+    lastTaskId: "task-001",
+    source: "Uploaded by user",
+    format: "GeoTIFF",
+    size: "118 MB",
+    checksum: "sha256:4bc2...a881",
+    tags: ["precipitation", "raster", "required-input"],
+    usedBy: {
+      sceneId: "scene-001",
+      taskId: "task-001",
+      resultId: "result-2026-001",
+      reportId: "report-2026-001",
+    },
+    auditSummary: "降水栅格通过分辨率与NoData一致性校验。",
+  },
+  "asset-003": {
+    assetId: "asset-003",
+    name: "lulc_2024.tif",
+    type: "Raster",
+    bindStatus: "Missing",
+    uploadedAt: "2026-03-28 09:15",
+    visibility: "Scene",
+    sceneId: "scene-001",
+    lastTaskId: "task-002",
+    source: "Imported from legacy workspace",
+    format: "GeoTIFF",
+    size: "96 MB",
+    checksum: "sha256:8ad4...ef29",
+    tags: ["lulc", "raster", "missing"],
+    usedBy: {
+      sceneId: "scene-001",
+      taskId: "task-002",
+    },
+    auditSummary: "资产引用存在但源文件不可访问，标记为缺失。",
+  },
+  "asset-004": {
+    assetId: "asset-004",
+    name: "biophysical_table_v2.csv",
+    type: "Table",
+    bindStatus: "Unbound",
+    uploadedAt: "2026-04-01 16:45",
+    visibility: "Public",
+    sceneId: "scene-001",
+    source: "Uploaded by user",
+    format: "CSV",
+    size: "180 KB",
+    checksum: "sha256:aa90...5c31",
+    tags: ["biophysical", "optional-input"],
+    usedBy: {
+      sceneId: "scene-001",
+    },
+    auditSummary: "资产可用但未绑定到当前任务输入角色。",
+  },
+  "asset-101": {
+    assetId: "asset-101",
+    name: "soil_erodibility_kfactor.tif",
+    type: "Raster",
+    bindStatus: "Bound",
+    uploadedAt: "2026-04-01 11:05",
+    visibility: "Task",
+    sceneId: "scene-002",
+    lastTaskId: "task-003",
+    source: "Uploaded by user",
+    format: "GeoTIFF",
+    size: "74 MB",
+    checksum: "sha256:bf21...89c0",
+    tags: ["sdr", "soil", "k-factor"],
+    usedBy: {
+      sceneId: "scene-002",
+      taskId: "task-003",
+      resultId: "result-2026-002",
+      reportId: "report-2026-002",
+    },
+    auditSummary: "土壤可蚀性参数栅格已绑定并参与最近一次任务计算。",
+  },
+  "asset-201": {
+    assetId: "asset-201",
+    name: "habitat_threats.xlsx",
+    type: "Document",
+    bindStatus: "Unbound",
+    uploadedAt: "2026-03-29 10:05",
+    visibility: "Public",
+    sceneId: "scene-003",
+    lastTaskId: "task-004",
+    source: "Uploaded by user",
+    format: "XLSX",
+    size: "540 KB",
+    checksum: "sha256:c714...0f1e",
+    tags: ["habitat", "threats", "reference"],
+    usedBy: {
+      sceneId: "scene-003",
+      taskId: "task-004",
+      reportId: "report-2026-003",
+    },
+    auditSummary: "参考文档资产已上传，待绑定到解释与报告流程。",
+  },
+};
