@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { scenePrimaryNav, sceneSecondaryNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
+
+const MORE_OPEN_STORAGE_KEY = "sage-web.sceneShell.moreOpen";
 
 export function SceneShell({
   sceneId,
@@ -15,6 +18,33 @@ export function SceneShell({
   const pathname = usePathname();
   const mainNav = scenePrimaryNav(sceneId);
   const supportNav = sceneSecondaryNav(sceneId);
+  const hasActiveSupportNav = useMemo(
+    () =>
+      supportNav.some(
+        (item) =>
+          pathname === item.href || pathname.startsWith(`${item.href}/`),
+      ),
+    [pathname, supportNav],
+  );
+  const [isMoreOpen, setIsMoreOpen] = useState(hasActiveSupportNav);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem(MORE_OPEN_STORAGE_KEY);
+    if (saved === "true") {
+      setIsMoreOpen(true);
+      return;
+    }
+    if (saved === "false") {
+      setIsMoreOpen(false);
+      return;
+    }
+    setIsMoreOpen(hasActiveSupportNav);
+  }, [hasActiveSupportNav]);
+
+  const onMoreToggle = (open: boolean) => {
+    setIsMoreOpen(open);
+    window.localStorage.setItem(MORE_OPEN_STORAGE_KEY, open ? "true" : "false");
+  };
 
   return (
     <section className="space-y-4">
@@ -56,7 +86,11 @@ export function SceneShell({
         })}
       </div>
 
-      <details className="rounded-lg border bg-card px-4 py-3">
+      <details
+        className="rounded-lg border bg-card px-4 py-3"
+        open={isMoreOpen}
+        onToggle={(event) => onMoreToggle(event.currentTarget.open)}
+      >
         <summary className="cursor-pointer text-sm font-medium text-muted-foreground">
           More ({supportNav.length})
         </summary>
