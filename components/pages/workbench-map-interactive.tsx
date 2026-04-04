@@ -150,6 +150,12 @@ export function WorkbenchMapInteractive({
       : layoutMode === "result-transition"
         ? "Result Transition Layout"
         : "Runtime Monitoring Layout";
+  const mapHeightClassName =
+    layoutMode === "input-recovery"
+      ? "h-[280px]"
+      : layoutMode === "result-transition"
+        ? "h-[500px]"
+        : "h-[420px]";
 
   const isInputReadOnly =
     !canEdit || isQueued || isRunning || isProcessingResults || isCompleted;
@@ -620,6 +626,7 @@ export function WorkbenchMapInteractive({
           activeLayerName={activeLayerName}
           onLayerPick={setActiveLayerName}
           onFeaturePick={setPickedFeature}
+          mapHeightClassName={mapHeightClassName}
         />
 
         <div className="mt-3 rounded-md border bg-muted/20 p-3">
@@ -740,14 +747,14 @@ export function WorkbenchMapInteractive({
           <CardDescription>context / lifecycle summary</CardDescription>
         </CardHeader>
         <CardContent>
+          <p className="mb-3 rounded-md border bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
+            {vm.analysisPanel.contextSummary}
+          </p>
           <details className="rounded-md border p-3">
             <summary className="cursor-pointer text-sm font-medium text-foreground">
               展开执行上下文
             </summary>
             <div className="mt-3 space-y-3">
-              <div className="rounded-md border p-3 text-sm text-muted-foreground">
-                {vm.analysisPanel.contextSummary}
-              </div>
               <div className="rounded-md border p-3 text-sm text-muted-foreground">
                 {vm.taskPanel.lifecycleSummary}
               </div>

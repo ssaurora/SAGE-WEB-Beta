@@ -101,6 +101,19 @@ export function GovernanceEvidenceTabs({
 
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                Failure Summary
+              </p>
+              {failureSummary ? (
+                <p className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
+                  {failureSummary}
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">无失败摘要</p>
+              )}
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
                 Suggested Fixes
               </p>
               {suggestedFixes.length === 0 ? (
@@ -113,19 +126,6 @@ export function GovernanceEvidenceTabs({
                     <li key={fix}>{fix}</li>
                   ))}
                 </ul>
-              )}
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-                Failure Summary
-              </p>
-              {failureSummary ? (
-                <p className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
-                  {failureSummary}
-                </p>
-              ) : (
-                <p className="text-sm text-muted-foreground">无失败摘要</p>
               )}
             </div>
           </div>

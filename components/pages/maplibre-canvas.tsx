@@ -15,6 +15,7 @@ type MapLibreCanvasProps = {
   activeLayerName?: string | null;
   onLayerPick?: (layerName: string) => void;
   onFeaturePick?: (feature: PickedFeature) => void;
+  mapHeightClassName?: string;
 };
 
 export type PickedFeature = {
@@ -193,6 +194,7 @@ export function MapLibreCanvas({
   activeLayerName,
   onLayerPick,
   onFeaturePick,
+  mapHeightClassName,
 }: MapLibreCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -422,7 +424,7 @@ export function MapLibreCanvas({
     <div className="space-y-2">
       <div
         ref={containerRef}
-        className="h-[420px] w-full overflow-hidden rounded-md border"
+        className={`${mapHeightClassName ?? "h-[420px]"} w-full overflow-hidden rounded-md border`}
       />
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
         <div className="flex flex-wrap items-center gap-3">
