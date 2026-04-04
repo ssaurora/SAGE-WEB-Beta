@@ -2,6 +2,15 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+export type TaskContextView =
+  | "Overview"
+  | "Workbench"
+  | "Governance"
+  | "Results"
+  | "Result Detail"
+  | "Assets"
+  | "Settings";
+
 type TaskContextBarProps = {
   sceneName?: string;
   sceneHref?: string;
@@ -9,7 +18,7 @@ type TaskContextBarProps = {
   taskHref?: string;
   stateLabel?: string;
   stateVariant?: "default" | "secondary" | "destructive" | "outline" | null;
-  currentView: string;
+  currentView: TaskContextView;
   roleLabel?: string;
   modeLabel?: string;
   fromLabel?: string;
