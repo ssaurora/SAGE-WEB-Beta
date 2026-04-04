@@ -139,6 +139,17 @@ export function WorkbenchMapInteractive({
 
   const isInputFocusState = isWaitingInput || isActionRequired || isFailed;
   const isRuntimeFocusState = isQueued || isRunning || isProcessingResults;
+  const layoutMode = isInputFocusState
+    ? "input-recovery"
+    : isCompleted
+      ? "result-transition"
+      : "runtime-monitoring";
+  const layoutLabel =
+    layoutMode === "input-recovery"
+      ? "Input Recovery Layout"
+      : layoutMode === "result-transition"
+        ? "Result Transition Layout"
+        : "Runtime Monitoring Layout";
 
   const isInputReadOnly =
     !canEdit || isQueued || isRunning || isProcessingResults || isCompleted;
@@ -422,6 +433,7 @@ export function WorkbenchMapInteractive({
               >
                 {workbenchState}
               </Badge>
+              <Badge variant="outline">{layoutLabel}</Badge>
             </div>
             <CardDescription>
               {stateHint}
@@ -445,7 +457,15 @@ export function WorkbenchMapInteractive({
         </CardHeader>
       </Card>
 
-      <div className="grid gap-4 xl:grid-cols-[320px_1fr]">
+      <div
+        className={`grid gap-4 ${
+          layoutMode === "input-recovery"
+            ? "xl:grid-cols-[1.2fr_0.8fr]"
+            : layoutMode === "result-transition"
+              ? "xl:grid-cols-[0.95fr_1.05fr]"
+              : "xl:grid-cols-[0.85fr_1.15fr]"
+        }`}
+      >
         <div className="space-y-4">
           <Card>
             <CardHeader>
