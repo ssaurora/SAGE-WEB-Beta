@@ -101,17 +101,6 @@ export default async function TaskGovernancePage({
         </Card>
       ) : null}
 
-      <GovernanceRecoveryPanel
-        sceneId={vm.sceneId}
-        taskId={vm.taskId}
-        status={decisionStatus}
-        canResume={vm.canResume}
-        failureReason={vm.failureSummary}
-        missingInputs={vm.missingRequiredInputs}
-        invalidBindings={vm.requiredActions}
-        suggestedFix={vm.suggestedFixes[0]}
-      />
-
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Decision Zone</CardTitle>
@@ -120,7 +109,7 @@ export default async function TaskGovernancePage({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-3 lg:grid-cols-2">
+          <div className="grid gap-3 lg:grid-cols-[1.2fr_0.8fr]">
             <div className="rounded-md border p-3 text-sm text-muted-foreground">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">
                 Why this status
@@ -148,6 +137,19 @@ export default async function TaskGovernancePage({
               </p>
             </div>
           </div>
+
+          <div className="mt-3">
+            <GovernanceRecoveryPanel
+              sceneId={vm.sceneId}
+              taskId={vm.taskId}
+              status={decisionStatus}
+              canResume={vm.canResume}
+              failureReason={vm.failureSummary}
+              missingInputs={vm.missingRequiredInputs}
+              invalidBindings={vm.requiredActions}
+              suggestedFix={vm.suggestedFixes[0]}
+            />
+          </div>
         </CardContent>
       </Card>
 
@@ -160,13 +162,11 @@ export default async function TaskGovernancePage({
         </CardHeader>
       </Card>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Governance Panel</CardTitle>
-            <CardDescription>
-              required actions / suggested fixes
-            </CardDescription>
+            <CardDescription>required actions / suggested fixes</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -223,39 +223,42 @@ export default async function TaskGovernancePage({
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Missing Required Inputs</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {vm.missingRequiredInputs.length === 0 ? (
-              <p className="text-sm text-muted-foreground">无缺失输入</p>
-            ) : (
-              <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                {vm.missingRequiredInputs.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Missing Required Inputs</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {vm.missingRequiredInputs.length === 0 ? (
+                <p className="text-sm text-muted-foreground">无缺失输入</p>
+              ) : (
+                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                  {vm.missingRequiredInputs.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Artifacts</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {vm.artifacts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">暂无工件</p>
-            ) : (
-              <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                {vm.artifacts.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Artifacts</CardTitle>
+              <CardDescription>运行产物与治理证据</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {vm.artifacts.length === 0 ? (
+                <p className="text-sm text-muted-foreground">暂无工件</p>
+              ) : (
+                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                  {vm.artifacts.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <Card>
@@ -314,6 +317,7 @@ export default async function TaskGovernancePage({
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Lifecycle Events</CardTitle>
+            <CardDescription>时间线证据</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             {vm.lifecycleEvents.map((event) => (
@@ -330,6 +334,7 @@ export default async function TaskGovernancePage({
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Audit Summary</CardTitle>
+            <CardDescription>审计结论与补充说明</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">{vm.auditSummary}</p>

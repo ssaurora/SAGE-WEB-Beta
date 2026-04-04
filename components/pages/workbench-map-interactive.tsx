@@ -665,23 +665,20 @@ export function WorkbenchMapInteractive({
                     />
                   </div>
                   <div className="mt-2 grid grid-cols-4 gap-2 text-[11px]">
-                    {[
-                      "Understanding",
-                      "Queued",
-                      "Running",
-                      "Processing",
-                    ].map((stage, index) => (
-                      <span
-                        key={stage}
-                        className={
-                          index <= runtimeStageIndex
-                            ? "font-semibold text-foreground"
-                            : "text-muted-foreground"
-                        }
-                      >
-                        {stage}
-                      </span>
-                    ))}
+                    {["Understanding", "Queued", "Running", "Processing"].map(
+                      (stage, index) => (
+                        <span
+                          key={stage}
+                          className={
+                            index <= runtimeStageIndex
+                              ? "font-semibold text-foreground"
+                              : "text-muted-foreground"
+                          }
+                        >
+                          {stage}
+                        </span>
+                      ),
+                    )}
                   </div>
                 </div>
               )}
@@ -756,7 +753,9 @@ export function WorkbenchMapInteractive({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>图层控制、上下文事实与对象证据后置阅读。</CardDescription>
+          <CardDescription>
+            图层控制、上下文事实与对象证据后置阅读。
+          </CardDescription>
         </CardHeader>
       </Card>
 
