@@ -48,6 +48,34 @@ export function SceneResultsPanel({
     return next;
   }, [items, taskFilter, sortBy]);
 
+  const latestResultId = useMemo(() => {
+    const latest = [...items].sort((left, right) => {
+      const leftTime = new Date(left.generatedAt).getTime();
+      const rightTime = new Date(right.generatedAt).getTime();
+      return rightTime - leftTime;
+    })[0];
+    return latest?.resultId;
+  }, [items]);
+
+  const recommendedResultId = useMemo(() => {
+    const latest = items.find((item) => item.resultId === latestResultId);
+    if (!latest) return undefined;
+    if (latest.explanationReady && latest.mapLayerReady) return latest.resultId;
+    return undefined;
+  }, [items, latestResultId]);
+
+  const displayItems = useMemo(() => {
+    if (!recommendedResultId) return filteredItems;
+    const recommended = filteredItems.find(
+      (item) => item.resultId === recommendedResultId,
+    );
+    if (!recommended) return filteredItems;
+    return [
+      recommended,
+      ...filteredItems.filter((item) => item.resultId !== recommendedResultId),
+    ];
+  }, [filteredItems, recommendedResultId]);
+
   return (
     <Card>
       <CardHeader>
@@ -60,8 +88,11 @@ export function SceneResultsPanel({
             Summary
           </p>
           <p className="mt-1">
-            当前共有 {items.length} 个结果包，筛选后显示 {filteredItems.length}{" "}
-            个。建议优先打开最新结果查看指标与解释。
+            当前共有 {items.length} 个结果包，筛选后显示 {displayItems.length}{" "}
+            个。
+            {recommendedResultId
+              ? "推荐结果已置顶，可直接进入。"
+              : "当前无推荐结果，请先查看最新结果判断可消费性。"}
           </p>
         </div>
 
@@ -104,17 +135,17 @@ export function SceneResultsPanel({
         </div>
 
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
+          当前显示 <span className="font-semibold">{displayItems.length}</span>{" "}
           条结果
         </p>
 
-        {filteredItems.length === 0 ? (
+        {displayItems.length === 0 ? (
           <DataStateCard
             title="No results matched"
             description="当前筛选条件下没有结果包，请调整任务筛选或时间排序。"
           />
         ) : (
-          filteredItems.map((item) => (
+          displayItems.map((item) => (
             <div key={item.resultId} className="rounded-md border p-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -123,9 +154,14 @@ export function SceneResultsPanel({
                     from {item.fromTaskId} · {item.generatedAt}
                   </p>
                 </div>
-                <Link href={`/scenes/${sceneId}/results/${item.resultId}`}>
-                  <Badge variant="outline">Open Detail</Badge>
-                </Link>
+                <div className="flex items-center gap-2">
+                  {item.resultId === recommendedResultId ? (
+                    <Badge variant="secondary">Recommended</Badge>
+                  ) : null}
+                  <Link href={`/scenes/${sceneId}/results/${item.resultId}`}>
+                    <Badge variant="outline">Open Detail</Badge>
+                  </Link>
+                </div>
               </div>
 
               <p className="mt-3 text-sm text-muted-foreground">

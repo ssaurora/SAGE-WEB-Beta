@@ -39,8 +39,7 @@ export default async function SceneOverviewPage({
 
   const taskState = vm.latestTask.state;
   const isInputRecoveryState =
-    taskState === "Waiting for Required Input" ||
-    taskState === "Failed";
+    taskState === "Waiting for Required Input" || taskState === "Failed";
   const isRuntimeState = taskState === "Running";
   const isCompletedState = taskState === "Completed";
 
@@ -207,8 +206,8 @@ export default async function SceneOverviewPage({
               ))}
             </ul>
           </details>
-          </CardContent>
-        </Card>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

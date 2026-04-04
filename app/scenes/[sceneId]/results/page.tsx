@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -41,6 +43,54 @@ export default async function SceneResultsPage({
     );
   }
 
+  const latestResult = [...vm.items].sort((left, right) => {
+    const leftTime = new Date(left.generatedAt).getTime();
+    const rightTime = new Date(right.generatedAt).getTime();
+    return rightTime - leftTime;
+  })[0];
+
+  const recommendedResult =
+    latestResult && latestResult.explanationReady && latestResult.mapLayerReady
+      ? latestResult
+      : undefined;
+
+  const primaryDecisionAction = (() => {
+    if (!latestResult) {
+      return {
+        label: "返回 Workbench",
+        href: `/scenes/${sceneId}/workbench?from=results`,
+        hint: "当前暂无结果包，先回到 Workbench 或 Governance 完成运行链路。",
+      };
+    }
+
+    if (recommendedResult) {
+      return {
+        label: "打开推荐结果",
+        href: `/scenes/${sceneId}/results/${recommendedResult.resultId}?from=results&taskId=${recommendedResult.fromTaskId}`,
+        hint: "最新结果的解释与地图图层都已就绪，优先进入该结果包。",
+      };
+    }
+
+    if (!latestResult.mapLayerReady) {
+      const goGovernance = vm.latestState === "Processing Results";
+      return {
+        label: goGovernance ? "返回 Governance" : "返回 Workbench",
+        href: goGovernance
+          ? `/task-governance/${latestResult.fromTaskId}?from=results&taskId=${latestResult.fromTaskId}`
+          : `/scenes/${sceneId}/workbench?from=results&taskId=${latestResult.fromTaskId}`,
+        hint: "结果图层尚未就绪，先返回运行/治理链路处理阻塞后再查看结果。",
+      };
+    }
+
+    return {
+      label: "查看原始结果明细",
+      href: `/scenes/${sceneId}/results/${latestResult.resultId}?from=results&taskId=${latestResult.fromTaskId}`,
+      hint: latestResult.explanationReady
+        ? "先进入最新结果明细进行人工判断。"
+        : "解释尚未就绪，先进入结果明细查看原始指标与映射证据。",
+    };
+  })();
+
   return (
     <div className="space-y-4">
       <Card>
@@ -57,10 +107,7 @@ export default async function SceneResultsPage({
                 {vm.sceneId} · 结论优先的结果判断与消费入口
               </CardDescription>
             </div>
-
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">Total Results: {vm.items.length}</Badge>
-            </div>
+            <Badge variant="outline">Total Results: {vm.items.length}</Badge>
           </div>
         </CardHeader>
       </Card>
@@ -68,22 +115,32 @@ export default async function SceneResultsPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>先看状态结论，再进入具体结果证据。</CardDescription>
+          <CardDescription>先判断去向，再进入具体结果证据。</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-3">
+        <CardContent className="grid gap-3 sm:grid-cols-4">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
             <p className="text-xs text-muted-foreground">Latest State</p>
-            <p className="mt-1 font-semibold">
-              {getTaskStateLabel(vm.latestState)}
-            </p>
+            <p className="mt-1 font-semibold">{getTaskStateLabel(vm.latestState)}</p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
             <p className="text-xs text-muted-foreground">Latest Result</p>
-            <p className="mt-1 font-semibold">{vm.items[0]?.resultId ?? "-"}</p>
+            <p className="mt-1 font-semibold">{latestResult?.resultId ?? "-"}</p>
+          </div>
+          <div className="rounded-md border bg-muted/20 p-3 text-sm">
+            <p className="text-xs text-muted-foreground">Recommended</p>
+            <p className="mt-1 font-semibold">
+              {recommendedResult?.resultId ?? "None"}
+            </p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-            当前页面用于判断结果是否可消费，再进入 Result Detail 查看证据。
+            <p className="text-xs">Primary Decision</p>
+            <p className="mt-1 text-foreground">{primaryDecisionAction.hint}</p>
           </div>
+        </CardContent>
+        <CardContent className="pt-0">
+          <Link href={primaryDecisionAction.href}>
+            <Button size="sm">{primaryDecisionAction.label}</Button>
+          </Link>
         </CardContent>
       </Card>
 
@@ -102,9 +159,7 @@ export default async function SceneResultsPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>
-            结果包、来源任务、解释和图层就绪度。
-          </CardDescription>
+          <CardDescription>结果包、来源任务、解释和图层就绪度。</CardDescription>
         </CardHeader>
       </Card>
 
