@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { primaryNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
-import { Separator } from "@/components/ui/separator";
 import { Package } from "lucide-react";
 
 function getPageTitle(pathname: string): string {
@@ -25,16 +24,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
-      <aside className="border-b border-border bg-[hsl(var(--surface-soft))] p-6 lg:border-b-0 lg:border-r">
-        <div className="space-y-2">
-          <div className="text-xl font-extrabold tracking-wide">SAGE-WEB</div>
-          <p className="text-xs leading-6 text-muted-foreground">
-            Scene-first · GIS-first · Governance-visible
+    <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[240px_1fr]">
+      <aside className="border-b border-border bg-background px-4 py-5 lg:border-b-0 lg:border-r">
+        <div className="space-y-1 px-2">
+          <div className="text-sm font-bold tracking-wide">SAGE-WEB</div>
+          <p className="text-xs text-muted-foreground">
+            Scene-first analysis workspace
           </p>
         </div>
 
-        <nav className="mt-6 flex flex-col gap-2">
+        <nav className="mt-5 flex flex-col gap-1">
           {primaryNav.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -43,31 +42,27 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-lg border border-transparent bg-background/70 px-4 py-3 transition hover:-translate-y-0.5 hover:border-border hover:shadow-sm",
-                  active && "border-primary/30 bg-background shadow-sm",
+                  "rounded-md px-3 py-2 transition-colors",
+                  "text-sm text-muted-foreground hover:bg-muted hover:text-foreground",
+                  active && "bg-muted font-semibold text-foreground",
                 )}
               >
-                <p className="text-sm font-semibold">{item.label}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {item.description}
-                </p>
+                {item.label}
               </Link>
             );
           })}
         </nav>
-
-        <Separator className="my-6" />
-
-        <div className="rounded-lg border bg-background/80 p-4">
-          <p className="text-xs text-muted-foreground">Current page</p>
-          <p className="mt-1 text-sm font-semibold">{getPageTitle(pathname)}</p>
-        </div>
       </aside>
 
       <div className="min-w-0">
-        <header className="flex items-center gap-3 border-b bg-background/90 px-6 py-3 backdrop-blur lg:px-8">
-          <Package className="h-5 w-5 text-muted-foreground" />
-          <span className="text-sm font-semibold text-foreground">
+        <header className="flex items-center justify-between border-b bg-background/95 px-6 py-3 backdrop-blur lg:px-8">
+          <div className="flex items-center gap-3">
+            <Package className="h-5 w-5 text-muted-foreground" />
+            <span className="text-sm font-semibold text-foreground">
+              SAGE-WEB Beta
+            </span>
+          </div>
+          <span className="text-xs text-muted-foreground">
             {getPageTitle(pathname)}
           </span>
         </header>
