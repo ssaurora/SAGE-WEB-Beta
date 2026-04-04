@@ -61,10 +61,14 @@ export function GovernanceRecoveryPanel({
           </div>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
-          <Link href={`/scenes/${sceneId}/workbench?from=governance&taskId=${taskId}`}>
+          <Link
+            href={`/scenes/${sceneId}/workbench?from=governance&taskId=${taskId}`}
+          >
             <Button variant="outline">Open Workbench</Button>
           </Link>
-          <Link href={`/task-governance/${taskId}?from=governance&taskId=${taskId}`}>
+          <Link
+            href={`/task-governance/${taskId}?from=governance&taskId=${taskId}`}
+          >
             <Button variant="secondary">Refresh Status</Button>
           </Link>
         </CardContent>
@@ -90,7 +94,9 @@ export function GovernanceRecoveryPanel({
           </div>
         </CardHeader>
         <CardContent>
-          <Link href={`/scenes/${sceneId}/results?from=governance&taskId=${taskId}`}>
+          <Link
+            href={`/scenes/${sceneId}/results?from=governance&taskId=${taskId}`}
+          >
             <Button variant="default">View Results</Button>
           </Link>
         </CardContent>
@@ -166,7 +172,9 @@ export function GovernanceRecoveryPanel({
 
           <div className="flex flex-wrap gap-2 pt-2">
             {canResume && (
-              <Link href={`/scenes/${sceneId}/workbench?from=governance&taskId=${taskId}`}>
+              <Link
+                href={`/scenes/${sceneId}/workbench?from=governance&taskId=${taskId}`}
+              >
                 <Button variant="default">
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Fix and Resume
@@ -223,7 +231,9 @@ export function GovernanceRecoveryPanel({
             <Link href={`/scenes/${sceneId}/workbench?from=governance`}>
               <Button variant="default">Start New Analysis</Button>
             </Link>
-            <Link href={`/task-governance/${taskId}?from=governance&taskId=${taskId}`}>
+            <Link
+              href={`/task-governance/${taskId}?from=governance&taskId=${taskId}`}
+            >
               <Button variant="outline">View Task Details</Button>
             </Link>
           </div>
@@ -244,7 +254,9 @@ export function GovernanceRecoveryPanel({
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
-          <Link href={`/scenes/${sceneId}/workbench?from=governance&taskId=${taskId}`}>
+          <Link
+            href={`/scenes/${sceneId}/workbench?from=governance&taskId=${taskId}`}
+          >
             <Button variant="secondary">
               <RefreshCw className="h-4 w-4 mr-2" />
               Re-run Analysis
