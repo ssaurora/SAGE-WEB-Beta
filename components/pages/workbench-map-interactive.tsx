@@ -569,7 +569,7 @@ export function WorkbenchMapInteractive({
         </CardHeader>
       </Card>
 
-      <div className="grid gap-4 xl:grid-cols-[320px_1fr_340px]">
+      <div className="grid gap-4 xl:grid-cols-[320px_1fr]">
         <div className="space-y-4">
           {contextFrom || contextTaskId ? (
             <Card>
@@ -629,67 +629,6 @@ export function WorkbenchMapInteractive({
               />
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Layers</CardTitle>
-              <CardDescription>图层可见性与交互管理</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <Badge variant="outline">{visibleCount} visible</Badge>
-                <Button size="sm" variant="outline" onClick={resetMapView}>
-                  Reset View
-                </Button>
-              </div>
-
-              <div className="space-y-3">
-                <div className="rounded-md border p-2">
-                  <button
-                    type="button"
-                    onClick={() => toggleGroupCollapse("inputs")}
-                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                  >
-                    <span>Input Layers</span>
-                    <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
-                  </button>
-                  {!collapsedGroups.inputs ? (
-                    <div className="mt-2 space-y-2">
-                      {groupedLayers.inputs.map((layer) =>
-                        renderLayerRow(
-                          layer,
-                          layers.findIndex((item) => item.name === layer.name),
-                          layers.length,
-                        ),
-                      )}
-                    </div>
-                  ) : null}
-                </div>
-
-                <div className="rounded-md border p-2">
-                  <button
-                    type="button"
-                    onClick={() => toggleGroupCollapse("results")}
-                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                  >
-                    <span>Result Layers</span>
-                    <span>{collapsedGroups.results ? "展开" : "收起"}</span>
-                  </button>
-                  {!collapsedGroups.results ? (
-                    <div className="mt-2 space-y-2">
-                      {groupedLayers.results.map((layer) =>
-                        renderLayerRow(
-                          layer,
-                          layers.findIndex((item) => item.name === layer.name),
-                          layers.length,
-                        ),
-                      )}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         <div className="space-y-4">
@@ -726,20 +665,23 @@ export function WorkbenchMapInteractive({
                     />
                   </div>
                   <div className="mt-2 grid grid-cols-4 gap-2 text-[11px]">
-                    {["Understanding", "Queued", "Running", "Processing"].map(
-                      (stage, index) => (
-                        <span
-                          key={stage}
-                          className={
-                            index <= runtimeStageIndex
-                              ? "font-semibold text-foreground"
-                              : "text-muted-foreground"
-                          }
-                        >
-                          {stage}
-                        </span>
-                      ),
-                    )}
+                    {[
+                      "Understanding",
+                      "Queued",
+                      "Running",
+                      "Processing",
+                    ].map((stage, index) => (
+                      <span
+                        key={stage}
+                        className={
+                          index <= runtimeStageIndex
+                            ? "font-semibold text-foreground"
+                            : "text-muted-foreground"
+                        }
+                      >
+                        {stage}
+                      </span>
+                    ))}
                   </div>
                 </div>
               )}
@@ -809,8 +751,78 @@ export function WorkbenchMapInteractive({
             </CardContent>
           </Card>
         </div>
+      </div>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Evidence Zone</CardTitle>
+          <CardDescription>图层控制、上下文事实与对象证据后置阅读。</CardDescription>
+        </CardHeader>
+      </Card>
+
+      <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
         <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Layers</CardTitle>
+              <CardDescription>图层可见性与交互管理</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <Badge variant="outline">{visibleCount} visible</Badge>
+                <Button size="sm" variant="outline" onClick={resetMapView}>
+                  Reset View
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                <div className="rounded-md border p-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleGroupCollapse("inputs")}
+                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                  >
+                    <span>Input Layers</span>
+                    <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
+                  </button>
+                  {!collapsedGroups.inputs ? (
+                    <div className="mt-2 space-y-2">
+                      {groupedLayers.inputs.map((layer) =>
+                        renderLayerRow(
+                          layer,
+                          layers.findIndex((item) => item.name === layer.name),
+                          layers.length,
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="rounded-md border p-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleGroupCollapse("results")}
+                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                  >
+                    <span>Result Layers</span>
+                    <span>{collapsedGroups.results ? "展开" : "收起"}</span>
+                  </button>
+                  {!collapsedGroups.results ? (
+                    <div className="mt-2 space-y-2">
+                      {groupedLayers.results.map((layer) =>
+                        renderLayerRow(
+                          layer,
+                          layers.findIndex((item) => item.name === layer.name),
+                          layers.length,
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Analysis / Context</CardTitle>
@@ -837,7 +849,9 @@ export function WorkbenchMapInteractive({
               </div>
             </CardContent>
           </Card>
+        </div>
 
+        <div className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Object Inspector</CardTitle>

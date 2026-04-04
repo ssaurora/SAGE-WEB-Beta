@@ -103,7 +103,9 @@ export default async function AssetDetailPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>先判断资产状态，再查看元数据与关联证据。</CardDescription>
+          <CardDescription>
+            先判断资产状态，再查看元数据与关联证据。
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
@@ -126,7 +128,10 @@ export default async function AssetDetailPage({
             </div>
             <div className="rounded-md border p-3 text-sm">
               <p className="text-xs text-muted-foreground">Bind Status</p>
-              <Badge className="mt-2" variant={bindStatusVariant(vm.bindStatus)}>
+              <Badge
+                className="mt-2"
+                variant={bindStatusVariant(vm.bindStatus)}
+              >
                 {bindStatusLabel(vm.bindStatus)}
               </Badge>
             </div>

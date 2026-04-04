@@ -99,7 +99,9 @@ export default async function SceneAssetsPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>先看本场景资产是否阻塞任务，再进入资产证据详情。</CardDescription>
+          <CardDescription>
+            先看本场景资产是否阻塞任务，再进入资产证据详情。
+          </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
@@ -121,7 +123,9 @@ export default async function SceneAssetsPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>资产清册、类型、绑定状态与可见性证据。</CardDescription>
+          <CardDescription>
+            资产清册、类型、绑定状态与可见性证据。
+          </CardDescription>
         </CardHeader>
       </Card>
 

@@ -17,7 +17,9 @@ export default async function AssetsPage({
   const { sceneId, from } = await searchParams;
   try {
     const assets = await getAssetListViewModel();
-    const boundCount = assets.filter((item) => item.bindStatus === "Bound").length;
+    const boundCount = assets.filter(
+      (item) => item.bindStatus === "Bound",
+    ).length;
     const missingCount = assets.filter(
       (item) => item.bindStatus === "Missing",
     ).length;
@@ -50,11 +52,14 @@ export default async function AssetsPage({
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Decision Zone</CardTitle>
-            <CardDescription>优先处理缺失资产，再处理未绑定资产。</CardDescription>
+            <CardDescription>
+              优先处理缺失资产，再处理未绑定资产。
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-              当前建议：先定位 Missing 资产并修复来源，再根据任务上下文完成绑定。
+              当前建议：先定位 Missing
+              资产并修复来源，再根据任务上下文完成绑定。
             </div>
           </CardContent>
         </Card>

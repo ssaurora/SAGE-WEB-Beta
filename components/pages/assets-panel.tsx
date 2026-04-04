@@ -106,8 +106,8 @@ export function AssetsPanel({
           Summary
         </p>
         <p className="mt-1">
-          当前筛选结果中共有 {filteredItems.length} 个资产，已绑定 {boundCount} 个，
-          缺失 {missingCount} 个。建议优先修复缺失项。
+          当前筛选结果中共有 {filteredItems.length} 个资产，已绑定 {boundCount}{" "}
+          个， 缺失 {missingCount} 个。建议优先修复缺失项。
         </p>
       </div>
 
@@ -162,7 +162,8 @@ export function AssetsPanel({
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredItems.length}</span> / {items.length}
+          当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
+          / {items.length}
         </p>
         <select
           value={sortByTime}
