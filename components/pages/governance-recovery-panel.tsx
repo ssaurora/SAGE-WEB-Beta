@@ -182,7 +182,9 @@ export function GovernanceRecoveryPanel({
                 </Button>
               </Link>
             )}
-            <Link href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Governance}`}>
+            <Link
+              href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Governance}`}
+            >
               <Button variant="outline">Start New Analysis</Button>
             </Link>
           </div>
@@ -229,11 +231,13 @@ export function GovernanceRecoveryPanel({
           )}
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <Link href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Governance}`}>
+            <Link
+              href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Governance}`}
+            >
               <Button variant="default">Start New Analysis</Button>
             </Link>
             <Link
-            href={`/task-governance/${taskId}?from=${TASK_CONTEXT_FROM.Governance}&taskId=${taskId}`}
+              href={`/task-governance/${taskId}?from=${TASK_CONTEXT_FROM.Governance}&taskId=${taskId}`}
             >
               <Button variant="outline">View Task Details</Button>
             </Link>
@@ -263,7 +267,9 @@ export function GovernanceRecoveryPanel({
               Re-run Analysis
             </Button>
           </Link>
-          <Link href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Governance}`}>
+          <Link
+            href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Governance}`}
+          >
             <Button variant="outline">Start New Analysis</Button>
           </Link>
         </CardContent>

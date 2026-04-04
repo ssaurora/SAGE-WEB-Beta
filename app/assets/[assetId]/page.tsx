@@ -78,7 +78,9 @@ export default async function AssetDetailPage({
                   Back to Assets
                 </Button>
               </Link>
-              <Link href={`/scenes/${vm.sceneId}/assets?from=${TASK_CONTEXT_FROM.AssetDetail}`}>
+              <Link
+                href={`/scenes/${vm.sceneId}/assets?from=${TASK_CONTEXT_FROM.AssetDetail}`}
+              >
                 <Button size="sm" variant="outline">
                   Open Scene Assets
                 </Button>

@@ -12,7 +12,8 @@ export const TASK_CONTEXT_FROM = {
   Tasks: "tasks",
 } as const;
 
-export type TaskContextFrom = (typeof TASK_CONTEXT_FROM)[keyof typeof TASK_CONTEXT_FROM];
+export type TaskContextFrom =
+  (typeof TASK_CONTEXT_FROM)[keyof typeof TASK_CONTEXT_FROM];
 
 const TASK_CONTEXT_FROM_LABELS: Record<TaskContextFrom, string> = {
   overview: "Overview",
@@ -28,7 +29,9 @@ const TASK_CONTEXT_FROM_LABELS: Record<TaskContextFrom, string> = {
   tasks: "Tasks",
 };
 
-export function formatTaskContextFrom(from?: string | null): string | undefined {
+export function formatTaskContextFrom(
+  from?: string | null,
+): string | undefined {
   if (!from) return undefined;
   if (from in TASK_CONTEXT_FROM_LABELS) {
     return TASK_CONTEXT_FROM_LABELS[from as TaskContextFrom];
