@@ -56,25 +56,30 @@ export function SceneShell({
         })}
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {supportNav.map((item) => {
-          const active =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "rounded-full border px-3 py-1.5 text-xs text-muted-foreground transition",
-                active &&
-                  "border-primary/40 bg-primary/10 font-semibold text-primary",
-              )}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
-      </div>
+      <details className="rounded-lg border bg-card px-4 py-3">
+        <summary className="cursor-pointer text-sm font-medium text-muted-foreground">
+          More ({supportNav.length})
+        </summary>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {supportNav.map((item) => {
+            const active =
+              pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-xs text-muted-foreground transition",
+                  active &&
+                    "border-primary/40 bg-primary/10 font-semibold text-primary",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+      </details>
 
       <div className="rounded-lg border bg-card p-6">{children}</div>
     </section>
