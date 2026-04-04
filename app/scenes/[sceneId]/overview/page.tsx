@@ -12,6 +12,7 @@ import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneOverviewMiniMap } from "@/components/pages/scene-overview-mini-map";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { getSceneOverviewViewModel } from "@/lib/api/scene";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import { getTaskStateVariant } from "@/lib/status/task-state";
 
 export default async function SceneOverviewPage({
@@ -46,21 +47,21 @@ export default async function SceneOverviewPage({
 
   const primaryAction = isCompletedState
     ? {
-        href: `/scenes/${sceneId}/results?from=overview&taskId=${vm.latestTask.id}`,
+        href: `/scenes/${sceneId}/results?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`,
         label: "查看 Results",
       }
     : isRuntimeState
       ? {
-          href: `/task-governance/${vm.latestTask.id}?from=overview&taskId=${vm.latestTask.id}`,
+          href: `/task-governance/${vm.latestTask.id}?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`,
           label: "查看 Governance",
         }
       : isInputRecoveryState
         ? {
-            href: `/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`,
+            href: `/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`,
             label: "进入 Workbench",
           }
         : {
-            href: `/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`,
+            href: `/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`,
             label: "进入 Workbench",
           };
 
@@ -70,7 +71,7 @@ export default async function SceneOverviewPage({
         sceneName={vm.sceneName}
         sceneHref={`/scenes/${sceneId}/overview`}
         taskId={vm.latestTask.id}
-        taskHref={`/task-governance/${vm.latestTask.id}?from=overview&taskId=${vm.latestTask.id}`}
+        taskHref={`/task-governance/${vm.latestTask.id}?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`}
         stateLabel={vm.latestTask.state}
         stateVariant={getTaskStateVariant(vm.latestTask.state)}
         currentView="Overview"
@@ -166,25 +167,25 @@ export default async function SceneOverviewPage({
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             <Link
-              href={`/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`}
+              href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
               Workbench
             </Link>
             <Link
-              href={`/task-governance/${vm.latestTask.id}?from=overview&taskId=${vm.latestTask.id}`}
+              href={`/task-governance/${vm.latestTask.id}?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
               Task Governance
             </Link>
             <Link
-              href={`/scenes/${sceneId}/results?from=overview&taskId=${vm.latestTask.id}`}
+              href={`/scenes/${sceneId}/results?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
               Results
             </Link>
             <Link
-              href={`/scenes/${sceneId}/task-runs?from=overview`}
+              href={`/scenes/${sceneId}/task-runs?from=${TASK_CONTEXT_FROM.Overview}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
               Task Runs

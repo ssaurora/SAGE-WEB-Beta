@@ -12,6 +12,7 @@ import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneResultsPanel } from "@/components/pages/scene-results-panel";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { getSceneResultsViewModel } from "@/lib/api/scene";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -59,7 +60,7 @@ export default async function SceneResultsPage({
     if (!latestResult) {
       return {
         label: "返回 Workbench",
-        href: `/scenes/${sceneId}/workbench?from=results`,
+        href: `/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Results}`,
         hint: "当前暂无结果包，先回到 Workbench 或 Governance 完成运行链路。",
       };
     }
@@ -67,7 +68,7 @@ export default async function SceneResultsPage({
     if (recommendedResult) {
       return {
         label: "打开推荐结果",
-        href: `/scenes/${sceneId}/results/${recommendedResult.resultId}?from=results&taskId=${recommendedResult.fromTaskId}`,
+        href: `/scenes/${sceneId}/results/${recommendedResult.resultId}?from=${TASK_CONTEXT_FROM.Results}&taskId=${recommendedResult.fromTaskId}`,
         hint: "最新结果的解释与地图图层都已就绪，优先进入该结果包。",
       };
     }
@@ -77,15 +78,15 @@ export default async function SceneResultsPage({
       return {
         label: goGovernance ? "返回 Governance" : "返回 Workbench",
         href: goGovernance
-          ? `/task-governance/${latestResult.fromTaskId}?from=results&taskId=${latestResult.fromTaskId}`
-          : `/scenes/${sceneId}/workbench?from=results&taskId=${latestResult.fromTaskId}`,
+          ? `/task-governance/${latestResult.fromTaskId}?from=${TASK_CONTEXT_FROM.Results}&taskId=${latestResult.fromTaskId}`
+          : `/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Results}&taskId=${latestResult.fromTaskId}`,
         hint: "结果图层尚未就绪，先返回运行/治理链路处理阻塞后再查看结果。",
       };
     }
 
     return {
       label: "查看原始结果明细",
-      href: `/scenes/${sceneId}/results/${latestResult.resultId}?from=results&taskId=${latestResult.fromTaskId}`,
+      href: `/scenes/${sceneId}/results/${latestResult.resultId}?from=${TASK_CONTEXT_FROM.Results}&taskId=${latestResult.fromTaskId}`,
       hint: latestResult.explanationReady
         ? "先进入最新结果明细进行人工判断。"
         : "解释尚未就绪，先进入结果明细查看原始指标与映射证据。",
@@ -100,7 +101,7 @@ export default async function SceneResultsPage({
         taskId={taskId}
         taskHref={
           taskId
-            ? `/task-governance/${taskId}?from=results&taskId=${taskId}`
+            ? `/task-governance/${taskId}?from=${TASK_CONTEXT_FROM.Results}&taskId=${taskId}`
             : undefined
         }
         stateLabel={getTaskStateLabel(vm.latestState)}

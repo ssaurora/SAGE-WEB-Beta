@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getAssetDetailViewModel } from "@/lib/api/asset";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 function bindStatusLabel(status: "Bound" | "Unbound" | "Missing") {
   if (status === "Bound") return "已绑定";
@@ -71,20 +72,20 @@ export default async function AssetDetailPage({
             </div>
             <div className="flex gap-2">
               <Link
-                href={`/assets${sceneId ? `?sceneId=${sceneId}&from=asset-detail` : ""}`}
+                href={`/assets${sceneId ? `?sceneId=${sceneId}&from=${TASK_CONTEXT_FROM.AssetDetail}` : ""}`}
               >
                 <Button size="sm" variant="outline">
                   Back to Assets
                 </Button>
               </Link>
-              <Link href={`/scenes/${vm.sceneId}/assets?from=asset-detail`}>
+              <Link href={`/scenes/${vm.sceneId}/assets?from=${TASK_CONTEXT_FROM.AssetDetail}`}>
                 <Button size="sm" variant="outline">
                   Open Scene Assets
                 </Button>
               </Link>
               {vm.lastTaskId ? (
                 <Link
-                  href={`/task-governance/${vm.lastTaskId}?from=asset-detail&taskId=${vm.lastTaskId}`}
+                  href={`/task-governance/${vm.lastTaskId}?from=${TASK_CONTEXT_FROM.AssetDetail}&taskId=${vm.lastTaskId}`}
                 >
                   <Button size="sm" variant="secondary">
                     Open Task Governance

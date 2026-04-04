@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { SceneResultItemViewModel } from "@/lib/contracts/scene";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 type SceneResultsPanelProps = {
   sceneId: string;
@@ -159,7 +160,7 @@ export function SceneResultsPanel({
                     <Badge variant="secondary">Recommended</Badge>
                   ) : null}
                   <Link
-                    href={`/scenes/${sceneId}/results/${item.resultId}?from=results&taskId=${item.fromTaskId}`}
+                    href={`/scenes/${sceneId}/results/${item.resultId}?from=${TASK_CONTEXT_FROM.Results}&taskId=${item.fromTaskId}`}
                   >
                     <Badge variant="outline">Open Detail</Badge>
                   </Link>

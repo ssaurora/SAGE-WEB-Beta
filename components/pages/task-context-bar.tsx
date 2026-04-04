@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { formatTaskContextFrom } from "@/lib/navigation/task-context";
 import { cn } from "@/lib/utils";
 
 export type TaskContextView =
@@ -41,6 +42,7 @@ export function TaskContextBar({
   className,
 }: TaskContextBarProps) {
   const resolvedStateVariant = stateVariant ?? "outline";
+  const resolvedFromLabel = formatTaskContextFrom(fromLabel);
 
   return (
     <div className={cn("rounded-lg border bg-muted/20 px-4 py-3", className)}>
@@ -78,8 +80,8 @@ export function TaskContextBar({
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          {fromLabel ? (
-            <Badge variant="outline">From: {fromLabel}</Badge>
+          {resolvedFromLabel ? (
+            <Badge variant="outline">From: {resolvedFromLabel}</Badge>
           ) : null}
           {roleLabel ? <Badge variant="outline">{roleLabel}</Badge> : null}
           {modeLabel ? <Badge variant="outline">{modeLabel}</Badge> : null}

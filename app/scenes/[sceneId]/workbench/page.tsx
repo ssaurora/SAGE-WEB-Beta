@@ -9,6 +9,7 @@ import {
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { WorkbenchMapInteractive } from "@/components/pages/workbench-map-interactive";
 import { getSceneWorkbenchViewModel } from "@/lib/api/scene";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import { getTaskStateVariant } from "@/lib/status/task-state";
 
 export default async function SceneWorkbenchPage({
@@ -46,7 +47,7 @@ export default async function SceneWorkbenchPage({
         taskId={taskId}
         taskHref={
           taskId
-            ? `/task-governance/${taskId}?from=workbench&taskId=${taskId}`
+            ? `/task-governance/${taskId}?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${taskId}`
             : undefined
         }
         stateLabel={vm.header.currentState}

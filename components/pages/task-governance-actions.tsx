@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 type TaskGovernanceActionsProps = {
   sceneId: string;
@@ -80,7 +81,7 @@ export function TaskGovernanceActions({
         <CardContent className="flex flex-wrap gap-2">
           {isCompleted && resultAvailable ? (
             <Link
-              href={`/scenes/${sceneId}/results?taskId=${taskId}&from=governance`}
+              href={`/scenes/${sceneId}/results?taskId=${taskId}&from=${TASK_CONTEXT_FROM.Governance}`}
               className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               Open Result Detail
@@ -100,7 +101,7 @@ export function TaskGovernanceActions({
           </Button>
 
           <Link
-            href={`/scenes/${sceneId}/workbench?from=governance&taskId=${taskId}`}
+            href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Governance}&taskId=${taskId}`}
             className="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
           >
             Back to Workbench

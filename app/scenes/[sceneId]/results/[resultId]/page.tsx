@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { getSceneResultDetailViewModel } from "@/lib/api/scene";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 function trendLabel(trend: "up" | "down" | "flat") {
   if (trend === "up") return "↑ 上升";
@@ -57,21 +58,21 @@ export default async function SceneResultDetailPage({
             </div>
             <div className="flex gap-2">
               <Link
-                href={`/task-governance/${vm.fromTaskId}?from=result-detail&taskId=${vm.fromTaskId}`}
+                href={`/task-governance/${vm.fromTaskId}?from=${TASK_CONTEXT_FROM.ResultDetail}&taskId=${vm.fromTaskId}`}
               >
                 <Button size="sm" variant="outline">
                   Open Task Governance
                 </Button>
               </Link>
               <Link
-                href={`/results/${linkedResultId ?? vm.resultId}?from=result-detail&taskId=${vm.fromTaskId}&resultId=${vm.resultId}`}
+                href={`/results/${linkedResultId ?? vm.resultId}?from=${TASK_CONTEXT_FROM.ResultDetail}&taskId=${vm.fromTaskId}&resultId=${vm.resultId}`}
               >
                 <Button size="sm" variant="outline">
                   Open Result Detail
                 </Button>
               </Link>
               <Link
-                href={`/scenes/${vm.sceneId}/results${taskId ? `?taskId=${taskId}&from=${from ?? "result-detail"}` : ""}`}
+                href={`/scenes/${vm.sceneId}/results${taskId ? `?taskId=${taskId}&from=${from ?? TASK_CONTEXT_FROM.ResultDetail}` : ""}`}
               >
                 <Button size="sm" variant="secondary">
                   Back to Results

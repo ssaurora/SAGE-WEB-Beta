@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getTaskGovernanceViewModel } from "@/lib/api/task";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -62,7 +63,7 @@ export default async function TaskGovernancePage({
         sceneName={vm.sceneId}
         sceneHref={`/scenes/${vm.sceneId}/overview`}
         taskId={vm.taskId}
-        taskHref={`/task-governance/${vm.taskId}?from=task-governance&taskId=${vm.taskId}`}
+        taskHref={`/task-governance/${vm.taskId}?from=${TASK_CONTEXT_FROM.TaskGovernance}&taskId=${vm.taskId}`}
         stateLabel={getTaskStateLabel(vm.currentState)}
         stateVariant={getTaskStateVariant(vm.currentState)}
         currentView="Governance"
