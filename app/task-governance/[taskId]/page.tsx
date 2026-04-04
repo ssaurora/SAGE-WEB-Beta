@@ -33,6 +33,27 @@ export default async function TaskGovernancePage({
   const isCancelled = vm.currentState === "Cancelled";
   const isFailedRecoverable = isFailed && vm.canResume;
   const isFailedTerminal = isFailed && !vm.canResume;
+  const decisionStatus = isCompleted
+    ? "Completed"
+    : isFailedTerminal
+      ? "Failed Terminal"
+      : isFailedRecoverable
+        ? "Failed Recoverable"
+        : isCancelled
+          ? "Cancelled"
+          : "Waiting";
+
+  const nextActionText = (() => {
+    if (isCompleted) return "结果已可用，建议进入 Results 做结论消费。";
+    if (isFailedRecoverable)
+      return "任务可恢复，优先修复阻塞项后执行 Fix and Resume。";
+    if (isFailedTerminal) return "当前任务不可恢复，建议重新发起分析。";
+    if (isCancelled) return "任务已取消，可按需重新运行或新建分析。";
+    if (isWaitingInput || isActionRequired)
+      return "当前需用户介入，优先处理必需输入与绑定问题。";
+    return "任务处理中，建议继续观察运行阶段与治理事件。";
+  })();
+
   return (
     <div className="space-y-4">
       <Card>
@@ -46,15 +67,24 @@ export default async function TaskGovernancePage({
           </div>
           <CardDescription>{vm.sceneId} · 任务治理与审计摘要</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            可恢复：{vm.canResume ? "是" : "否"}
+        <CardContent className="space-y-3">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-md border p-3 text-sm text-muted-foreground">
+              可恢复：{vm.canResume ? "是" : "否"}
+            </div>
+            <div className="rounded-md border p-3 text-sm text-muted-foreground">
+              可取消：{vm.canCancel ? "是" : "否"}
+            </div>
+            <div className="rounded-md border p-3 text-sm text-muted-foreground">
+              结果可用：{vm.resultAvailable ? "是" : "否"}
+            </div>
           </div>
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            可取消：{vm.canCancel ? "是" : "否"}
-          </div>
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            结果可用：{vm.resultAvailable ? "是" : "否"}
+
+          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+              Next Action
+            </p>
+            <p className="mt-1">{nextActionText}</p>
           </div>
         </CardContent>
       </Card>
@@ -74,17 +104,7 @@ export default async function TaskGovernancePage({
       <GovernanceRecoveryPanel
         sceneId={vm.sceneId}
         taskId={vm.taskId}
-        status={
-          isCompleted
-            ? "Completed"
-            : isFailedTerminal
-              ? "Failed Terminal"
-              : isFailedRecoverable
-                ? "Failed Recoverable"
-                : isCancelled
-                  ? "Cancelled"
-                  : "Waiting"
-        }
+        status={decisionStatus}
         canResume={vm.canResume}
         failureReason={vm.failureSummary}
         missingInputs={vm.missingRequiredInputs}
@@ -94,17 +114,50 @@ export default async function TaskGovernancePage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Governance Access</CardTitle>
+          <CardTitle className="text-base">Decision Zone</CardTitle>
           <CardDescription>
-            当前页面用于查看任务治理状态、建议与执行上下文；编辑类操作仍受角色与任务状态共同约束。
+            首屏聚焦状态判断、阻塞原因与下一步动作。
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-            Viewer 模式下建议仅查看治理信息并跳转至 Settings 调整角色；Editor /
-            Admin 模式可继续执行恢复和取消。
+          <div className="grid gap-3 lg:grid-cols-2">
+            <div className="rounded-md border p-3 text-sm text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                Why this status
+              </p>
+              <p className="mt-1">
+                {vm.failureSummary
+                  ? vm.failureSummary
+                  : vm.missingRequiredInputs.length > 0
+                    ? `检测到 ${vm.missingRequiredInputs.length} 项缺失输入。`
+                    : "当前状态由任务运行阶段与治理规则共同决定。"}
+              </p>
+            </div>
+            <div className="rounded-md border p-3 text-sm text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                Primary decision
+              </p>
+              <p className="mt-1">
+                {isFailedRecoverable
+                  ? "优先恢复"
+                  : isFailedTerminal
+                    ? "重新发起"
+                    : isCompleted
+                      ? "消费结果"
+                      : "继续观察 / 补齐输入"}
+              </p>
+            </div>
           </div>
         </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Evidence Zone</CardTitle>
+          <CardDescription>
+            证据后置：用于支撑判断，不与决策区竞争首屏焦点。
+          </CardDescription>
+        </CardHeader>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -205,74 +258,84 @@ export default async function TaskGovernancePage({
         </Card>
       </div>
 
-      <GovernanceManifestTab
-        parameters={[
-          {
-            key: "analysisType",
-            value: vm.manifestSummary.analysisType,
-            type: "parameter",
-            isEditable: false,
-            description: "Analysis Type",
-            children: [],
-          },
-          {
-            key: "modelName",
-            value: vm.manifestSummary.modelName,
-            type: "parameter",
-            isEditable: false,
-            description: "Model",
-            children: [],
-          },
-          {
-            key: "requiredInputs",
-            value: vm.manifestSummary.requiredInputsReady,
-            type: "input",
-            isEditable: false,
-            description: "Required Inputs",
-            children: vm.missingRequiredInputs.map((input) => ({
-              key: `input-${input}`,
-              value: "missing",
-              type: "input",
-              isEditable: false,
-              description: input,
-              children: [],
-            })),
-          },
-          {
-            key: "runtimeProfile",
-            value: vm.manifestSummary.runtimeProfile,
-            type: "parameter",
-            isEditable: false,
-            description: "Runtime Profile",
-            children: [],
-          },
-        ]}
-      />
-
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Lifecycle Events</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {vm.lifecycleEvents.map((event) => (
-            <p
-              key={event}
-              className="rounded-md border px-3 py-2 text-sm text-muted-foreground"
-            >
-              {event}
-            </p>
-          ))}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Audit Summary</CardTitle>
+          <CardTitle className="text-base">Manifest Snapshot</CardTitle>
+          <CardDescription>参数与输入的只读证据视图</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">{vm.auditSummary}</p>
+          <GovernanceManifestTab
+            parameters={[
+              {
+                key: "analysisType",
+                value: vm.manifestSummary.analysisType,
+                type: "parameter",
+                isEditable: false,
+                description: "Analysis Type",
+                children: [],
+              },
+              {
+                key: "modelName",
+                value: vm.manifestSummary.modelName,
+                type: "parameter",
+                isEditable: false,
+                description: "Model",
+                children: [],
+              },
+              {
+                key: "requiredInputs",
+                value: vm.manifestSummary.requiredInputsReady,
+                type: "input",
+                isEditable: false,
+                description: "Required Inputs",
+                children: vm.missingRequiredInputs.map((input) => ({
+                  key: `input-${input}`,
+                  value: "missing",
+                  type: "input",
+                  isEditable: false,
+                  description: input,
+                  children: [],
+                })),
+              },
+              {
+                key: "runtimeProfile",
+                value: vm.manifestSummary.runtimeProfile,
+                type: "parameter",
+                isEditable: false,
+                description: "Runtime Profile",
+                children: [],
+              },
+            ]}
+          />
         </CardContent>
       </Card>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Lifecycle Events</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {vm.lifecycleEvents.map((event) => (
+              <p
+                key={event}
+                className="rounded-md border px-3 py-2 text-sm text-muted-foreground"
+              >
+                {event}
+              </p>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Audit Summary</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">{vm.auditSummary}</p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

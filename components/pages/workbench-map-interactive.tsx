@@ -513,14 +513,20 @@ export function WorkbenchMapInteractive({
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-base">Current State</CardTitle>
-                <Badge variant={statusBadgeVariant(isFailed ? "Invalid" : isCompleted ? "Bound" : "Unbound")}>
+                <Badge
+                  variant={statusBadgeVariant(
+                    isFailed ? "Invalid" : isCompleted ? "Bound" : "Unbound",
+                  )}
+                >
                   {workbenchState}
                 </Badge>
                 <Badge variant="outline">Role: {role}</Badge>
               </div>
               <CardDescription>{stateHint}</CardDescription>
               <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                <span>Required Ready {requiredReadyCount}/{requiredTotal}</span>
+                <span>
+                  Required Ready {requiredReadyCount}/{requiredTotal}
+                </span>
                 <span>· Missing {requiredMissingCount}</span>
                 <span>· Invalid {invalidBindingCount}</span>
                 <span>· Visible Layers {visibleCount}</span>
@@ -551,7 +557,8 @@ export function WorkbenchMapInteractive({
                 <Button
                   size="sm"
                   disabled={
-                    !canEdit || (!canRunAction && !(isFailed || isActionRequired))
+                    !canEdit ||
+                    (!canRunAction && !(isFailed || isActionRequired))
                   }
                 >
                   {primaryActionLabel}
@@ -580,7 +587,8 @@ export function WorkbenchMapInteractive({
             <CardHeader>
               <CardTitle className="text-base">Inputs</CardTitle>
               <CardDescription>
-                输入绑定管理 · Required Ready {requiredReadyCount}/{requiredTotal}
+                输入绑定管理 · Required Ready {requiredReadyCount}/
+                {requiredTotal}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -693,14 +701,20 @@ export function WorkbenchMapInteractive({
             <CardContent className="space-y-3">
               {(isWaitingInput || isActionRequired || isFailed) && (
                 <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-sm">
-                  <p className="font-semibold text-foreground">Input / Recovery Focus</p>
+                  <p className="font-semibold text-foreground">
+                    Input / Recovery Focus
+                  </p>
                   <p className="mt-1 text-muted-foreground">
-                    缺失输入 {requiredMissingCount} 项，异常绑定 {invalidBindingCount} 项。请先修复后恢复执行。
+                    缺失输入 {requiredMissingCount} 项，异常绑定{" "}
+                    {invalidBindingCount} 项。请先修复后恢复执行。
                   </p>
                 </div>
               )}
 
-              {(isUnderstanding || isQueued || isRunning || isProcessingResults) && (
+              {(isUnderstanding ||
+                isQueued ||
+                isRunning ||
+                isProcessingResults) && (
                 <div className="rounded-md border bg-muted/20 p-3">
                   <p className="text-xs font-semibold uppercase tracking-wide text-primary">
                     Runtime Progress
@@ -741,7 +755,8 @@ export function WorkbenchMapInteractive({
 
               {!canEdit ? (
                 <div className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
-                  Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到 Settings 调整角色。
+                  Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到
+                  Settings 调整角色。
                 </div>
               ) : null}
             </CardContent>
@@ -781,7 +796,8 @@ export function WorkbenchMapInteractive({
                       <span
                         className="inline-block h-3 w-3 rounded-sm"
                         style={{
-                          backgroundColor: legendColorMap[layer.name] ?? "#6B7280",
+                          backgroundColor:
+                            legendColorMap[layer.name] ?? "#6B7280",
                           opacity: layer.opacity,
                         }}
                       />
@@ -855,9 +871,12 @@ export function WorkbenchMapInteractive({
                     <p className="mt-1">{pickedFeature.updatedAt}</p>
                   </div>
                   <div className="rounded-md border bg-background p-2 sm:col-span-2">
-                    <p className="font-medium text-foreground">Clicked Coordinate</p>
+                    <p className="font-medium text-foreground">
+                      Clicked Coordinate
+                    </p>
                     <p className="mt-1">
-                      Lng {pickedFeature.lng.toFixed(5)} · Lat {pickedFeature.lat.toFixed(5)}
+                      Lng {pickedFeature.lng.toFixed(5)} · Lat{" "}
+                      {pickedFeature.lat.toFixed(5)}
                     </p>
                   </div>
                 </div>
