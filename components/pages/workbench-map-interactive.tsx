@@ -96,7 +96,9 @@ export function WorkbenchMapInteractive({
   const [focusSignal, setFocusSignal] = useState(0);
   const [resetSignal, setResetSignal] = useState(0);
   const [activeLayerName, setActiveLayerName] = useState<string | null>(null);
-  const [pickedFeature, setPickedFeature] = useState<PickedFeature | null>(null);
+  const [pickedFeature, setPickedFeature] = useState<PickedFeature | null>(
+    null,
+  );
   const [collapsedGroups, setCollapsedGroups] = useState({
     inputs: false,
     results: false,
@@ -189,7 +191,8 @@ export function WorkbenchMapInteractive({
 
   const isCompatible = (expectedType: string, assetType: UploadAssetType) => {
     const normalizedExpected = expectedType.toLowerCase();
-    if (normalizedExpected.includes("vector")) return assetType === "Vector Polygon";
+    if (normalizedExpected.includes("vector"))
+      return assetType === "Vector Polygon";
     if (normalizedExpected.includes("raster")) return assetType === "Raster";
     if (
       normalizedExpected.includes("csv") ||
@@ -296,7 +299,8 @@ export function WorkbenchMapInteractive({
     setLayers((prev) => {
       const currentIndex = prev.findIndex((layer) => layer.name === layerName);
       if (currentIndex === -1) return prev;
-      const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+      const targetIndex =
+        direction === "up" ? currentIndex - 1 : currentIndex + 1;
       if (targetIndex < 0 || targetIndex >= prev.length) return prev;
       const next = [...prev];
       const [picked] = next.splice(currentIndex, 1);
@@ -408,7 +412,13 @@ export function WorkbenchMapInteractive({
             <div className="flex flex-wrap items-center gap-2">
               <CardTitle className="text-base">Current State</CardTitle>
               <Badge
-                variant={isFailed ? "destructive" : isCompleted ? "secondary" : "outline"}
+                variant={
+                  isFailed
+                    ? "destructive"
+                    : isCompleted
+                      ? "secondary"
+                      : "outline"
+                }
               >
                 {workbenchState}
               </Badge>
@@ -441,7 +451,8 @@ export function WorkbenchMapInteractive({
             <CardHeader>
               <CardTitle className="text-base">Inputs</CardTitle>
               <CardDescription>
-                Required Ready {requiredReadyCount}/{requiredTotal} · Missing {requiredMissingCount} · Invalid {invalidBindingCount}
+                Required Ready {requiredReadyCount}/{requiredTotal} · Missing{" "}
+                {requiredMissingCount} · Invalid {invalidBindingCount}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -534,9 +545,12 @@ export function WorkbenchMapInteractive({
             <CardContent className="space-y-3">
               {isInputFocusState ? (
                 <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-sm">
-                  <p className="font-semibold text-foreground">Input / Recovery Focus</p>
+                  <p className="font-semibold text-foreground">
+                    Input / Recovery Focus
+                  </p>
                   <p className="mt-1 text-muted-foreground">
-                    缺失输入 {requiredMissingCount} 项，异常绑定 {invalidBindingCount} 项。请先修复后恢复执行。
+                    缺失输入 {requiredMissingCount} 项，异常绑定{" "}
+                    {invalidBindingCount} 项。请先修复后恢复执行。
                   </p>
                   {contextTaskId ? (
                     <Link
@@ -599,7 +613,10 @@ export function WorkbenchMapInteractive({
                   <p className="mt-1 text-muted-foreground">
                     任务已完成，建议立即进入 Results 查看结果摘要与解释。
                   </p>
-                  <Link href={`/scenes/${sceneId}/results`} className="mt-3 inline-flex">
+                  <Link
+                    href={`/scenes/${sceneId}/results`}
+                    className="mt-3 inline-flex"
+                  >
                     <Button size="sm">View Results</Button>
                   </Link>
                 </div>
@@ -647,7 +664,8 @@ export function WorkbenchMapInteractive({
                       <span
                         className="inline-block h-3 w-3 rounded-sm"
                         style={{
-                          backgroundColor: legendColorMap[layer.name] ?? "#6B7280",
+                          backgroundColor:
+                            legendColorMap[layer.name] ?? "#6B7280",
                           opacity: layer.opacity,
                         }}
                       />
@@ -708,7 +726,9 @@ export function WorkbenchMapInteractive({
                         {groupedLayers.inputs.map((layer) =>
                           renderLayerRow(
                             layer,
-                            layers.findIndex((item) => item.name === layer.name),
+                            layers.findIndex(
+                              (item) => item.name === layer.name,
+                            ),
                             layers.length,
                           ),
                         )}
@@ -730,7 +750,9 @@ export function WorkbenchMapInteractive({
                         {groupedLayers.results.map((layer) =>
                           renderLayerRow(
                             layer,
-                            layers.findIndex((item) => item.name === layer.name),
+                            layers.findIndex(
+                              (item) => item.name === layer.name,
+                            ),
                             layers.length,
                           ),
                         )}
@@ -784,8 +806,12 @@ export function WorkbenchMapInteractive({
             <summary className="cursor-pointer list-none px-6 py-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-base font-semibold text-foreground">Object Inspector</p>
-                  <p className="text-sm text-muted-foreground">地图对象的结构化摘要</p>
+                  <p className="text-base font-semibold text-foreground">
+                    Object Inspector
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    地图对象的结构化摘要
+                  </p>
                 </div>
                 {pickedFeature ? (
                   <Badge variant="outline">{pickedFeature.layerName}</Badge>
@@ -814,9 +840,12 @@ export function WorkbenchMapInteractive({
                     <p className="mt-1">{pickedFeature.updatedAt}</p>
                   </div>
                   <div className="rounded-md border bg-background p-2 sm:col-span-2">
-                    <p className="font-medium text-foreground">Clicked Coordinate</p>
+                    <p className="font-medium text-foreground">
+                      Clicked Coordinate
+                    </p>
                     <p className="mt-1">
-                      Lng {pickedFeature.lng.toFixed(5)} · Lat {pickedFeature.lat.toFixed(5)}
+                      Lng {pickedFeature.lng.toFixed(5)} · Lat{" "}
+                      {pickedFeature.lat.toFixed(5)}
                     </p>
                   </div>
                 </div>

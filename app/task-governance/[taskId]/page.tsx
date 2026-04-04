@@ -67,7 +67,9 @@ export default async function TaskGovernancePage({
           </div>
           <CardDescription>
             {vm.sceneId} · 任务治理与审计摘要
-            {from ? ` · via ${from}${contextTaskId ? ` / task ${contextTaskId}` : ""}` : ""}
+            {from
+              ? ` · via ${from}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
+              : ""}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -159,7 +161,9 @@ export default async function TaskGovernancePage({
                   </Badge>
                 ) : null}
                 {vm.requiredActions.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">当前无必做动作</p>
+                  <p className="text-sm text-muted-foreground">
+                    当前无必做动作
+                  </p>
                 ) : (
                   <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
                     {vm.requiredActions.map((action) => (
@@ -313,7 +317,9 @@ export default async function TaskGovernancePage({
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
                   Audit Summary
                 </p>
-                <p className="text-sm text-muted-foreground">{vm.auditSummary}</p>
+                <p className="text-sm text-muted-foreground">
+                  {vm.auditSummary}
+                </p>
               </div>
             </CardContent>
           </Card>
