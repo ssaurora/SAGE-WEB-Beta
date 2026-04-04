@@ -52,9 +52,19 @@ export function SceneResultsPanel({
     <Card>
       <CardHeader>
         <CardTitle className="text-base">Result Packages</CardTitle>
-        <CardDescription>结果包、来源任务与解释可用性</CardDescription>
+        <CardDescription>先给结论，再查看结果证据。</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
+        <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+            Summary
+          </p>
+          <p className="mt-1">
+            当前共有 {items.length} 个结果包，筛选后显示 {filteredItems.length}{" "}
+            个。建议优先打开最新结果查看指标与解释。
+          </p>
+        </div>
+
         {initialTaskFilter ? (
           <div className="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
             当前由 {contextFrom ?? "external"} 带入任务上下文筛选：
@@ -94,8 +104,7 @@ export function SceneResultsPanel({
         </div>
 
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
-          条结果
+          当前显示 <span className="font-semibold">{filteredItems.length}</span> 条结果
         </p>
 
         {filteredItems.length === 0 ? (
@@ -113,23 +122,21 @@ export function SceneResultsPanel({
                     from {item.fromTaskId} · {item.generatedAt}
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <Link href={`/scenes/${sceneId}/results/${item.resultId}`}>
-                    <Badge variant="outline">Open Detail</Badge>
-                  </Link>
-                  <Badge variant={item.mapLayerReady ? "secondary" : "outline"}>
-                    {item.mapLayerReady ? "地图图层可用" : "地图图层未就绪"}
-                  </Badge>
-                  <Badge
-                    variant={item.explanationReady ? "secondary" : "outline"}
-                  >
-                    {item.explanationReady ? "解释可用" : "解释待生成"}
-                  </Badge>
-                </div>
+                <Link href={`/scenes/${sceneId}/results/${item.resultId}`}>
+                  <Badge variant="outline">Open Detail</Badge>
+                </Link>
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">
-                {item.summary}
-              </p>
+
+              <p className="mt-3 text-sm text-muted-foreground">{item.summary}</p>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Badge variant={item.mapLayerReady ? "secondary" : "outline"}>
+                  {item.mapLayerReady ? "地图图层可用" : "地图图层未就绪"}
+                </Badge>
+                <Badge variant={item.explanationReady ? "secondary" : "outline"}>
+                  {item.explanationReady ? "解释可用" : "解释待生成"}
+                </Badge>
+              </div>
             </div>
           ))
         )}

@@ -71,6 +71,22 @@ export default async function SceneResultDetailPage({
         </CardHeader>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Decision Zone</CardTitle>
+          <CardDescription>先看结论，再进入指标、映射与下载证据。</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="rounded-md border bg-muted/20 p-3 text-sm">
+            <p className="text-xs text-muted-foreground">Result Summary</p>
+            <p className="mt-1 font-medium">{vm.summary}</p>
+          </div>
+          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+            {vm.explanation}
+          </div>
+        </CardContent>
+      </Card>
+
       {from ? (
         <Card>
           <CardHeader>
@@ -85,14 +101,9 @@ export default async function SceneResultDetailPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Result Summary</CardTitle>
+          <CardTitle className="text-base">Evidence Zone</CardTitle>
+          <CardDescription>指标、输入输出映射与可下载工件。</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <p className="text-sm text-muted-foreground">{vm.summary}</p>
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            {vm.explanation}
-          </div>
-        </CardContent>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-2">
