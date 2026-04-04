@@ -166,7 +166,9 @@ export default async function TaskGovernancePage({
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Governance Panel</CardTitle>
-            <CardDescription>required actions / suggested fixes</CardDescription>
+            <CardDescription>
+              required actions / suggested fixes
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -226,7 +228,9 @@ export default async function TaskGovernancePage({
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Missing Required Inputs</CardTitle>
+              <CardTitle className="text-base">
+                Missing Required Inputs
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {vm.missingRequiredInputs.length === 0 ? (
