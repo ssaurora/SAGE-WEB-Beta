@@ -10,13 +10,12 @@ export const primaryNav: NavItem[] = [
     href: "/scenes",
     description: "场景入口与工作容器",
   },
-  { label: "Tasks", href: "/tasks", description: "任务列表与筛选" },
   { label: "Assets", href: "/assets", description: "输入资产与绑定素材" },
-  { label: "Reports", href: "/reports", description: "结果消费与解释" },
+  { label: "Results", href: "/reports", description: "结果消费与解释" },
   { label: "Settings", href: "/settings", description: "角色与模式设置" },
 ];
 
-export const sceneNav = (sceneId: string): NavItem[] => [
+export const scenePrimaryNav = (sceneId: string): NavItem[] => [
   {
     label: "Overview",
     href: `/scenes/${sceneId}/overview`,
@@ -27,6 +26,14 @@ export const sceneNav = (sceneId: string): NavItem[] => [
     href: `/scenes/${sceneId}/workbench`,
     description: "分析主工作台",
   },
+  {
+    label: "Results",
+    href: `/scenes/${sceneId}/results`,
+    description: "结果消费与判断",
+  },
+];
+
+export const sceneSecondaryNav = (sceneId: string): NavItem[] => [
   {
     label: "Assets",
     href: `/scenes/${sceneId}/assets`,
@@ -43,4 +50,9 @@ export const sceneNav = (sceneId: string): NavItem[] => [
     description: "场景结果",
   },
   { label: "Audit", href: `/scenes/${sceneId}/audit`, description: "审计视图" },
+];
+
+export const sceneNav = (sceneId: string): NavItem[] => [
+  ...scenePrimaryNav(sceneId),
+  ...sceneSecondaryNav(sceneId),
 ];

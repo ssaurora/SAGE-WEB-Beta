@@ -17,7 +17,9 @@ import {
 } from "@/components/pages/maplibre-canvas";
 import { InputsPanelInteractive } from "@/components/pages/inputs-panel-interactive";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
+import { TaskContextBar } from "@/components/pages/task-context-bar";
 import type { WorkbenchPageViewModel } from "@/lib/contracts/scene";
+import { getTaskStateLabel, getTaskStateVariant } from "@/lib/status/task-state";
 import type {
   OptionalInputItem,
   RequiredInputItem,
@@ -843,6 +845,23 @@ export function WorkbenchMapInteractive({
 
   return (
     <div className="space-y-4">
+      <TaskContextBar
+        sceneName={vm.header.sceneName}
+        sceneHref={`/scenes/${sceneId}/overview`}
+        taskId={contextTaskId}
+        taskHref={
+          contextTaskId
+            ? `/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`
+            : undefined
+        }
+        stateLabel={getTaskStateLabel(workbenchState)}
+        stateVariant={getTaskStateVariant(workbenchState)}
+        currentView="Workbench"
+        roleLabel={role}
+        modeLabel={canEdit ? "Editable" : "Read Only"}
+        summary={layoutLabel}
+      />
+
       <Card>
         <CardHeader className="pb-3">
           <div className="space-y-2">

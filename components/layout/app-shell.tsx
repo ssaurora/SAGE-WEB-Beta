@@ -1,27 +1,27 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAppRole } from "@/components/pages/app-role";
 import { primaryNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 import { Package } from "lucide-react";
 
-function getPageTitle(pathname: string): string {
-  if (pathname.includes("/workbench")) return "Scene Workbench";
-  if (pathname.includes("/overview")) return "Scene Overview";
-  if (pathname.includes("/task-runs")) return "Task Runs";
-  if (pathname.includes("/results")) return "Results";
-  if (pathname.includes("/audit")) return "Audit";
-  if (pathname.startsWith("/tasks")) return "Tasks";
+function getSectionLabel(pathname: string): string {
+  if (pathname.startsWith("/scenes/")) return "Scene Workspace";
   if (pathname.startsWith("/task-governance")) return "Task Governance";
   if (pathname.startsWith("/assets")) return "Assets";
-  if (pathname.startsWith("/reports")) return "Reports";
+  if (pathname.startsWith("/reports")) return "Results";
   if (pathname.startsWith("/settings")) return "Settings";
   return "Scenes";
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { role } = useAppRole();
+  const modeLabel = role === "Viewer" ? "Read Only" : "Editable";
+  const sectionLabel = getSectionLabel(pathname);
 
   return (
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[240px_1fr]">
@@ -41,6 +41,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
+                title={item.description}
                 className={cn(
                   "rounded-md px-3 py-2 transition-colors",
                   "text-sm text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -58,13 +59,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <header className="flex items-center justify-between border-b bg-background/95 px-6 py-3 backdrop-blur lg:px-8">
           <div className="flex items-center gap-3">
             <Package className="h-5 w-5 text-muted-foreground" />
-            <span className="text-sm font-semibold text-foreground">
-              SAGE-WEB Beta
-            </span>
+            <div>
+              <span className="text-sm font-semibold text-foreground">
+                SAGE-WEB Beta
+              </span>
+              <p className="text-xs text-muted-foreground">
+                Scene-first analysis workspace
+              </p>
+            </div>
           </div>
-          <span className="text-xs text-muted-foreground">
-            {getPageTitle(pathname)}
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="outline">{sectionLabel}</Badge>
+            <Badge variant="secondary">{role}</Badge>
+            <Badge variant={role === "Viewer" ? "outline" : "default"}>
+              {modeLabel}
+            </Badge>
+          </div>
         </header>
 
         <main className="p-6 lg:p-8">{children}</main>

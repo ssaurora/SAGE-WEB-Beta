@@ -15,6 +15,7 @@ import Link from "next/link";
 import { GovernanceRecoveryPanel } from "@/components/pages/governance-recovery-panel";
 import { GovernanceManifestTab } from "@/components/pages/governance-manifest-tab";
 import { GovernanceEvidenceTabs } from "@/components/pages/governance-evidence-tabs";
+import { TaskContextBar } from "@/components/pages/task-context-bar";
 
 export default async function TaskGovernancePage({
   params,
@@ -57,6 +58,17 @@ export default async function TaskGovernancePage({
 
   return (
     <div className="space-y-4">
+      <TaskContextBar
+        sceneName={vm.sceneId}
+        sceneHref={`/scenes/${vm.sceneId}/overview`}
+        taskId={vm.taskId}
+        taskHref={`/task-governance/${vm.taskId}?from=task-governance&taskId=${vm.taskId}`}
+        stateLabel={getTaskStateLabel(vm.currentState)}
+        stateVariant={getTaskStateVariant(vm.currentState)}
+        currentView="Governance"
+        summary={nextActionText}
+      />
+
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center gap-2">
@@ -133,16 +145,6 @@ export default async function TaskGovernancePage({
             suggestedFix={vm.suggestedFixes[0]}
           />
         </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>
-            证据后置：Blocking / Manifest / Artifacts / Timeline / Audit
-            分层阅读。
-          </CardDescription>
-        </CardHeader>
       </Card>
 
       <GovernanceEvidenceTabs

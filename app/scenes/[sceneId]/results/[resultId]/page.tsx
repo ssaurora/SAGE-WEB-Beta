@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getSceneResultDetailViewModel } from "@/lib/api/scene";
+import { TaskContextBar } from "@/components/pages/task-context-bar";
 
 function trendLabel(trend: "up" | "down" | "flat") {
   if (trend === "up") return "↑ 上升";
@@ -35,6 +36,15 @@ export default async function SceneResultDetailPage({
 
   return (
     <div className="space-y-4">
+      <TaskContextBar
+        sceneName={vm.sceneId}
+        sceneHref={`/scenes/${vm.sceneId}/overview`}
+        taskId={taskId ?? vm.fromTaskId}
+        taskHref={`/task-governance/${vm.fromTaskId}?from=result-detail&taskId=${vm.fromTaskId}`}
+        currentView="Result Detail"
+        summary={`From task ${vm.fromTaskId}`}
+      />
+
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -100,13 +110,6 @@ export default async function SceneResultDetailPage({
           </CardHeader>
         </Card>
       ) : null}
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>指标、输入输出映射与可下载工件。</CardDescription>
-        </CardHeader>
-      </Card>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>

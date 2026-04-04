@@ -5,8 +5,8 @@ import { toReportsListViewModel } from "@/lib/adapters/report";
 import type { ReportListViewModel } from "@/lib/contracts/report";
 
 export const metadata: Metadata = {
-  title: "Reports",
-  description: "Browse and download analysis reports",
+  title: "Results",
+  description: "Browse and download analysis results",
 };
 
 async function getReportsViewModel(): Promise<ReportListViewModel> {
@@ -20,9 +20,9 @@ export default async function ReportsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Reports</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Results</h1>
         <p className="mt-2 text-muted-foreground">
-          Browse, search, and download analysis reports from your projects.
+          Browse, search, and download analysis results from your projects.
         </p>
       </div>
 

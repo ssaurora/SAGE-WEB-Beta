@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneOverviewMiniMap } from "@/components/pages/scene-overview-mini-map";
+import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { getSceneOverviewViewModel } from "@/lib/api/scene";
 import { getTaskStateVariant } from "@/lib/status/task-state";
 
@@ -65,6 +66,17 @@ export default async function SceneOverviewPage({
 
   return (
     <div className="space-y-4">
+      <TaskContextBar
+        sceneName={vm.sceneName}
+        sceneHref={`/scenes/${sceneId}/overview`}
+        taskId={vm.latestTask.id}
+        taskHref={`/task-governance/${vm.latestTask.id}?from=overview&taskId=${vm.latestTask.id}`}
+        stateLabel={vm.latestTask.state}
+        stateVariant={getTaskStateVariant(vm.latestTask.state)}
+        currentView="Overview"
+        summary={primaryAction.label}
+      />
+
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -129,15 +141,6 @@ export default async function SceneOverviewPage({
             / Results。
           </div>
         </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Context Evidence</CardTitle>
-          <CardDescription>
-            地图预览与活动记录作为辅助证据，不与主动作竞争首屏焦点。
-          </CardDescription>
-        </CardHeader>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneResultsPanel } from "@/components/pages/scene-results-panel";
+import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { getSceneResultsViewModel } from "@/lib/api/scene";
 import {
   getTaskStateLabel,
@@ -93,6 +94,17 @@ export default async function SceneResultsPage({
 
   return (
     <div className="space-y-4">
+      <TaskContextBar
+        sceneName={sceneId}
+        sceneHref={`/scenes/${sceneId}/overview`}
+        taskId={taskId}
+        taskHref={taskId ? `/task-governance/${taskId}?from=results&taskId=${taskId}` : undefined}
+        stateLabel={getTaskStateLabel(vm.latestState)}
+        stateVariant={getTaskStateVariant(vm.latestState)}
+        currentView="Results"
+        summary={primaryDecisionAction.label}
+      />
+
       <Card>
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -159,15 +171,6 @@ export default async function SceneResultsPage({
           </CardHeader>
         </Card>
       ) : null}
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>
-            结果包、来源任务、解释和图层就绪度。
-          </CardDescription>
-        </CardHeader>
-      </Card>
 
       <SceneResultsPanel
         sceneId={vm.sceneId}

@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { sceneNav } from "@/config/navigation";
+import { scenePrimaryNav, sceneSecondaryNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
-import { Card, CardContent } from "@/components/ui/card";
 
 export function SceneShell({
   sceneId,
@@ -14,47 +13,30 @@ export function SceneShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const nav = sceneNav(sceneId);
+  const mainNav = scenePrimaryNav(sceneId);
+  const supportNav = sceneSecondaryNav(sceneId);
 
   return (
     <section className="space-y-4">
-      <div className="flex flex-col gap-4 rounded-lg border bg-card p-6 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-            Scene Detail
+      <div className="rounded-lg border bg-card p-6">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+              Scene Workspace
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold">{sceneId}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              主链路：Overview → Workbench → Results；支撑视图：Assets / Task Runs / Audit。
+            </p>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            场景级容器先行，任务上下文由页面内部上下文条承担。
           </p>
-          <h2 className="mt-2 text-2xl font-semibold">
-            {sceneId} · Watershed analysis
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            场景级容器先行，为后续 Workbench、Tasks、Results 提供统一承载。
-          </p>
-        </div>
-
-        <div className="grid gap-3 sm:grid-cols-3">
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">Current State</p>
-              <p className="mt-1 text-sm font-semibold">Ready to Run</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">Required Inputs</p>
-              <p className="mt-1 text-sm font-semibold">2 missing</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">Latest Task</p>
-              <p className="mt-1 text-sm font-semibold">Running</p>
-            </CardContent>
-          </Card>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {nav.map((item) => {
+        {mainNav.map((item) => {
           const active =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
@@ -63,6 +45,26 @@ export function SceneShell({
               href={item.href}
               className={cn(
                 "rounded-full border px-4 py-2 text-sm text-muted-foreground transition",
+                active &&
+                  "border-primary/40 bg-primary/10 font-semibold text-primary",
+              )}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {supportNav.map((item) => {
+          const active =
+            pathname === item.href || pathname.startsWith(`${item.href}/`);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "rounded-full border px-3 py-1.5 text-xs text-muted-foreground transition",
                 active &&
                   "border-primary/40 bg-primary/10 font-semibold text-primary",
               )}
