@@ -50,6 +50,13 @@ export default async function AssetDetailPage({
     );
   }
 
+  const currentIssueMessage =
+    vm.bindStatus === "Missing"
+      ? "当前资产缺失，建议立即替换来源或重新上传。"
+      : vm.bindStatus === "Unbound"
+        ? "当前资产可用但未绑定，建议按最近任务上下文完成绑定。"
+        : "当前资产已绑定且可用，可继续查看关系链路或返回任务执行。";
+
   return (
     <div className="space-y-4">
       <Card>
@@ -58,7 +65,7 @@ export default async function AssetDetailPage({
             <div>
               <CardTitle>{vm.name}</CardTitle>
               <CardDescription>
-                {vm.assetId} · {vm.sceneId} · 上传于 {vm.uploadedAt}
+                {vm.assetId} · {vm.sceneId} · 资产元数据与关系详情 · 上传于 {vm.uploadedAt}
               </CardDescription>
             </div>
             <div className="flex gap-2">
@@ -102,23 +109,15 @@ export default async function AssetDetailPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>
-            先判断资产状态，再查看元数据与关联证据。
-          </CardDescription>
+          <CardTitle className="text-base">Current Asset Status</CardTitle>
+          <CardDescription>先判断当前问题，再进入元数据与关系详情</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
             <p className="text-xs font-semibold uppercase tracking-wide text-primary">
               Current Decision
             </p>
-            <p className="mt-1">
-              {vm.bindStatus === "Missing"
-                ? "该资产缺失，建议优先替换或重新上传。"
-                : vm.bindStatus === "Unbound"
-                  ? "该资产可用但未绑定，建议按任务上下文完成绑定。"
-                  : "该资产已绑定，可继续进入治理或结果链路。"}
-            </p>
+            <p className="mt-1">{currentIssueMessage}</p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -149,8 +148,8 @@ export default async function AssetDetailPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>元数据、关联关系、标签与审计摘要。</CardDescription>
+          <CardTitle className="text-base">Asset Evidence</CardTitle>
+          <CardDescription>元数据、关联关系、标签与审计摘要</CardDescription>
         </CardHeader>
       </Card>
 

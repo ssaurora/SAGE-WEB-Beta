@@ -20,9 +20,18 @@ export default async function AssetsPage({
     const boundCount = assets.filter(
       (item) => item.bindStatus === "Bound",
     ).length;
+    const unboundCount = assets.filter(
+      (item) => item.bindStatus === "Unbound",
+    ).length;
     const missingCount = assets.filter(
       (item) => item.bindStatus === "Missing",
     ).length;
+    const statusMessage =
+      missingCount > 0
+        ? `当前缺失 ${missingCount} 个关键资产，建议优先修复来源或重新上传。`
+        : unboundCount > 0
+          ? `当前有 ${unboundCount} 个未绑定资产，建议按任务上下文完成绑定。`
+          : "当前无阻塞资产，可返回 Workbench 或 Governance 继续任务链路。";
 
     return (
       <div className="space-y-4">
@@ -30,7 +39,7 @@ export default async function AssetsPage({
           <CardHeader>
             <CardTitle>Assets</CardTitle>
             <CardDescription>
-              全局资产清册、绑定状态与跨场景复用视图
+              全局资产池：跨场景资产清册与治理入口
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3 pt-0 sm:grid-cols-3">
@@ -51,23 +60,22 @@ export default async function AssetsPage({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Decision Zone</CardTitle>
-            <CardDescription>
-              优先处理缺失资产，再处理未绑定资产。
-            </CardDescription>
+            <CardTitle className="text-base">Current Asset Status</CardTitle>
+            <CardDescription>基于当前资产状态的实时判断</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-              当前建议：先定位 Missing
-              资产并修复来源，再根据任务上下文完成绑定。
+              {statusMessage}
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Evidence Zone</CardTitle>
-            <CardDescription>资产明细、筛选与绑定关系证据。</CardDescription>
+            <CardTitle className="text-base">Asset Inventory</CardTitle>
+            <CardDescription>
+              资产明细、筛选与绑定关系（{sceneId ? `scene ${sceneId}` : "all scenes"}）。
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <AssetsPanel

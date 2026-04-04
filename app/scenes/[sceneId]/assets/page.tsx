@@ -77,13 +77,26 @@ export default async function SceneAssetsPage({
     );
   }
 
+  const missingCount = vm.items.filter(
+    (item) => item.bindStatus === "Missing",
+  ).length;
+  const unboundCount = vm.items.filter(
+    (item) => item.bindStatus === "Unbound",
+  ).length;
+  const currentBlockingMessage =
+    missingCount > 0
+      ? `当前缺失 ${missingCount} 个关键资产，会直接阻塞本场景任务。`
+      : unboundCount > 0
+        ? `当前有 ${unboundCount} 个未绑定资产，建议先完成绑定再继续运行。`
+        : "当前无阻塞资产，可返回 Workbench 继续执行。";
+
   return (
     <div className="space-y-4">
       <Card>
         <CardHeader>
           <CardTitle>Scene Assets</CardTitle>
           <CardDescription>
-            {vm.sceneId} · 场景资产管理与绑定状态
+            {vm.sceneId} · 场景资源清单与阻塞资产入口
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-0">
@@ -98,10 +111,8 @@ export default async function SceneAssetsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>
-            先看本场景资产是否阻塞任务，再进入资产证据详情。
-          </CardDescription>
+          <CardTitle className="text-base">Current Scene Asset Status</CardTitle>
+          <CardDescription>先判断是否存在阻塞，再处理资产清单</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
@@ -110,22 +121,18 @@ export default async function SceneAssetsPage({
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
             <p className="text-xs text-muted-foreground">Missing</p>
-            <p className="mt-1 font-semibold">
-              {vm.items.filter((item) => item.bindStatus === "Missing").length}
-            </p>
+            <p className="mt-1 font-semibold">{missingCount}</p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-            优先修复缺失资产，再处理未绑定项。
+            {currentBlockingMessage}
           </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>
-            资产清册、类型、绑定状态与可见性证据。
-          </CardDescription>
+          <CardTitle className="text-base">Asset List</CardTitle>
+          <CardDescription>资产清册、类型、绑定状态与可见性</CardDescription>
         </CardHeader>
       </Card>
 
