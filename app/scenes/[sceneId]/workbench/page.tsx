@@ -55,14 +55,12 @@ export default async function SceneWorkbenchPage({
         </CardHeader>
       </Card>
 
-      <div className="grid gap-4 lg:grid-cols-[320px_1fr_340px]">
-        <WorkbenchMapInteractive
-          vm={vm}
-          sceneId={sceneId}
-          contextFrom={from}
-          contextTaskId={taskId}
-        />
-      </div>
+      <WorkbenchMapInteractive
+        vm={vm}
+        sceneId={sceneId}
+        contextFrom={from}
+        contextTaskId={taskId}
+      />
     </div>
   );
 }

@@ -127,6 +127,12 @@ export function WorkbenchMapInteractive({
   const requiredTotal = requiredInputs.length;
   const canRunByInputs =
     requiredReadyCount === requiredTotal && requiredTotal > 0;
+  const requiredMissingCount = requiredInputs.filter(
+    (item) => item.status === "Missing",
+  ).length;
+  const invalidBindingCount =
+    requiredInputs.filter((item) => item.status === "Invalid").length +
+    optionalInputs.filter((item) => item.status === "Invalid").length;
   const workbenchState = vm.header.currentState;
 
   const isQueued = workbenchState === "Queued";
@@ -500,376 +506,395 @@ export function WorkbenchMapInteractive({
   };
 
   return (
-    <>
-      {contextFrom || contextTaskId ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Navigation Context</CardTitle>
-            <CardDescription>
-              当前工作台由 {contextFrom ?? "external"} 进入
-              {contextTaskId ? ` · task ${contextTaskId}` : ""}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-wrap gap-2">
-            {contextTaskId ? (
+    <div className="space-y-4">
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <CardTitle className="text-base">Current State</CardTitle>
+                <Badge variant={statusBadgeVariant(isFailed ? "Invalid" : isCompleted ? "Bound" : "Unbound")}>
+                  {workbenchState}
+                </Badge>
+                <Badge variant="outline">Role: {role}</Badge>
+              </div>
+              <CardDescription>{stateHint}</CardDescription>
+              <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                <span>Required Ready {requiredReadyCount}/{requiredTotal}</span>
+                <span>· Missing {requiredMissingCount}</span>
+                <span>· Invalid {invalidBindingCount}</span>
+                <span>· Visible Layers {visibleCount}</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {contextTaskId ? (
+                <Link
+                  href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
+                >
+                  <Button size="sm" variant="outline">
+                    Open Governance
+                  </Button>
+                </Link>
+              ) : null}
               <Link
-                href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
+                href={`/scenes/${sceneId}/results${contextTaskId ? `?taskId=${contextTaskId}&from=workbench` : ""}`}
               >
-                <Button size="sm" variant="outline">
-                  Open Task Governance
+                <Button size="sm" variant="secondary">
+                  Open Results
                 </Button>
               </Link>
-            ) : null}
-            <Link
-              href={`/scenes/${sceneId}/results${contextTaskId ? `?taskId=${contextTaskId}&from=workbench` : ""}`}
-            >
-              <Button size="sm" variant="secondary">
-                Open Scene Results
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      ) : null}
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">
-            Workbench Permission Scope
-          </CardTitle>
-          <CardDescription>
-            当前角色：{role} · {canEdit ? "可编辑" : "只读"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {!canEdit ? (
-            <div className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
-              Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到 Settings
-              调整角色。
-            </div>
-          ) : null}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Inputs</CardTitle>
-          <CardDescription>
-            输入绑定管理 · Required Ready {requiredReadyCount}/{requiredTotal}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <InputsPanelInteractive
-            requiredInputs={requiredInputs}
-            optionalInputs={optionalInputs}
-            uploadedAssets={uploadedUnboundAssets}
-            isReadOnly={isInputReadOnly}
-            onRequiredInputsChange={(updated) => {
-              // Handle required inputs change
-              updated.forEach((item) => {
-                if (item.boundAssetId) {
-                  applyBinding(
-                    "required",
-                    item.name,
-                    item.expectedType,
-                    item.boundAssetId,
-                  );
-                }
-              });
-            }}
-            onOptionalInputsChange={(updated) => {
-              // Handle optional inputs change
-              updated.forEach((item) => {
-                if (item.boundAssetId) {
-                  applyBinding(
-                    "optional",
-                    item.name,
-                    item.expectedType,
-                    item.boundAssetId,
-                  );
-                }
-              });
-            }}
-            onUploadedAssetsChange={(assets) => {
-              // Handle uploaded assets change
-              assets.forEach((asset) => {
-                uploadAsset();
-              });
-            }}
-          />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Layers</CardTitle>
-          <CardDescription>图层可见性与交互管理</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="mb-2 flex items-center justify-between gap-2">
-            <Badge variant="outline">{visibleCount} visible</Badge>
-            <Button size="sm" variant="outline" onClick={resetMapView}>
-              Reset View
-            </Button>
-          </div>
-
-          <div className="space-y-3">
-            <div className="rounded-md border p-2">
-              <button
-                type="button"
-                onClick={() => toggleGroupCollapse("inputs")}
-                className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-              >
-                <span>Input Layers</span>
-                <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
-              </button>
-              {!collapsedGroups.inputs ? (
-                <div className="mt-2 space-y-2">
-                  {groupedLayers.inputs.map((layer) =>
-                    renderLayerRow(
-                      layer,
-                      layers.findIndex((item) => item.name === layer.name),
-                      layers.length,
-                    ),
-                  )}
-                </div>
-              ) : null}
-            </div>
-
-            <div className="rounded-md border p-2">
-              <button
-                type="button"
-                onClick={() => toggleGroupCollapse("results")}
-                className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-              >
-                <span>Result Layers</span>
-                <span>{collapsedGroups.results ? "展开" : "收起"}</span>
-              </button>
-              {!collapsedGroups.results ? (
-                <div className="mt-2 space-y-2">
-                  {groupedLayers.results.map((layer) =>
-                    renderLayerRow(
-                      layer,
-                      layers.findIndex((item) => item.name === layer.name),
-                      layers.length,
-                    ),
-                  )}
-                </div>
-              ) : null}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <div className="flex flex-wrap items-center gap-2">
-            <CardTitle className="text-base">Map Canvas</CardTitle>
-            {activeLayerName ? (
-              <Badge variant="outline">Active: {activeLayerName}</Badge>
-            ) : null}
-          </div>
-          <CardDescription>GIS-first 主画布（MapLibre）</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <MapLibreCanvas
-            layers={layers}
-            focusLayerName={focusLayerName}
-            focusSignal={focusSignal}
-            resetSignal={resetSignal}
-            activeLayerName={activeLayerName}
-            onLayerPick={setActiveLayerName}
-            onFeaturePick={setPickedFeature}
-          />
-
-          <div className="mt-3 rounded-md border bg-muted/20 p-3">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-              Legend
-            </p>
-            <div className="grid gap-2 sm:grid-cols-3">
-              {layers.map((layer) => (
-                <div
-                  key={`legend-${layer.name}`}
-                  className="flex items-center gap-2 rounded-md border bg-background px-2 py-1 text-xs"
+              {isCompleted ? (
+                <Link href={`/scenes/${sceneId}/results`}>
+                  <Button size="sm">{primaryActionLabel}</Button>
+                </Link>
+              ) : (
+                <Button
+                  size="sm"
+                  disabled={
+                    !canEdit || (!canRunAction && !(isFailed || isActionRequired))
+                  }
                 >
-                  <span
-                    className="inline-block h-3 w-3 rounded-sm"
-                    style={{
-                      backgroundColor: legendColorMap[layer.name] ?? "#6B7280",
-                      opacity: layer.opacity,
-                    }}
-                  />
-                  <span className="truncate">{layer.name}</span>
-                </div>
-              ))}
+                  {primaryActionLabel}
+                </Button>
+              )}
             </div>
           </div>
-
-          <div className="mt-3 rounded-md border bg-muted/20 p-3">
-            <div className="mb-2 flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Object Inspector
-              </p>
-              {pickedFeature ? (
-                <Badge variant="outline">{pickedFeature.layerName}</Badge>
-              ) : null}
-            </div>
-
-            {pickedFeature ? (
-              <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
-                <div className="rounded-md border bg-background p-2">
-                  <p className="font-medium text-foreground">Object Name</p>
-                  <p className="mt-1">{pickedFeature.objectName}</p>
-                </div>
-                <div className="rounded-md border bg-background p-2">
-                  <p className="font-medium text-foreground">Object Type</p>
-                  <p className="mt-1">{pickedFeature.objectType}</p>
-                </div>
-                <div className="rounded-md border bg-background p-2">
-                  <p className="font-medium text-foreground">Status</p>
-                  <p className="mt-1">{pickedFeature.status}</p>
-                </div>
-                <div className="rounded-md border bg-background p-2">
-                  <p className="font-medium text-foreground">Updated At</p>
-                  <p className="mt-1">{pickedFeature.updatedAt}</p>
-                </div>
-                <div className="rounded-md border bg-background p-2 sm:col-span-2">
-                  <p className="font-medium text-foreground">
-                    Clicked Coordinate
-                  </p>
-                  <p className="mt-1">
-                    Lng {pickedFeature.lng.toFixed(5)} · Lat{" "}
-                    {pickedFeature.lat.toFixed(5)}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <p className="text-xs text-muted-foreground">
-                点击地图中的任意图层对象后，这里会展示结构化属性摘要。
-              </p>
-            )}
-          </div>
-        </CardContent>
+        </CardHeader>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Analysis / Task / Context</CardTitle>
-          <CardDescription>结构化事实优先于聊天流</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {pickedFeature ? (
-            <div className="rounded-md border bg-accent/40 p-3 text-sm">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Selected Object Summary
-              </p>
-              <p className="mt-2 font-medium">{pickedFeature.objectName}</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {pickedFeature.objectType} · {pickedFeature.status} ·{" "}
-                {pickedFeature.layerName}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {pickedFeature.taskId ? (
-                  <Link
-                    href={`/task-governance/${pickedFeature.taskId}?from=workbench&taskId=${pickedFeature.taskId}`}
-                    className="inline-block"
-                  >
-                    <Button size="sm" variant="outline">
-                      Open Task Governance
-                    </Button>
-                  </Link>
-                ) : null}
-                {pickedFeature.resultId ? (
-                  <Link
-                    href={`/scenes/${sceneId}/results/${pickedFeature.resultId}?from=workbench&taskId=${pickedFeature.taskId ?? ""}`}
-                    className="inline-block"
-                  >
-                    <Button size="sm" variant="secondary">
-                      Open Result Detail
-                    </Button>
-                  </Link>
-                ) : null}
-              </div>
-            </div>
+      <div className="grid gap-4 xl:grid-cols-[320px_1fr_340px]">
+        <div className="space-y-4">
+          {contextFrom || contextTaskId ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Navigation Context</CardTitle>
+                <CardDescription>
+                  当前工作台由 {contextFrom ?? "external"} 进入
+                  {contextTaskId ? ` · task ${contextTaskId}` : ""}
+                </CardDescription>
+              </CardHeader>
+            </Card>
           ) : null}
 
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-              Suggested Next Steps
-            </p>
-            <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-              {vm.analysisPanel.suggestedNextSteps.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Inputs</CardTitle>
+              <CardDescription>
+                输入绑定管理 · Required Ready {requiredReadyCount}/{requiredTotal}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <InputsPanelInteractive
+                requiredInputs={requiredInputs}
+                optionalInputs={optionalInputs}
+                uploadedAssets={uploadedUnboundAssets}
+                isReadOnly={isInputReadOnly}
+                onRequiredInputsChange={(updated) => {
+                  updated.forEach((item) => {
+                    if (item.boundAssetId) {
+                      applyBinding(
+                        "required",
+                        item.name,
+                        item.expectedType,
+                        item.boundAssetId,
+                      );
+                    }
+                  });
+                }}
+                onOptionalInputsChange={(updated) => {
+                  updated.forEach((item) => {
+                    if (item.boundAssetId) {
+                      applyBinding(
+                        "optional",
+                        item.name,
+                        item.expectedType,
+                        item.boundAssetId,
+                      );
+                    }
+                  });
+                }}
+                onUploadedAssetsChange={(assets) => {
+                  assets.forEach(() => {
+                    uploadAsset();
+                  });
+                }}
+              />
+            </CardContent>
+          </Card>
 
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            {vm.analysisPanel.contextSummary}
-          </div>
-
-          <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            {vm.taskPanel.lifecycleSummary}
-          </div>
-
-          {(isUnderstanding ||
-            isQueued ||
-            isRunning ||
-            isProcessingResults) && (
-            <div className="rounded-md border bg-muted/20 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Runtime Progress
-              </p>
-              <div className="mt-2 h-2 w-full rounded-full bg-muted">
-                <div
-                  className="h-2 rounded-full bg-primary transition-all duration-500"
-                  style={{ width: `${runtimeProgressPercent}%` }}
-                />
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Layers</CardTitle>
+              <CardDescription>图层可见性与交互管理</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <Badge variant="outline">{visibleCount} visible</Badge>
+                <Button size="sm" variant="outline" onClick={resetMapView}>
+                  Reset View
+                </Button>
               </div>
-              <div className="mt-2 grid grid-cols-4 gap-2 text-[11px]">
-                {["Understanding", "Queued", "Running", "Processing"].map(
-                  (stage, index) => (
-                    <span
-                      key={stage}
-                      className={
-                        index <= runtimeStageIndex
-                          ? "font-semibold text-foreground"
-                          : "text-muted-foreground"
-                      }
+
+              <div className="space-y-3">
+                <div className="rounded-md border p-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleGroupCollapse("inputs")}
+                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                  >
+                    <span>Input Layers</span>
+                    <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
+                  </button>
+                  {!collapsedGroups.inputs ? (
+                    <div className="mt-2 space-y-2">
+                      {groupedLayers.inputs.map((layer) =>
+                        renderLayerRow(
+                          layer,
+                          layers.findIndex((item) => item.name === layer.name),
+                          layers.length,
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="rounded-md border p-2">
+                  <button
+                    type="button"
+                    onClick={() => toggleGroupCollapse("results")}
+                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                  >
+                    <span>Result Layers</span>
+                    <span>{collapsedGroups.results ? "展开" : "收起"}</span>
+                  </button>
+                  {!collapsedGroups.results ? (
+                    <div className="mt-2 space-y-2">
+                      {groupedLayers.results.map((layer) =>
+                        renderLayerRow(
+                          layer,
+                          layers.findIndex((item) => item.name === layer.name),
+                          layers.length,
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">State Focus</CardTitle>
+              <CardDescription>当前阶段的首要决策与动作</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {(isWaitingInput || isActionRequired || isFailed) && (
+                <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-sm">
+                  <p className="font-semibold text-foreground">Input / Recovery Focus</p>
+                  <p className="mt-1 text-muted-foreground">
+                    缺失输入 {requiredMissingCount} 项，异常绑定 {invalidBindingCount} 项。请先修复后恢复执行。
+                  </p>
+                </div>
+              )}
+
+              {(isUnderstanding || isQueued || isRunning || isProcessingResults) && (
+                <div className="rounded-md border bg-muted/20 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+                    Runtime Progress
+                  </p>
+                  <div className="mt-2 h-2 w-full rounded-full bg-muted">
+                    <div
+                      className="h-2 rounded-full bg-primary transition-all duration-500"
+                      style={{ width: `${runtimeProgressPercent}%` }}
+                    />
+                  </div>
+                  <div className="mt-2 grid grid-cols-4 gap-2 text-[11px]">
+                    {["Understanding", "Queued", "Running", "Processing"].map(
+                      (stage, index) => (
+                        <span
+                          key={stage}
+                          className={
+                            index <= runtimeStageIndex
+                              ? "font-semibold text-foreground"
+                              : "text-muted-foreground"
+                          }
+                        >
+                          {stage}
+                        </span>
+                      ),
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {isCompleted && (
+                <div className="rounded-md border border-emerald-500/40 bg-emerald-500/5 p-3 text-sm">
+                  <p className="font-semibold text-foreground">Result Ready</p>
+                  <p className="mt-1 text-muted-foreground">
+                    任务已完成，建议立即进入 Results 查看结果摘要与解释。
+                  </p>
+                </div>
+              )}
+
+              {!canEdit ? (
+                <div className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
+                  Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到 Settings 调整角色。
+                </div>
+              ) : null}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className="flex flex-wrap items-center gap-2">
+                <CardTitle className="text-base">Map Canvas</CardTitle>
+                {activeLayerName ? (
+                  <Badge variant="outline">Active: {activeLayerName}</Badge>
+                ) : null}
+              </div>
+              <CardDescription>GIS-first 主画布（MapLibre）</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <MapLibreCanvas
+                layers={layers}
+                focusLayerName={focusLayerName}
+                focusSignal={focusSignal}
+                resetSignal={resetSignal}
+                activeLayerName={activeLayerName}
+                onLayerPick={setActiveLayerName}
+                onFeaturePick={setPickedFeature}
+              />
+
+              <div className="mt-3 rounded-md border bg-muted/20 p-3">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Legend
+                </p>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  {layers.map((layer) => (
+                    <div
+                      key={`legend-${layer.name}`}
+                      className="flex items-center gap-2 rounded-md border bg-background px-2 py-1 text-xs"
                     >
-                      {stage}
-                    </span>
-                  ),
+                      <span
+                        className="inline-block h-3 w-3 rounded-sm"
+                        style={{
+                          backgroundColor: legendColorMap[layer.name] ?? "#6B7280",
+                          opacity: layer.opacity,
+                        }}
+                      />
+                      <span className="truncate">{layer.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Analysis / Context</CardTitle>
+              <CardDescription>结构化事实优先于聊天流</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Suggested Next Steps
+                </p>
+                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                  {vm.analysisPanel.suggestedNextSteps.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="rounded-md border p-3 text-sm text-muted-foreground">
+                {vm.analysisPanel.contextSummary}
+              </div>
+
+              <div className="rounded-md border p-3 text-sm text-muted-foreground">
+                {vm.taskPanel.lifecycleSummary}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Object Inspector</CardTitle>
+              <CardDescription>地图对象的结构化摘要</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-2 flex items-center justify-between">
+                {pickedFeature ? (
+                  <Badge variant="outline">{pickedFeature.layerName}</Badge>
+                ) : (
+                  <Badge variant="outline">No Selection</Badge>
                 )}
               </div>
-            </div>
-          )}
 
-          <div className="rounded-md border bg-muted/20 p-3 text-xs text-muted-foreground">
-            <p className="font-semibold text-foreground">
-              State Hint · {workbenchState}
-            </p>
-            <p className="mt-1">{stateHint}</p>
-          </div>
+              {pickedFeature ? (
+                <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
+                  <div className="rounded-md border bg-background p-2">
+                    <p className="font-medium text-foreground">Object Name</p>
+                    <p className="mt-1">{pickedFeature.objectName}</p>
+                  </div>
+                  <div className="rounded-md border bg-background p-2">
+                    <p className="font-medium text-foreground">Object Type</p>
+                    <p className="mt-1">{pickedFeature.objectType}</p>
+                  </div>
+                  <div className="rounded-md border bg-background p-2">
+                    <p className="font-medium text-foreground">Status</p>
+                    <p className="mt-1">{pickedFeature.status}</p>
+                  </div>
+                  <div className="rounded-md border bg-background p-2">
+                    <p className="font-medium text-foreground">Updated At</p>
+                    <p className="mt-1">{pickedFeature.updatedAt}</p>
+                  </div>
+                  <div className="rounded-md border bg-background p-2 sm:col-span-2">
+                    <p className="font-medium text-foreground">Clicked Coordinate</p>
+                    <p className="mt-1">
+                      Lng {pickedFeature.lng.toFixed(5)} · Lat {pickedFeature.lat.toFixed(5)}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  点击地图中的任意图层对象后，这里会展示结构化属性摘要。
+                </p>
+              )}
 
-          {isCompleted ? (
-            <Link href={`/scenes/${sceneId}/results`}>
-              <Button className="w-full" variant="secondary">
-                {primaryActionLabel}
-              </Button>
-            </Link>
-          ) : (
-            <Button
-              className="w-full"
-              disabled={
-                !canEdit || (!canRunAction && !(isFailed || isActionRequired))
-              }
-              variant={isFailed || isActionRequired ? "outline" : "default"}
-            >
-              {primaryActionLabel}
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-    </>
+              {pickedFeature ? (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {pickedFeature.taskId ? (
+                    <Link
+                      href={`/task-governance/${pickedFeature.taskId}?from=workbench&taskId=${pickedFeature.taskId}`}
+                      className="inline-block"
+                    >
+                      <Button size="sm" variant="outline">
+                        Open Task Governance
+                      </Button>
+                    </Link>
+                  ) : null}
+                  {pickedFeature.resultId ? (
+                    <Link
+                      href={`/scenes/${sceneId}/results/${pickedFeature.resultId}?from=workbench&taskId=${pickedFeature.taskId ?? ""}`}
+                      className="inline-block"
+                    >
+                      <Button size="sm" variant="secondary">
+                        Open Result Detail
+                      </Button>
+                    </Link>
+                  ) : null}
+                </div>
+              ) : null}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 }
