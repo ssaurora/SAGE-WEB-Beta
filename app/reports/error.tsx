@@ -17,7 +17,7 @@ export default function ReportsError({ error, reset }: ReportsErrorProps) {
     <PageErrorState
       title="Results load failed"
       description="结果列表暂时不可用，请稍后重试。"
-      actionHref="/reports"
+      actionHref="/results"
       actionLabel="Back to Results"
       onRetry={reset}
     />

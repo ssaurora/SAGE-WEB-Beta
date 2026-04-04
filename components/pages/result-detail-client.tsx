@@ -1,0 +1,1 @@
+export { ReportDetailClient as ResultDetailClient } from "./report-detail-client";

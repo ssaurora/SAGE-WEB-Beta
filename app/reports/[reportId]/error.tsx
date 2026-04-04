@@ -20,7 +20,7 @@ export default function ReportDetailError({
     <PageErrorState
       title="Report detail failed"
       description="报告详情暂时不可用，请稍后重试。"
-      actionHref="/reports"
+      actionHref="/results"
       actionLabel="Back to Reports"
       onRetry={reset}
     />

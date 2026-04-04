@@ -1,32 +1,5 @@
-import { Metadata } from "next";
-import { ReportsListClient } from "@/components/pages/reports-list-client";
-import { getReportListViewModel } from "@/lib/api/report";
-import { toReportsListViewModel } from "@/lib/adapters/report";
-import type { ReportListViewModel } from "@/lib/contracts/report";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Results",
-  description: "Browse and download analysis results",
-};
-
-async function getReportsViewModel(): Promise<ReportListViewModel> {
-  const reports = await getReportListViewModel();
-  return toReportsListViewModel(reports);
-}
-
-export default async function ReportsPage() {
-  const vm = await getReportsViewModel();
-
-  return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Results</h1>
-        <p className="mt-2 text-muted-foreground">
-          Browse, search, and download analysis results from your projects.
-        </p>
-      </div>
-
-      <ReportsListClient vm={vm} />
-    </div>
-  );
+export default function ReportsRedirectPage() {
+  redirect("/results");
 }

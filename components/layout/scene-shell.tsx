@@ -55,13 +55,9 @@ export function SceneShell({
               Scene Workspace
             </p>
             <h2 className="mt-2 text-2xl font-semibold">{sceneId}</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              主链路：Overview → Workbench → Results；支撑视图：Assets / Task
-              Runs / Audit。
-            </p>
           </div>
           <p className="text-sm text-muted-foreground">
-            场景级容器先行，任务上下文由页面内部上下文条承担。
+            场景级工作容器。
           </p>
         </div>
       </div>

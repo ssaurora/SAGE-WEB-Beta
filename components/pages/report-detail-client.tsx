@@ -256,7 +256,7 @@ export function ReportDetailClient({ vm }: { vm: ReportDetailViewModel }) {
           <CardTitle className="text-base">Actions</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
-          <Link href="/reports">
+          <Link href="/results">
             <Button variant="outline">← Back to Results</Button>
           </Link>
           <Button variant="outline">

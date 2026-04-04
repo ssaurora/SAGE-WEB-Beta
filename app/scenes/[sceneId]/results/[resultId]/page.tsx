@@ -28,10 +28,10 @@ export default async function SceneResultDetailPage({
   searchParams,
 }: {
   params: Promise<{ sceneId: string; resultId: string }>;
-  searchParams: Promise<{ from?: string; taskId?: string; reportId?: string }>;
+  searchParams: Promise<{ from?: string; taskId?: string; resultId?: string }>;
 }) {
   const { sceneId, resultId } = await params;
-  const { from, taskId, reportId } = await searchParams;
+  const { from, taskId, resultId: linkedResultId } = await searchParams;
   const vm = await getSceneResultDetailViewModel(sceneId, resultId);
 
   return (
@@ -64,10 +64,10 @@ export default async function SceneResultDetailPage({
                 </Button>
               </Link>
               <Link
-                href={`/reports/${reportId ?? "report-2026-001"}?from=result-detail&taskId=${vm.fromTaskId}&resultId=${vm.resultId}`}
+                href={`/results/${linkedResultId ?? vm.resultId}?from=result-detail&taskId=${vm.fromTaskId}&resultId=${vm.resultId}`}
               >
                 <Button size="sm" variant="outline">
-                  Open Report Detail
+                  Open Result Detail
                 </Button>
               </Link>
               <Link

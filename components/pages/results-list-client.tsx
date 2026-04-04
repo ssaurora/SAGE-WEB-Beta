@@ -1,0 +1,1 @@
+export { ReportsListClient as ResultsListClient } from "./reports-list-client";

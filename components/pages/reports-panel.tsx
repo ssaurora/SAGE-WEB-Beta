@@ -93,7 +93,7 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
                   {item.time}
                 </p>
               </div>
-              <Link href={`/reports/${item.reportId}?from=reports`}>
+              <Link href={`/results/${item.reportId}?from=results`}>
                 <Badge variant="outline">Open Report Detail</Badge>
               </Link>
             </div>

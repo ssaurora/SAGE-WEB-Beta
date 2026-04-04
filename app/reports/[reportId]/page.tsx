@@ -1,39 +1,10 @@
-import { Metadata } from "next";
-import { ReportDetailClient } from "@/components/pages/report-detail-client";
-import { getReportDetailViewModel as getReportDetailFromApi } from "@/lib/api/report";
-import { toReportDetailViewModel } from "@/lib/adapters/report";
-import type { ReportDetailViewModel } from "@/lib/contracts/report";
+import { redirect } from "next/navigation";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ reportId: string }>;
-}): Promise<Metadata> {
-  const { reportId } = await params;
-  return {
-    title: `Result ${reportId}`,
-    description: "View and download analysis result",
-  };
-}
-
-async function getReportDetailViewModel(
-  reportId: string,
-): Promise<ReportDetailViewModel> {
-  const detail = await getReportDetailFromApi(reportId);
-  return toReportDetailViewModel(detail);
-}
-
-export default async function ReportDetailPage({
+export default async function ReportRedirectPage({
   params,
 }: {
   params: Promise<{ reportId: string }>;
 }) {
   const { reportId } = await params;
-  const vm = await getReportDetailViewModel(reportId);
-
-  return (
-    <div className="space-y-4">
-      <ReportDetailClient vm={vm} />
-    </div>
-  );
+  redirect(`/results/${reportId}`);
 }

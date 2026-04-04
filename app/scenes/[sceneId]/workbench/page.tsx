@@ -1,3 +1,4 @@
+import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -39,6 +40,18 @@ export default async function SceneWorkbenchPage({
 
   return (
     <div className="space-y-4">
+      <TaskContextBar
+        sceneName={vm.header.sceneName}
+        sceneHref={`/scenes/${sceneId}/overview`}
+        taskId={taskId}
+        taskHref={taskId ? `/task-governance/${taskId}?from=workbench&taskId=${taskId}` : undefined}
+        stateLabel={vm.header.currentState}
+        stateVariant={getTaskStateVariant(vm.header.currentState)}
+        currentView="Workbench"
+        fromLabel={from}
+        summary={`${vm.header.analysisType} · Required Inputs Ready: ${vm.header.requiredInputsReady}`}
+      />
+
       <Card>
         <CardHeader className="pb-4">
           <div className="flex flex-wrap items-center gap-2">
