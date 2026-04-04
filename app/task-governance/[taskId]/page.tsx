@@ -139,7 +139,8 @@ export default async function TaskGovernancePage({
         <CardHeader>
           <CardTitle className="text-base">Evidence Zone</CardTitle>
           <CardDescription>
-            证据后置：Blocking / Manifest / Artifacts / Timeline / Audit 分层阅读。
+            证据后置：Blocking / Manifest / Artifacts / Timeline / Audit
+            分层阅读。
           </CardDescription>
         </CardHeader>
       </Card>

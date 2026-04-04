@@ -44,7 +44,10 @@ export function GovernanceEvidenceTabs({
 }: GovernanceEvidenceTabsProps) {
   const [activeTab, setActiveTab] = useState<TabKey>("blocking");
 
-  const timelinePreview = useMemo(() => lifecycleEvents.slice(0, 3), [lifecycleEvents]);
+  const timelinePreview = useMemo(
+    () => lifecycleEvents.slice(0, 3),
+    [lifecycleEvents],
+  );
   const hasMoreTimeline = lifecycleEvents.length > timelinePreview.length;
 
   return (
@@ -101,7 +104,9 @@ export function GovernanceEvidenceTabs({
                 Suggested Fixes
               </p>
               {suggestedFixes.length === 0 ? (
-                <p className="text-sm text-muted-foreground">当前无建议修复项</p>
+                <p className="text-sm text-muted-foreground">
+                  当前无建议修复项
+                </p>
               ) : (
                 <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
                   {suggestedFixes.map((fix) => (

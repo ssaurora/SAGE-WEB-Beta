@@ -415,148 +415,97 @@ export function WorkbenchMapInteractive({
     </div>
   );
 
-  return (
-    <div className="space-y-4">
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="text-base">Current State</CardTitle>
-              <Badge
-                variant={
-                  isFailed
-                    ? "destructive"
-                    : isCompleted
-                      ? "secondary"
-                      : "outline"
+  const renderInputsCard = (mode: "expanded" | "collapsed") => (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Inputs</CardTitle>
+        <CardDescription>
+          Required Ready {requiredReadyCount}/{requiredTotal} · Missing{" "}
+          {requiredMissingCount} · Invalid {invalidBindingCount}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {mode === "expanded" ? (
+          <InputsPanelInteractive
+            requiredInputs={requiredInputs}
+            optionalInputs={optionalInputs}
+            uploadedAssets={uploadedUnboundAssets}
+            isReadOnly={isInputReadOnly}
+            onRequiredInputsChange={(updated) => {
+              updated.forEach((item) => {
+                if (item.boundAssetId) {
+                  applyBinding(
+                    "required",
+                    item.name,
+                    item.expectedType,
+                    item.boundAssetId,
+                  );
                 }
-              >
-                {workbenchState}
-              </Badge>
-              <Badge variant="outline">{layoutLabel}</Badge>
+              });
+            }}
+            onOptionalInputsChange={(updated) => {
+              updated.forEach((item) => {
+                if (item.boundAssetId) {
+                  applyBinding(
+                    "optional",
+                    item.name,
+                    item.expectedType,
+                    item.boundAssetId,
+                  );
+                }
+              });
+            }}
+            onUploadedAssetsChange={(assets) => {
+              assets.forEach(() => uploadAsset());
+            }}
+          />
+        ) : (
+          <details className="rounded-md border p-3">
+            <summary className="cursor-pointer text-sm font-medium text-foreground">
+              展开输入详情
+            </summary>
+            <div className="mt-3">
+              <InputsPanelInteractive
+                requiredInputs={requiredInputs}
+                optionalInputs={optionalInputs}
+                uploadedAssets={uploadedUnboundAssets}
+                isReadOnly={isInputReadOnly}
+                onRequiredInputsChange={(updated) => {
+                  updated.forEach((item) => {
+                    if (item.boundAssetId) {
+                      applyBinding(
+                        "required",
+                        item.name,
+                        item.expectedType,
+                        item.boundAssetId,
+                      );
+                    }
+                  });
+                }}
+                onOptionalInputsChange={(updated) => {
+                  updated.forEach((item) => {
+                    if (item.boundAssetId) {
+                      applyBinding(
+                        "optional",
+                        item.name,
+                        item.expectedType,
+                        item.boundAssetId,
+                      );
+                    }
+                  });
+                }}
+                onUploadedAssetsChange={(assets) => {
+                  assets.forEach(() => uploadAsset());
+                }}
+              />
             </div>
-            <CardDescription>
-              {stateHint}
-              {contextFrom || contextTaskId
-                ? ` · via ${contextFrom ?? "external"}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
-                : ""}
-            </CardDescription>
-            <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-              <span>
-                Required Ready {requiredReadyCount}/{requiredTotal}
-              </span>
-              <span>· Missing {requiredMissingCount}</span>
-              <span>· Invalid {invalidBindingCount}</span>
-            </div>
-            {!canEdit ? (
-              <p className="text-xs text-muted-foreground">
-                Viewer 模式（{role}）下已禁用编辑操作。
-              </p>
-            ) : null}
-          </div>
-        </CardHeader>
-      </Card>
+          </details>
+        )}
+      </CardContent>
+    </Card>
+  );
 
-      <div
-        className={`grid gap-4 ${
-          layoutMode === "input-recovery"
-            ? "xl:grid-cols-[1.2fr_0.8fr]"
-            : layoutMode === "result-transition"
-              ? "xl:grid-cols-[0.95fr_1.05fr]"
-              : "xl:grid-cols-[0.85fr_1.15fr]"
-        }`}
-      >
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Inputs</CardTitle>
-              <CardDescription>
-                Required Ready {requiredReadyCount}/{requiredTotal} · Missing{" "}
-                {requiredMissingCount} · Invalid {invalidBindingCount}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isInputFocusState ? (
-                <InputsPanelInteractive
-                  requiredInputs={requiredInputs}
-                  optionalInputs={optionalInputs}
-                  uploadedAssets={uploadedUnboundAssets}
-                  isReadOnly={isInputReadOnly}
-                  onRequiredInputsChange={(updated) => {
-                    updated.forEach((item) => {
-                      if (item.boundAssetId) {
-                        applyBinding(
-                          "required",
-                          item.name,
-                          item.expectedType,
-                          item.boundAssetId,
-                        );
-                      }
-                    });
-                  }}
-                  onOptionalInputsChange={(updated) => {
-                    updated.forEach((item) => {
-                      if (item.boundAssetId) {
-                        applyBinding(
-                          "optional",
-                          item.name,
-                          item.expectedType,
-                          item.boundAssetId,
-                        );
-                      }
-                    });
-                  }}
-                  onUploadedAssetsChange={(assets) => {
-                    assets.forEach(() => uploadAsset());
-                  }}
-                />
-              ) : (
-                <details className="rounded-md border p-3">
-                  <summary className="cursor-pointer text-sm font-medium text-foreground">
-                    展开输入详情
-                  </summary>
-                  <div className="mt-3">
-                    <InputsPanelInteractive
-                      requiredInputs={requiredInputs}
-                      optionalInputs={optionalInputs}
-                      uploadedAssets={uploadedUnboundAssets}
-                      isReadOnly={isInputReadOnly}
-                      onRequiredInputsChange={(updated) => {
-                        updated.forEach((item) => {
-                          if (item.boundAssetId) {
-                            applyBinding(
-                              "required",
-                              item.name,
-                              item.expectedType,
-                              item.boundAssetId,
-                            );
-                          }
-                        });
-                      }}
-                      onOptionalInputsChange={(updated) => {
-                        updated.forEach((item) => {
-                          if (item.boundAssetId) {
-                            applyBinding(
-                              "optional",
-                              item.name,
-                              item.expectedType,
-                              item.boundAssetId,
-                            );
-                          }
-                        });
-                      }}
-                      onUploadedAssetsChange={(assets) => {
-                        assets.forEach(() => uploadAsset());
-                      }}
-                    />
-                  </div>
-                </details>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="space-y-4">
+        const renderStateFocusCard = () => (
           <Card>
             <CardHeader>
               <CardTitle className="text-base">State Focus</CardTitle>
@@ -565,12 +514,10 @@ export function WorkbenchMapInteractive({
             <CardContent className="space-y-3">
               {isInputFocusState ? (
                 <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-sm">
-                  <p className="font-semibold text-foreground">
-                    Input / Recovery Focus
-                  </p>
+                  <p className="font-semibold text-foreground">Input / Recovery Focus</p>
                   <p className="mt-1 text-muted-foreground">
-                    缺失输入 {requiredMissingCount} 项，异常绑定{" "}
-                    {invalidBindingCount} 项。请先修复后恢复执行。
+                    缺失输入 {requiredMissingCount} 项，异常绑定 {invalidBindingCount}
+                    项。请先修复后恢复执行。
                   </p>
                   {contextTaskId ? (
                     <Link
@@ -633,10 +580,7 @@ export function WorkbenchMapInteractive({
                   <p className="mt-1 text-muted-foreground">
                     任务已完成，建议立即进入 Results 查看结果摘要与解释。
                   </p>
-                  <Link
-                    href={`/scenes/${sceneId}/results`}
-                    className="mt-3 inline-flex"
-                  >
+                  <Link href={`/scenes/${sceneId}/results`} className="mt-3 inline-flex">
                     <Button size="sm">View Results</Button>
                   </Link>
                 </div>
@@ -649,7 +593,9 @@ export function WorkbenchMapInteractive({
               ) : null}
             </CardContent>
           </Card>
+        );
 
+        const renderMapCard = () => (
           <Card>
             <CardHeader>
               <div className="flex flex-wrap items-center gap-2">
@@ -684,8 +630,7 @@ export function WorkbenchMapInteractive({
                       <span
                         className="inline-block h-3 w-3 rounded-sm"
                         style={{
-                          backgroundColor:
-                            legendColorMap[layer.name] ?? "#6B7280",
+                          backgroundColor: legendColorMap[layer.name] ?? "#6B7280",
                           opacity: layer.opacity,
                         }}
                       />
@@ -696,132 +641,119 @@ export function WorkbenchMapInteractive({
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        );
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>
-            图层控制、上下文事实与对象证据后置阅读。
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
-      <div className="grid gap-4 xl:grid-cols-[1fr_340px]">
-        <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <CardTitle className="text-base">Layers</CardTitle>
-                  <CardDescription>图层可见性与交互管理</CardDescription>
-                </div>
-                <Badge variant="outline">{visibleCount} visible</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <details className="rounded-md border p-3">
-                <summary className="cursor-pointer text-sm font-medium text-foreground">
-                  展开图层详细控制
-                </summary>
-                <div className="mt-3 space-y-3">
-                  <div className="flex items-center justify-end">
-                    <Button size="sm" variant="outline" onClick={resetMapView}>
-                      Reset View
-                    </Button>
+        const renderEvidenceCards = () => (
+          <>
+            <Card>
+              <CardHeader>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <CardTitle className="text-base">Layers</CardTitle>
+                    <CardDescription>图层可见性与交互管理</CardDescription>
                   </div>
+                  <Badge variant="outline">{visibleCount} visible</Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <details className="rounded-md border p-3">
+                  <summary className="cursor-pointer text-sm font-medium text-foreground">
+                    展开图层详细控制
+                  </summary>
+                  <div className="mt-3 space-y-3">
+                    <div className="flex items-center justify-end">
+                      <Button size="sm" variant="outline" onClick={resetMapView}>
+                        Reset View
+                      </Button>
+                    </div>
 
-                  <div className="rounded-md border p-2">
-                    <button
-                      type="button"
-                      onClick={() => toggleGroupCollapse("inputs")}
-                      className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                    >
-                      <span>Input Layers</span>
-                      <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
-                    </button>
-                    {!collapsedGroups.inputs ? (
-                      <div className="mt-2 space-y-2">
-                        {groupedLayers.inputs.map((layer) =>
-                          renderLayerRow(
-                            layer,
-                            layers.findIndex(
-                              (item) => item.name === layer.name,
+                    <div className="rounded-md border p-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleGroupCollapse("inputs")}
+                        className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                      >
+                        <span>Input Layers</span>
+                        <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
+                      </button>
+                      {!collapsedGroups.inputs ? (
+                        <div className="mt-2 space-y-2">
+                          {groupedLayers.inputs.map((layer) =>
+                            renderLayerRow(
+                              layer,
+                              layers.findIndex((item) => item.name === layer.name),
+                              layers.length,
                             ),
-                            layers.length,
-                          ),
-                        )}
-                      </div>
-                    ) : null}
-                  </div>
+                          )}
+                        </div>
+                      ) : null}
+                    </div>
 
-                  <div className="rounded-md border p-2">
-                    <button
-                      type="button"
-                      onClick={() => toggleGroupCollapse("results")}
-                      className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                    >
-                      <span>Result Layers</span>
-                      <span>{collapsedGroups.results ? "展开" : "收起"}</span>
-                    </button>
-                    {!collapsedGroups.results ? (
-                      <div className="mt-2 space-y-2">
-                        {groupedLayers.results.map((layer) =>
-                          renderLayerRow(
-                            layer,
-                            layers.findIndex(
-                              (item) => item.name === layer.name,
+                    <div className="rounded-md border p-2">
+                      <button
+                        type="button"
+                        onClick={() => toggleGroupCollapse("results")}
+                        className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                      >
+                        <span>Result Layers</span>
+                        <span>{collapsedGroups.results ? "展开" : "收起"}</span>
+                      </button>
+                      {!collapsedGroups.results ? (
+                        <div className="mt-2 space-y-2">
+                          {groupedLayers.results.map((layer) =>
+                            renderLayerRow(
+                              layer,
+                              layers.findIndex((item) => item.name === layer.name),
+                              layers.length,
                             ),
-                            layers.length,
-                          ),
-                        )}
-                      </div>
-                    ) : null}
+                          )}
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-              </details>
-            </CardContent>
-          </Card>
+                </details>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Next Steps</CardTitle>
-              <CardDescription>只保留有行动含义的建议</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                {vm.analysisPanel.suggestedNextSteps.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Next Steps</CardTitle>
+                <CardDescription>只保留有行动含义的建议</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                  {vm.analysisPanel.suggestedNextSteps.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Execution Context</CardTitle>
-              <CardDescription>context / lifecycle summary</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <details className="rounded-md border p-3">
-                <summary className="cursor-pointer text-sm font-medium text-foreground">
-                  展开执行上下文
-                </summary>
-                <div className="mt-3 space-y-3">
-                  <div className="rounded-md border p-3 text-sm text-muted-foreground">
-                    {vm.analysisPanel.contextSummary}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Execution Context</CardTitle>
+                <CardDescription>context / lifecycle summary</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <details className="rounded-md border p-3">
+                  <summary className="cursor-pointer text-sm font-medium text-foreground">
+                    展开执行上下文
+                  </summary>
+                  <div className="mt-3 space-y-3">
+                    <div className="rounded-md border p-3 text-sm text-muted-foreground">
+                      {vm.analysisPanel.contextSummary}
+                    </div>
+                    <div className="rounded-md border p-3 text-sm text-muted-foreground">
+                      {vm.taskPanel.lifecycleSummary}
+                    </div>
                   </div>
-                  <div className="rounded-md border p-3 text-sm text-muted-foreground">
-                    {vm.taskPanel.lifecycleSummary}
-                  </div>
-                </div>
-              </details>
-            </CardContent>
-          </Card>
-        </div>
+                </details>
+              </CardContent>
+            </Card>
+          </>
+        );
 
-        <div className="space-y-4">
+        const renderObjectInspector = () => (
           <details className="rounded-lg border bg-card shadow-sm">
             <summary className="cursor-pointer list-none px-6 py-4">
               <div className="flex items-center justify-between gap-3">
@@ -860,12 +792,9 @@ export function WorkbenchMapInteractive({
                     <p className="mt-1">{pickedFeature.updatedAt}</p>
                   </div>
                   <div className="rounded-md border bg-background p-2 sm:col-span-2">
-                    <p className="font-medium text-foreground">
-                      Clicked Coordinate
-                    </p>
+                    <p className="font-medium text-foreground">Clicked Coordinate</p>
                     <p className="mt-1">
-                      Lng {pickedFeature.lng.toFixed(5)} · Lat{" "}
-                      {pickedFeature.lat.toFixed(5)}
+                      Lng {pickedFeature.lng.toFixed(5)} · Lat {pickedFeature.lat.toFixed(5)}
                     </p>
                   </div>
                 </div>
@@ -901,8 +830,87 @@ export function WorkbenchMapInteractive({
               ) : null}
             </div>
           </details>
-        </div>
-      </div>
-    </div>
-  );
+        );
+
+        return (
+          <div className="space-y-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="space-y-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <CardTitle className="text-base">Current State</CardTitle>
+                    <Badge
+                      variant={
+                        isFailed
+                          ? "destructive"
+                          : isCompleted
+                            ? "secondary"
+                            : "outline"
+                      }
+                    >
+                      {workbenchState}
+                    </Badge>
+                    <Badge variant="outline">{layoutLabel}</Badge>
+                  </div>
+                  <CardDescription>
+                    {stateHint}
+                    {contextFrom || contextTaskId
+                      ? ` · via ${contextFrom ?? "external"}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
+                      : ""}
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                    <span>
+                      Required Ready {requiredReadyCount}/{requiredTotal}
+                    </span>
+                    <span>· Missing {requiredMissingCount}</span>
+                    <span>· Invalid {invalidBindingCount}</span>
+                  </div>
+                  {!canEdit ? (
+                    <p className="text-xs text-muted-foreground">
+                      Viewer 模式（{role}）下已禁用编辑操作。
+                    </p>
+                  ) : null}
+                </div>
+              </CardHeader>
+            </Card>
+
+            {layoutMode === "input-recovery" ? (
+              <div className="grid gap-4 xl:grid-cols-[1.35fr_0.95fr]">
+                <div className="space-y-4">
+                  {renderInputsCard("expanded")}
+                  {renderEvidenceCards()}
+                </div>
+                <div className="space-y-4">
+                  {renderStateFocusCard()}
+                  {renderMapCard()}
+                  {renderObjectInspector()}
+                </div>
+              </div>
+            ) : layoutMode === "result-transition" ? (
+              <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+                <div className="space-y-4">
+                  {renderStateFocusCard()}
+                  {renderEvidenceCards()}
+                </div>
+                <div className="space-y-4">
+                  {renderMapCard()}
+                  {renderInputsCard("collapsed")}
+                  {renderObjectInspector()}
+                </div>
+              </div>
+            ) : (
+              <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+                <div className="space-y-4">
+                  {renderStateFocusCard()}
+                  {renderInputsCard("collapsed")}
+                </div>
+                <div className="space-y-4">
+                  {renderMapCard()}
+                  {renderEvidenceCards()}
+                  {renderObjectInspector()}
+                </div>
+              </div>
+            )}
+          </div>
+        );
 }
