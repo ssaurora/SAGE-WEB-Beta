@@ -65,7 +65,8 @@ export default async function AssetDetailPage({
             <div>
               <CardTitle>{vm.name}</CardTitle>
               <CardDescription>
-                {vm.assetId} · {vm.sceneId} · 资产元数据与关系详情 · 上传于 {vm.uploadedAt}
+                {vm.assetId} · {vm.sceneId} · 资产元数据与关系详情 · 上传于{" "}
+                {vm.uploadedAt}
               </CardDescription>
             </div>
             <div className="flex gap-2">
@@ -110,7 +111,9 @@ export default async function AssetDetailPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Current Asset Status</CardTitle>
-          <CardDescription>先判断当前问题，再进入元数据与关系详情</CardDescription>
+          <CardDescription>
+            先判断当前问题，再进入元数据与关系详情
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">

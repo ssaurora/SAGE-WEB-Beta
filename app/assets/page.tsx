@@ -74,7 +74,8 @@ export default async function AssetsPage({
           <CardHeader>
             <CardTitle className="text-base">Asset Inventory</CardTitle>
             <CardDescription>
-              资产明细、筛选与绑定关系（{sceneId ? `scene ${sceneId}` : "all scenes"}）。
+              资产明细、筛选与绑定关系（
+              {sceneId ? `scene ${sceneId}` : "all scenes"}）。
             </CardDescription>
           </CardHeader>
           <CardContent>

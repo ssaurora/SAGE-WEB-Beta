@@ -111,7 +111,9 @@ export default async function SceneAssetsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Current Scene Asset Status</CardTitle>
+          <CardTitle className="text-base">
+            Current Scene Asset Status
+          </CardTitle>
           <CardDescription>先判断是否存在阻塞，再处理资产清单</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">
