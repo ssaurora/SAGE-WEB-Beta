@@ -102,29 +102,51 @@ export default async function AssetDetailPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Asset Summary</CardTitle>
-          <CardDescription>类型、绑定状态与可见性</CardDescription>
+          <CardTitle className="text-base">Decision Zone</CardTitle>
+          <CardDescription>先判断资产状态，再查看元数据与关联证据。</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-md border p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Type</p>
-            <p className="mt-1 font-medium">{vm.type}</p>
+        <CardContent className="space-y-3">
+          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+              Current Decision
+            </p>
+            <p className="mt-1">
+              {vm.bindStatus === "Missing"
+                ? "该资产缺失，建议优先替换或重新上传。"
+                : vm.bindStatus === "Unbound"
+                  ? "该资产可用但未绑定，建议按任务上下文完成绑定。"
+                  : "该资产已绑定，可继续进入治理或结果链路。"}
+            </p>
           </div>
-          <div className="rounded-md border p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Bind Status</p>
-            <Badge className="mt-2" variant={bindStatusVariant(vm.bindStatus)}>
-              {bindStatusLabel(vm.bindStatus)}
-            </Badge>
-          </div>
-          <div className="rounded-md border p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Visibility</p>
-            <p className="mt-1 font-medium">{vm.visibility}</p>
-          </div>
-          <div className="rounded-md border p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Last Task</p>
-            <p className="mt-1 font-medium">{vm.lastTaskId ?? "-"}</p>
+
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-md border p-3 text-sm">
+              <p className="text-xs text-muted-foreground">Type</p>
+              <p className="mt-1 font-medium">{vm.type}</p>
+            </div>
+            <div className="rounded-md border p-3 text-sm">
+              <p className="text-xs text-muted-foreground">Bind Status</p>
+              <Badge className="mt-2" variant={bindStatusVariant(vm.bindStatus)}>
+                {bindStatusLabel(vm.bindStatus)}
+              </Badge>
+            </div>
+            <div className="rounded-md border p-3 text-sm">
+              <p className="text-xs text-muted-foreground">Visibility</p>
+              <p className="mt-1 font-medium">{vm.visibility}</p>
+            </div>
+            <div className="rounded-md border p-3 text-sm">
+              <p className="text-xs text-muted-foreground">Last Task</p>
+              <p className="mt-1 font-medium">{vm.lastTaskId ?? "-"}</p>
+            </div>
           </div>
         </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Evidence Zone</CardTitle>
+          <CardDescription>元数据、关联关系、标签与审计摘要。</CardDescription>
+        </CardHeader>
       </Card>
 
       <Card>

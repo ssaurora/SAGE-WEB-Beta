@@ -74,7 +74,9 @@ export default async function SceneResultDetailPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>先看结论，再进入指标、映射与下载证据。</CardDescription>
+          <CardDescription>
+            先看结论，再进入指标、映射与下载证据。
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">

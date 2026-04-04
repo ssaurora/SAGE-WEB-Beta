@@ -104,7 +104,8 @@ export function SceneResultsPanel({
         </div>
 
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredItems.length}</span> 条结果
+          当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
+          条结果
         </p>
 
         {filteredItems.length === 0 ? (
@@ -127,13 +128,17 @@ export function SceneResultsPanel({
                 </Link>
               </div>
 
-              <p className="mt-3 text-sm text-muted-foreground">{item.summary}</p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                {item.summary}
+              </p>
 
               <div className="mt-3 flex flex-wrap gap-2">
                 <Badge variant={item.mapLayerReady ? "secondary" : "outline"}>
                   {item.mapLayerReady ? "地图图层可用" : "地图图层未就绪"}
                 </Badge>
-                <Badge variant={item.explanationReady ? "secondary" : "outline"}>
+                <Badge
+                  variant={item.explanationReady ? "secondary" : "outline"}
+                >
                   {item.explanationReady ? "解释可用" : "解释待生成"}
                 </Badge>
               </div>

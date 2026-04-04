@@ -90,8 +90,27 @@ export function AssetsPanel({
       });
   }, [items, searchQuery, sceneFilter, typeFilter, statusFilter, sortByTime]);
 
+  const boundCount = useMemo(
+    () => filteredItems.filter((item) => item.bindStatus === "Bound").length,
+    [filteredItems],
+  );
+  const missingCount = useMemo(
+    () => filteredItems.filter((item) => item.bindStatus === "Missing").length,
+    [filteredItems],
+  );
+
   return (
     <div className="space-y-4">
+      <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+        <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+          Summary
+        </p>
+        <p className="mt-1">
+          当前筛选结果中共有 {filteredItems.length} 个资产，已绑定 {boundCount} 个，
+          缺失 {missingCount} 个。建议优先修复缺失项。
+        </p>
+      </div>
+
       {initialSceneFilter ? (
         <div className="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
           当前由 {contextFrom ?? "external"} 带入场景筛选：
@@ -143,8 +162,7 @@ export function AssetsPanel({
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground">
-          当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
-          / {items.length}
+          当前显示 <span className="font-semibold">{filteredItems.length}</span> / {items.length}
         </p>
         <select
           value={sortByTime}

@@ -73,7 +73,9 @@ export default async function SceneResultsPage({
         <CardContent className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
             <p className="text-xs text-muted-foreground">Latest State</p>
-            <p className="mt-1 font-semibold">{getTaskStateLabel(vm.latestState)}</p>
+            <p className="mt-1 font-semibold">
+              {getTaskStateLabel(vm.latestState)}
+            </p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
             <p className="text-xs text-muted-foreground">Latest Result</p>
@@ -100,7 +102,9 @@ export default async function SceneResultsPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Evidence Zone</CardTitle>
-          <CardDescription>结果包、来源任务、解释和图层就绪度。</CardDescription>
+          <CardDescription>
+            结果包、来源任务、解释和图层就绪度。
+          </CardDescription>
         </CardHeader>
       </Card>
 

@@ -98,6 +98,35 @@ export default async function SceneAssetsPage({
 
       <Card>
         <CardHeader>
+          <CardTitle className="text-base">Decision Zone</CardTitle>
+          <CardDescription>先看本场景资产是否阻塞任务，再进入资产证据详情。</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-3">
+          <div className="rounded-md border bg-muted/20 p-3 text-sm">
+            <p className="text-xs text-muted-foreground">Total</p>
+            <p className="mt-1 font-semibold">{vm.items.length}</p>
+          </div>
+          <div className="rounded-md border bg-muted/20 p-3 text-sm">
+            <p className="text-xs text-muted-foreground">Missing</p>
+            <p className="mt-1 font-semibold">
+              {vm.items.filter((item) => item.bindStatus === "Missing").length}
+            </p>
+          </div>
+          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+            优先修复缺失资产，再处理未绑定项。
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Evidence Zone</CardTitle>
+          <CardDescription>资产清册、类型、绑定状态与可见性证据。</CardDescription>
+        </CardHeader>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle className="text-base">Assets</CardTitle>
           <CardDescription>资产清册、类型、绑定状态与可见性</CardDescription>
         </CardHeader>
