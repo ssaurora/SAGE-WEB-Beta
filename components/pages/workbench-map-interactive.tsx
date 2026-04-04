@@ -862,6 +862,7 @@ export function WorkbenchMapInteractive({
         currentView="Workbench"
         roleLabel={role}
         modeLabel={canEdit ? "Editable" : "Read Only"}
+        fromLabel={contextFrom}
         summary={layoutLabel}
       />
 

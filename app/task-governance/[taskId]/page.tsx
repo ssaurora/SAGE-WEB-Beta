@@ -66,6 +66,7 @@ export default async function TaskGovernancePage({
         stateLabel={getTaskStateLabel(vm.currentState)}
         stateVariant={getTaskStateVariant(vm.currentState)}
         currentView="Governance"
+        fromLabel={from}
         summary={nextActionText}
       />
 

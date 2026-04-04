@@ -42,6 +42,7 @@ export default async function SceneResultDetailPage({
         taskId={taskId ?? vm.fromTaskId}
         taskHref={`/task-governance/${vm.fromTaskId}?from=result-detail&taskId=${vm.fromTaskId}`}
         currentView="Result Detail"
+        fromLabel={from}
         summary={`From task ${vm.fromTaskId}`}
       />
 

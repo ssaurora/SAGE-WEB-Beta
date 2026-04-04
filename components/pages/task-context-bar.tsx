@@ -12,6 +12,7 @@ type TaskContextBarProps = {
   currentView: string;
   roleLabel?: string;
   modeLabel?: string;
+  fromLabel?: string;
   summary?: string;
   className?: string;
 };
@@ -26,6 +27,7 @@ export function TaskContextBar({
   currentView,
   roleLabel,
   modeLabel,
+  fromLabel,
   summary,
   className,
 }: TaskContextBarProps) {
@@ -67,6 +69,7 @@ export function TaskContextBar({
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+          {fromLabel ? <Badge variant="outline">From: {fromLabel}</Badge> : null}
           {roleLabel ? <Badge variant="outline">{roleLabel}</Badge> : null}
           {modeLabel ? <Badge variant="outline">{modeLabel}</Badge> : null}
         </div>

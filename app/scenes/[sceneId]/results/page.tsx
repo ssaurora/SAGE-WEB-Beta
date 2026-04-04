@@ -106,6 +106,7 @@ export default async function SceneResultsPage({
         stateLabel={getTaskStateLabel(vm.latestState)}
         stateVariant={getTaskStateVariant(vm.latestState)}
         currentView="Results"
+        fromLabel={from}
         summary={primaryDecisionAction.label}
       />
 
