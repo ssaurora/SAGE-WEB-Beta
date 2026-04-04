@@ -65,9 +65,12 @@ export default async function TaskGovernancePage({
             </Badge>
             <Badge variant="outline">{vm.stageState}</Badge>
           </div>
-          <CardDescription>{vm.sceneId} · 任务治理与审计摘要</CardDescription>
+          <CardDescription>
+            {vm.sceneId} · 任务治理与审计摘要
+            {from ? ` · via ${from}${contextTaskId ? ` / task ${contextTaskId}` : ""}` : ""}
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="space-y-4">
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-md border p-3 text-sm text-muted-foreground">
               可恢复：{vm.canResume ? "是" : "否"}
@@ -86,29 +89,7 @@ export default async function TaskGovernancePage({
             </p>
             <p className="mt-1">{nextActionText}</p>
           </div>
-        </CardContent>
-      </Card>
 
-      {from ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Navigation Context</CardTitle>
-            <CardDescription>
-              当前治理页由 {from} 进入
-              {contextTaskId ? ` · task ${contextTaskId}` : ""}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      ) : null}
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>
-            首屏聚焦状态判断、阻塞原因与下一步动作。
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
           <div className="grid gap-3 lg:grid-cols-[1.2fr_0.8fr]">
             <div className="rounded-md border p-3 text-sm text-muted-foreground">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">
@@ -138,18 +119,16 @@ export default async function TaskGovernancePage({
             </div>
           </div>
 
-          <div className="mt-3">
-            <GovernanceRecoveryPanel
-              sceneId={vm.sceneId}
-              taskId={vm.taskId}
-              status={decisionStatus}
-              canResume={vm.canResume}
-              failureReason={vm.failureSummary}
-              missingInputs={vm.missingRequiredInputs}
-              invalidBindings={vm.requiredActions}
-              suggestedFix={vm.suggestedFixes[0]}
-            />
-          </div>
+          <GovernanceRecoveryPanel
+            sceneId={vm.sceneId}
+            taskId={vm.taskId}
+            status={decisionStatus}
+            canResume={vm.canResume}
+            failureReason={vm.failureSummary}
+            missingInputs={vm.missingRequiredInputs}
+            invalidBindings={vm.requiredActions}
+            suggestedFix={vm.suggestedFixes[0]}
+          />
         </CardContent>
       </Card>
 
@@ -157,193 +136,188 @@ export default async function TaskGovernancePage({
         <CardHeader>
           <CardTitle className="text-base">Evidence Zone</CardTitle>
           <CardDescription>
-            证据后置：用于支撑判断，不与决策区竞争首屏焦点。
+            证据后置：阻塞项、工件、时间线与审计分层阅读。
           </CardDescription>
         </CardHeader>
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Governance Panel</CardTitle>
-            <CardDescription>
-              required actions / suggested fixes
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-                Required Actions
-              </p>
-              {isWaitingInput || isActionRequired ? (
-                <Badge variant="outline" className="mb-2">
-                  Pending user actions
-                </Badge>
-              ) : null}
-              {vm.requiredActions.length === 0 ? (
-                <p className="text-sm text-muted-foreground">当前无必做动作</p>
-              ) : (
-                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                  {vm.requiredActions.map((action) => (
-                    <li key={action}>{action}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-                Suggested Fixes
-              </p>
-              {vm.suggestedFixes.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  当前无建议修复项
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Blocking Evidence</CardTitle>
+              <CardDescription>阻塞项优先于建议项</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Required Actions
                 </p>
-              ) : (
-                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                  {vm.suggestedFixes.map((fix) => (
-                    <li key={fix}>{fix}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            {vm.failureSummary ? (
-              <div
-                className={`rounded-md border p-3 text-sm text-muted-foreground ${
-                  isFailedTerminal
-                    ? "border-destructive/60 bg-destructive/5"
-                    : "border-amber-500/60 bg-amber-500/5"
-                }`}
-              >
-                <p className="text-xs font-semibold uppercase tracking-wide text-destructive">
-                  Failure Summary
-                </p>
-                <p className="mt-1">{vm.failureSummary}</p>
+                {isWaitingInput || isActionRequired ? (
+                  <Badge variant="outline" className="mb-2">
+                    Pending user actions
+                  </Badge>
+                ) : null}
+                {vm.requiredActions.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">当前无必做动作</p>
+                ) : (
+                  <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                    {vm.requiredActions.map((action) => (
+                      <li key={action}>{action}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
-            ) : null}
-          </CardContent>
-        </Card>
+
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Missing Required Inputs
+                </p>
+                {vm.missingRequiredInputs.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">无缺失输入</p>
+                ) : (
+                  <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                    {vm.missingRequiredInputs.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Suggested Fixes
+                </p>
+                {vm.suggestedFixes.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    当前无建议修复项
+                  </p>
+                ) : (
+                  <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                    {vm.suggestedFixes.map((fix) => (
+                      <li key={fix}>{fix}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {vm.failureSummary ? (
+                <div
+                  className={`rounded-md border p-3 text-sm text-muted-foreground ${
+                    isFailedTerminal
+                      ? "border-destructive/60 bg-destructive/5"
+                      : "border-amber-500/60 bg-amber-500/5"
+                  }`}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide text-destructive">
+                    Failure Summary
+                  </p>
+                  <p className="mt-1">{vm.failureSummary}</p>
+                </div>
+              ) : null}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Manifest & Artifacts</CardTitle>
+              <CardDescription>只读参数视图与运行产物</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <GovernanceManifestTab
+                parameters={[
+                  {
+                    key: "analysisType",
+                    value: vm.manifestSummary.analysisType,
+                    type: "parameter",
+                    isEditable: false,
+                    description: "Analysis Type",
+                    children: [],
+                  },
+                  {
+                    key: "modelName",
+                    value: vm.manifestSummary.modelName,
+                    type: "parameter",
+                    isEditable: false,
+                    description: "Model",
+                    children: [],
+                  },
+                  {
+                    key: "requiredInputs",
+                    value: vm.manifestSummary.requiredInputsReady,
+                    type: "input",
+                    isEditable: false,
+                    description: "Required Inputs",
+                    children: vm.missingRequiredInputs.map((input) => ({
+                      key: `input-${input}`,
+                      value: "missing",
+                      type: "input",
+                      isEditable: false,
+                      description: input,
+                      children: [],
+                    })),
+                  },
+                  {
+                    key: "runtimeProfile",
+                    value: vm.manifestSummary.runtimeProfile,
+                    type: "parameter",
+                    isEditable: false,
+                    description: "Runtime Profile",
+                    children: [],
+                  },
+                ]}
+              />
+
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Artifacts
+                </p>
+                {vm.artifacts.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">暂无工件</p>
+                ) : (
+                  <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                    {vm.artifacts.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">
-                Missing Required Inputs
-              </CardTitle>
+              <CardTitle className="text-base">Timeline & Audit</CardTitle>
+              <CardDescription>时间线与审计分层阅读</CardDescription>
             </CardHeader>
-            <CardContent>
-              {vm.missingRequiredInputs.length === 0 ? (
-                <p className="text-sm text-muted-foreground">无缺失输入</p>
-              ) : (
-                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                  {vm.missingRequiredInputs.map((item) => (
-                    <li key={item}>{item}</li>
+            <CardContent className="space-y-4">
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Lifecycle Events
+                </p>
+                <div className="space-y-2">
+                  {vm.lifecycleEvents.map((event) => (
+                    <p
+                      key={event}
+                      className="rounded-md border px-3 py-2 text-sm text-muted-foreground"
+                    >
+                      {event}
+                    </p>
                   ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
+                </div>
+              </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Artifacts</CardTitle>
-              <CardDescription>运行产物与治理证据</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {vm.artifacts.length === 0 ? (
-                <p className="text-sm text-muted-foreground">暂无工件</p>
-              ) : (
-                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                  {vm.artifacts.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              )}
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Audit Summary
+                </p>
+                <p className="text-sm text-muted-foreground">{vm.auditSummary}</p>
+              </div>
             </CardContent>
           </Card>
         </div>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Manifest Snapshot</CardTitle>
-          <CardDescription>参数与输入的只读证据视图</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <GovernanceManifestTab
-            parameters={[
-              {
-                key: "analysisType",
-                value: vm.manifestSummary.analysisType,
-                type: "parameter",
-                isEditable: false,
-                description: "Analysis Type",
-                children: [],
-              },
-              {
-                key: "modelName",
-                value: vm.manifestSummary.modelName,
-                type: "parameter",
-                isEditable: false,
-                description: "Model",
-                children: [],
-              },
-              {
-                key: "requiredInputs",
-                value: vm.manifestSummary.requiredInputsReady,
-                type: "input",
-                isEditable: false,
-                description: "Required Inputs",
-                children: vm.missingRequiredInputs.map((input) => ({
-                  key: `input-${input}`,
-                  value: "missing",
-                  type: "input",
-                  isEditable: false,
-                  description: input,
-                  children: [],
-                })),
-              },
-              {
-                key: "runtimeProfile",
-                value: vm.manifestSummary.runtimeProfile,
-                type: "parameter",
-                isEditable: false,
-                description: "Runtime Profile",
-                children: [],
-              },
-            ]}
-          />
-        </CardContent>
-      </Card>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Lifecycle Events</CardTitle>
-            <CardDescription>时间线证据</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {vm.lifecycleEvents.map((event) => (
-              <p
-                key={event}
-                className="rounded-md border px-3 py-2 text-sm text-muted-foreground"
-              >
-                {event}
-              </p>
-            ))}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Audit Summary</CardTitle>
-            <CardDescription>审计结论与补充说明</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">{vm.auditSummary}</p>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

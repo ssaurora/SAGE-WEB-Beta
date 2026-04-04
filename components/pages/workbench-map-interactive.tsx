@@ -52,6 +52,7 @@ export function WorkbenchMapInteractive({
 }: WorkbenchMapInteractiveProps) {
   const { role } = useAppRole();
   const canEdit = canEditWorkbench(role);
+
   const [requiredInputs, setRequiredInputs] = useState<RequiredInputItem[]>(
     vm.inputsPanel.required.map((item) => ({
       name: item.name,
@@ -85,25 +86,17 @@ export function WorkbenchMapInteractive({
       type: "CSV",
     },
   ]);
+
   const [uploadName, setUploadName] = useState("");
   const [uploadType, setUploadType] = useState<UploadAssetType>("Raster");
-  const [bindingSelection, setBindingSelection] = useState<
-    Record<string, string>
-  >({});
-
   const [layers, setLayers] = useState<InteractiveLayer[]>(
-    vm.layersPanel.map((layer) => ({
-      ...layer,
-      opacity: 0.6,
-    })),
+    vm.layersPanel.map((layer) => ({ ...layer, opacity: 0.6 })),
   );
   const [focusLayerName, setFocusLayerName] = useState<string | null>(null);
   const [focusSignal, setFocusSignal] = useState(0);
   const [resetSignal, setResetSignal] = useState(0);
   const [activeLayerName, setActiveLayerName] = useState<string | null>(null);
-  const [pickedFeature, setPickedFeature] = useState<PickedFeature | null>(
-    null,
-  );
+  const [pickedFeature, setPickedFeature] = useState<PickedFeature | null>(null);
   const [collapsedGroups, setCollapsedGroups] = useState({
     inputs: false,
     results: false,
@@ -113,12 +106,10 @@ export function WorkbenchMapInteractive({
     () => layers.filter((layer) => layer.visible).length,
     [layers],
   );
-
   const uploadedUnboundAssets = useMemo(
     () => uploadedAssets.filter((asset) => !asset.boundTo),
     [uploadedAssets],
   );
-
   const requiredReadyCount = useMemo(
     () => requiredInputs.filter((item) => item.status === "Bound").length,
     [requiredInputs],
@@ -133,8 +124,8 @@ export function WorkbenchMapInteractive({
   const invalidBindingCount =
     requiredInputs.filter((item) => item.status === "Invalid").length +
     optionalInputs.filter((item) => item.status === "Invalid").length;
-  const workbenchState = vm.header.currentState;
 
+  const workbenchState = vm.header.currentState;
   const isQueued = workbenchState === "Queued";
   const isRunning = workbenchState === "Running";
   const isProcessingResults = workbenchState === "Processing Results";
@@ -144,22 +135,12 @@ export function WorkbenchMapInteractive({
   const isWaitingInput = workbenchState === "Waiting for Required Input";
   const isActionRequired = workbenchState === "Action Required";
 
+  const isInputFocusState = isWaitingInput || isActionRequired || isFailed;
+  const isRuntimeFocusState = isQueued || isRunning || isProcessingResults;
+
   const isInputReadOnly =
     !canEdit || isQueued || isRunning || isProcessingResults || isCompleted;
   const canRunAction = canRunByInputs && !isInputReadOnly;
-
-  const primaryActionLabel = (() => {
-    if (isCompleted) return "View Results";
-    if (isProcessingResults) return "Processing Results";
-    if (isRunning) return "Running";
-    if (isQueued) return "Queued";
-    if (isUnderstanding) return "Understanding";
-    if (!canEdit) return "Read Only";
-    if (isFailed || isActionRequired) return "Fix and Resume";
-    if (canRunAction) return "Run Analysis";
-    if (isWaitingInput) return "Waiting for Required Input";
-    return "Run Analysis";
-  })();
 
   const stateHint = (() => {
     if (isUnderstanding)
@@ -206,25 +187,10 @@ export function WorkbenchMapInteractive({
     [layers],
   );
 
-  const toggleLayerVisibility = (layerName: string) => {
-    setLayers((prev) =>
-      prev.map((layer) =>
-        layer.name === layerName
-          ? { ...layer, visible: !layer.visible }
-          : layer,
-      ),
-    );
-  };
-
   const isCompatible = (expectedType: string, assetType: UploadAssetType) => {
     const normalizedExpected = expectedType.toLowerCase();
-
-    if (normalizedExpected.includes("vector")) {
-      return assetType === "Vector Polygon";
-    }
-    if (normalizedExpected.includes("raster")) {
-      return assetType === "Raster";
-    }
+    if (normalizedExpected.includes("vector")) return assetType === "Vector Polygon";
+    if (normalizedExpected.includes("raster")) return assetType === "Raster";
     if (
       normalizedExpected.includes("csv") ||
       normalizedExpected.includes("table")
@@ -251,9 +217,7 @@ export function WorkbenchMapInteractive({
   };
 
   const releaseOldBinding = (boundAssetId?: string) => {
-    if (!boundAssetId) {
-      return;
-    }
+    if (!boundAssetId) return;
     setUploadedAssets((prev) =>
       prev.map((asset) =>
         asset.id === boundAssetId ? { ...asset, boundTo: undefined } : asset,
@@ -268,36 +232,26 @@ export function WorkbenchMapInteractive({
     selectedAssetId?: string,
   ) => {
     const targetAssetId = selectedAssetId ?? uploadedUnboundAssets[0]?.id;
-
-    if (!targetAssetId) {
-      return;
-    }
+    if (!targetAssetId) return;
 
     const selectedAsset = uploadedAssets.find(
       (asset) => asset.id === targetAssetId,
     );
-    if (!selectedAsset) {
-      return;
-    }
+    if (!selectedAsset) return;
 
     const inputKey = makeInputKey(inputType, inputName);
     const compatible = isCompatible(expectedType, selectedAsset.type);
 
     setUploadedAssets((prev) =>
-      prev.map((asset) => {
-        if (asset.id === targetAssetId) {
-          return { ...asset, boundTo: inputKey };
-        }
-        return asset;
-      }),
+      prev.map((asset) =>
+        asset.id === targetAssetId ? { ...asset, boundTo: inputKey } : asset,
+      ),
     );
 
     if (inputType === "required") {
       setRequiredInputs((prev) =>
         prev.map((item) => {
-          if (item.name !== inputName) {
-            return item;
-          }
+          if (item.name !== inputName) return item;
           releaseOldBinding(item.boundAssetId);
           return {
             ...item,
@@ -314,9 +268,7 @@ export function WorkbenchMapInteractive({
 
     setOptionalInputs((prev) =>
       prev.map((item) => {
-        if (item.name !== inputName) {
-          return item;
-        }
+        if (item.name !== inputName) return item;
         releaseOldBinding(item.boundAssetId);
         return {
           ...item,
@@ -330,58 +282,27 @@ export function WorkbenchMapInteractive({
     );
   };
 
-  const removeBinding = (
-    inputType: "required" | "optional",
-    inputName: string,
-  ) => {
-    if (inputType === "required") {
-      let oldAssetId: string | undefined;
-      setRequiredInputs((prev) =>
-        prev.map((item) => {
-          if (item.name !== inputName) {
-            return item;
-          }
-          oldAssetId = item.boundAssetId;
-          return {
-            ...item,
-            status: "Missing",
-            boundAssetId: undefined,
-            invalidReason: undefined,
-          };
-        }),
-      );
-      releaseOldBinding(oldAssetId);
-      return;
-    }
-
-    let oldAssetId: string | undefined;
-    setOptionalInputs((prev) =>
-      prev.map((item) => {
-        if (item.name !== inputName) {
-          return item;
-        }
-        oldAssetId = item.boundAssetId;
-        return {
-          ...item,
-          status: "Unbound",
-          boundAssetId: undefined,
-          invalidReason: undefined,
-        };
-      }),
+  const toggleLayerVisibility = (layerName: string) => {
+    setLayers((prev) =>
+      prev.map((layer) =>
+        layer.name === layerName
+          ? { ...layer, visible: !layer.visible }
+          : layer,
+      ),
     );
-    releaseOldBinding(oldAssetId);
   };
 
-  const statusBadgeVariant = (
-    status: "Missing" | "Unbound" | "Bound" | "Invalid",
-  ) => {
-    if (status === "Bound") {
-      return "secondary" as const;
-    }
-    if (status === "Invalid") {
-      return "destructive" as const;
-    }
-    return "outline" as const;
+  const moveLayer = (layerName: string, direction: "up" | "down") => {
+    setLayers((prev) => {
+      const currentIndex = prev.findIndex((layer) => layer.name === layerName);
+      if (currentIndex === -1) return prev;
+      const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+      if (targetIndex < 0 || targetIndex >= prev.length) return prev;
+      const next = [...prev];
+      const [picked] = next.splice(currentIndex, 1);
+      next.splice(targetIndex, 0, picked);
+      return next;
+    });
   };
 
   const zoomToLayer = (layerName: string) => {
@@ -403,10 +324,7 @@ export function WorkbenchMapInteractive({
   };
 
   const toggleGroupCollapse = (group: "inputs" | "results") => {
-    setCollapsedGroups((prev) => ({
-      ...prev,
-      [group]: !prev[group],
-    }));
+    setCollapsedGroups((prev) => ({ ...prev, [group]: !prev[group] }));
   };
 
   const renderLayerRow = (
@@ -431,7 +349,6 @@ export function WorkbenchMapInteractive({
             variant="outline"
             disabled={index === 0}
             onClick={() => moveLayer(layer.name, "up")}
-            aria-label={`Move ${layer.name} up`}
           >
             ↑
           </Button>
@@ -440,7 +357,6 @@ export function WorkbenchMapInteractive({
             variant="outline"
             disabled={index === totalCount - 1}
             onClick={() => moveLayer(layer.name, "down")}
-            aria-label={`Move ${layer.name} down`}
           >
             ↓
           </Button>
@@ -484,149 +400,127 @@ export function WorkbenchMapInteractive({
     </div>
   );
 
-  const moveLayer = (layerName: string, direction: "up" | "down") => {
-    setLayers((prev) => {
-      const currentIndex = prev.findIndex((layer) => layer.name === layerName);
-      if (currentIndex === -1) {
-        return prev;
-      }
-
-      const targetIndex =
-        direction === "up" ? currentIndex - 1 : currentIndex + 1;
-
-      if (targetIndex < 0 || targetIndex >= prev.length) {
-        return prev;
-      }
-
-      const next = [...prev];
-      const [picked] = next.splice(currentIndex, 1);
-      next.splice(targetIndex, 0, picked);
-      return next;
-    });
-  };
-
   return (
     <div className="space-y-4">
       <Card>
         <CardHeader className="pb-3">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <CardTitle className="text-base">Current State</CardTitle>
-                <Badge
-                  variant={statusBadgeVariant(
-                    isFailed ? "Invalid" : isCompleted ? "Bound" : "Unbound",
-                  )}
-                >
-                  {workbenchState}
-                </Badge>
-                <Badge variant="outline">Role: {role}</Badge>
-              </div>
-              <CardDescription>{stateHint}</CardDescription>
-              <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                <span>
-                  Required Ready {requiredReadyCount}/{requiredTotal}
-                </span>
-                <span>· Missing {requiredMissingCount}</span>
-                <span>· Invalid {invalidBindingCount}</span>
-                <span>· Visible Layers {visibleCount}</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {contextTaskId ? (
-                <Link
-                  href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
-                >
-                  <Button size="sm" variant="outline">
-                    Open Governance
-                  </Button>
-                </Link>
-              ) : null}
-              <Link
-                href={`/scenes/${sceneId}/results${contextTaskId ? `?taskId=${contextTaskId}&from=workbench` : ""}`}
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle className="text-base">Current State</CardTitle>
+              <Badge
+                variant={isFailed ? "destructive" : isCompleted ? "secondary" : "outline"}
               >
-                <Button size="sm" variant="secondary">
-                  Open Results
-                </Button>
-              </Link>
-              {isCompleted ? (
-                <Link href={`/scenes/${sceneId}/results`}>
-                  <Button size="sm">{primaryActionLabel}</Button>
-                </Link>
-              ) : (
-                <Button
-                  size="sm"
-                  disabled={
-                    !canEdit ||
-                    (!canRunAction && !(isFailed || isActionRequired))
-                  }
-                >
-                  {primaryActionLabel}
-                </Button>
-              )}
+                {workbenchState}
+              </Badge>
             </div>
+            <CardDescription>
+              {stateHint}
+              {contextFrom || contextTaskId
+                ? ` · via ${contextFrom ?? "external"}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
+                : ""}
+            </CardDescription>
+            <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+              <span>
+                Required Ready {requiredReadyCount}/{requiredTotal}
+              </span>
+              <span>· Missing {requiredMissingCount}</span>
+              <span>· Invalid {invalidBindingCount}</span>
+            </div>
+            {!canEdit ? (
+              <p className="text-xs text-muted-foreground">
+                Viewer 模式（{role}）下已禁用编辑操作。
+              </p>
+            ) : null}
           </div>
         </CardHeader>
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-[320px_1fr]">
         <div className="space-y-4">
-          {contextFrom || contextTaskId ? (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Navigation Context</CardTitle>
-                <CardDescription>
-                  当前工作台由 {contextFrom ?? "external"} 进入
-                  {contextTaskId ? ` · task ${contextTaskId}` : ""}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ) : null}
-
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Inputs</CardTitle>
               <CardDescription>
-                输入绑定管理 · Required Ready {requiredReadyCount}/
-                {requiredTotal}
+                Required Ready {requiredReadyCount}/{requiredTotal} · Missing {requiredMissingCount} · Invalid {invalidBindingCount}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <InputsPanelInteractive
-                requiredInputs={requiredInputs}
-                optionalInputs={optionalInputs}
-                uploadedAssets={uploadedUnboundAssets}
-                isReadOnly={isInputReadOnly}
-                onRequiredInputsChange={(updated) => {
-                  updated.forEach((item) => {
-                    if (item.boundAssetId) {
-                      applyBinding(
-                        "required",
-                        item.name,
-                        item.expectedType,
-                        item.boundAssetId,
-                      );
-                    }
-                  });
-                }}
-                onOptionalInputsChange={(updated) => {
-                  updated.forEach((item) => {
-                    if (item.boundAssetId) {
-                      applyBinding(
-                        "optional",
-                        item.name,
-                        item.expectedType,
-                        item.boundAssetId,
-                      );
-                    }
-                  });
-                }}
-                onUploadedAssetsChange={(assets) => {
-                  assets.forEach(() => {
-                    uploadAsset();
-                  });
-                }}
-              />
+              {isInputFocusState ? (
+                <InputsPanelInteractive
+                  requiredInputs={requiredInputs}
+                  optionalInputs={optionalInputs}
+                  uploadedAssets={uploadedUnboundAssets}
+                  isReadOnly={isInputReadOnly}
+                  onRequiredInputsChange={(updated) => {
+                    updated.forEach((item) => {
+                      if (item.boundAssetId) {
+                        applyBinding(
+                          "required",
+                          item.name,
+                          item.expectedType,
+                          item.boundAssetId,
+                        );
+                      }
+                    });
+                  }}
+                  onOptionalInputsChange={(updated) => {
+                    updated.forEach((item) => {
+                      if (item.boundAssetId) {
+                        applyBinding(
+                          "optional",
+                          item.name,
+                          item.expectedType,
+                          item.boundAssetId,
+                        );
+                      }
+                    });
+                  }}
+                  onUploadedAssetsChange={(assets) => {
+                    assets.forEach(() => uploadAsset());
+                  }}
+                />
+              ) : (
+                <details className="rounded-md border p-3">
+                  <summary className="cursor-pointer text-sm font-medium text-foreground">
+                    展开输入详情
+                  </summary>
+                  <div className="mt-3">
+                    <InputsPanelInteractive
+                      requiredInputs={requiredInputs}
+                      optionalInputs={optionalInputs}
+                      uploadedAssets={uploadedUnboundAssets}
+                      isReadOnly={isInputReadOnly}
+                      onRequiredInputsChange={(updated) => {
+                        updated.forEach((item) => {
+                          if (item.boundAssetId) {
+                            applyBinding(
+                              "required",
+                              item.name,
+                              item.expectedType,
+                              item.boundAssetId,
+                            );
+                          }
+                        });
+                      }}
+                      onOptionalInputsChange={(updated) => {
+                        updated.forEach((item) => {
+                          if (item.boundAssetId) {
+                            applyBinding(
+                              "optional",
+                              item.name,
+                              item.expectedType,
+                              item.boundAssetId,
+                            );
+                          }
+                        });
+                      }}
+                      onUploadedAssetsChange={(assets) => {
+                        assets.forEach(() => uploadAsset());
+                      }}
+                    />
+                  </div>
+                </details>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -638,22 +532,28 @@ export function WorkbenchMapInteractive({
               <CardDescription>当前阶段的首要决策与动作</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              {(isWaitingInput || isActionRequired || isFailed) && (
+              {isInputFocusState ? (
                 <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-sm">
-                  <p className="font-semibold text-foreground">
-                    Input / Recovery Focus
-                  </p>
+                  <p className="font-semibold text-foreground">Input / Recovery Focus</p>
                   <p className="mt-1 text-muted-foreground">
-                    缺失输入 {requiredMissingCount} 项，异常绑定{" "}
-                    {invalidBindingCount} 项。请先修复后恢复执行。
+                    缺失输入 {requiredMissingCount} 项，异常绑定 {invalidBindingCount} 项。请先修复后恢复执行。
                   </p>
+                  {contextTaskId ? (
+                    <Link
+                      href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
+                      className="mt-3 inline-flex"
+                    >
+                      <Button size="sm">Fix and Resume</Button>
+                    </Link>
+                  ) : (
+                    <Button size="sm" className="mt-3" disabled>
+                      Fix and Resume
+                    </Button>
+                  )}
                 </div>
-              )}
+              ) : null}
 
-              {(isUnderstanding ||
-                isQueued ||
-                isRunning ||
-                isProcessingResults) && (
+              {isRuntimeFocusState ? (
                 <div className="rounded-md border bg-muted/20 p-3">
                   <p className="text-xs font-semibold uppercase tracking-wide text-primary">
                     Runtime Progress
@@ -680,22 +580,34 @@ export function WorkbenchMapInteractive({
                       ),
                     )}
                   </div>
+                  {contextTaskId ? (
+                    <Link
+                      href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
+                      className="mt-3 inline-flex"
+                    >
+                      <Button size="sm" variant="outline">
+                        Open Governance
+                      </Button>
+                    </Link>
+                  ) : null}
                 </div>
-              )}
+              ) : null}
 
-              {isCompleted && (
+              {isCompleted ? (
                 <div className="rounded-md border border-emerald-500/40 bg-emerald-500/5 p-3 text-sm">
                   <p className="font-semibold text-foreground">Result Ready</p>
                   <p className="mt-1 text-muted-foreground">
                     任务已完成，建议立即进入 Results 查看结果摘要与解释。
                   </p>
+                  <Link href={`/scenes/${sceneId}/results`} className="mt-3 inline-flex">
+                    <Button size="sm">View Results</Button>
+                  </Link>
                 </div>
-              )}
+              ) : null}
 
-              {!canEdit ? (
-                <div className="rounded-md border border-amber-500/50 bg-amber-500/5 p-3 text-sm text-muted-foreground">
-                  Viewer 模式下已禁用上传、绑定、移除和运行类操作；可切换到
-                  Settings 调整角色。
+              {isUnderstanding ? (
+                <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+                  Understanding 阶段暂无主动作，当前仅做状态观察。
                 </div>
               ) : null}
             </CardContent>
@@ -735,8 +647,7 @@ export function WorkbenchMapInteractive({
                       <span
                         className="inline-block h-3 w-3 rounded-sm"
                         style={{
-                          backgroundColor:
-                            legendColorMap[layer.name] ?? "#6B7280",
+                          backgroundColor: legendColorMap[layer.name] ?? "#6B7280",
                           opacity: layer.opacity,
                         }}
                       />
@@ -763,108 +674,127 @@ export function WorkbenchMapInteractive({
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Layers</CardTitle>
-              <CardDescription>图层可见性与交互管理</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="mb-2 flex items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <CardTitle className="text-base">Layers</CardTitle>
+                  <CardDescription>图层可见性与交互管理</CardDescription>
+                </div>
                 <Badge variant="outline">{visibleCount} visible</Badge>
-                <Button size="sm" variant="outline" onClick={resetMapView}>
-                  Reset View
-                </Button>
               </div>
+            </CardHeader>
+            <CardContent>
+              <details className="rounded-md border p-3">
+                <summary className="cursor-pointer text-sm font-medium text-foreground">
+                  展开图层详细控制
+                </summary>
+                <div className="mt-3 space-y-3">
+                  <div className="flex items-center justify-end">
+                    <Button size="sm" variant="outline" onClick={resetMapView}>
+                      Reset View
+                    </Button>
+                  </div>
 
-              <div className="space-y-3">
-                <div className="rounded-md border p-2">
-                  <button
-                    type="button"
-                    onClick={() => toggleGroupCollapse("inputs")}
-                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                  >
-                    <span>Input Layers</span>
-                    <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
-                  </button>
-                  {!collapsedGroups.inputs ? (
-                    <div className="mt-2 space-y-2">
-                      {groupedLayers.inputs.map((layer) =>
-                        renderLayerRow(
-                          layer,
-                          layers.findIndex((item) => item.name === layer.name),
-                          layers.length,
-                        ),
-                      )}
-                    </div>
-                  ) : null}
-                </div>
+                  <div className="rounded-md border p-2">
+                    <button
+                      type="button"
+                      onClick={() => toggleGroupCollapse("inputs")}
+                      className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                    >
+                      <span>Input Layers</span>
+                      <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
+                    </button>
+                    {!collapsedGroups.inputs ? (
+                      <div className="mt-2 space-y-2">
+                        {groupedLayers.inputs.map((layer) =>
+                          renderLayerRow(
+                            layer,
+                            layers.findIndex((item) => item.name === layer.name),
+                            layers.length,
+                          ),
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
 
-                <div className="rounded-md border p-2">
-                  <button
-                    type="button"
-                    onClick={() => toggleGroupCollapse("results")}
-                    className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                  >
-                    <span>Result Layers</span>
-                    <span>{collapsedGroups.results ? "展开" : "收起"}</span>
-                  </button>
-                  {!collapsedGroups.results ? (
-                    <div className="mt-2 space-y-2">
-                      {groupedLayers.results.map((layer) =>
-                        renderLayerRow(
-                          layer,
-                          layers.findIndex((item) => item.name === layer.name),
-                          layers.length,
-                        ),
-                      )}
-                    </div>
-                  ) : null}
+                  <div className="rounded-md border p-2">
+                    <button
+                      type="button"
+                      onClick={() => toggleGroupCollapse("results")}
+                      className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+                    >
+                      <span>Result Layers</span>
+                      <span>{collapsedGroups.results ? "展开" : "收起"}</span>
+                    </button>
+                    {!collapsedGroups.results ? (
+                      <div className="mt-2 space-y-2">
+                        {groupedLayers.results.map((layer) =>
+                          renderLayerRow(
+                            layer,
+                            layers.findIndex((item) => item.name === layer.name),
+                            layers.length,
+                          ),
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
-              </div>
+              </details>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Analysis / Context</CardTitle>
-              <CardDescription>结构化事实优先于聊天流</CardDescription>
+              <CardTitle className="text-base">Next Steps</CardTitle>
+              <CardDescription>只保留有行动含义的建议</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-                  Suggested Next Steps
-                </p>
-                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                  {vm.analysisPanel.suggestedNextSteps.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
+            <CardContent>
+              <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                {vm.analysisPanel.suggestedNextSteps.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
 
-              <div className="rounded-md border p-3 text-sm text-muted-foreground">
-                {vm.analysisPanel.contextSummary}
-              </div>
-
-              <div className="rounded-md border p-3 text-sm text-muted-foreground">
-                {vm.taskPanel.lifecycleSummary}
-              </div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Execution Context</CardTitle>
+              <CardDescription>context / lifecycle summary</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <details className="rounded-md border p-3">
+                <summary className="cursor-pointer text-sm font-medium text-foreground">
+                  展开执行上下文
+                </summary>
+                <div className="mt-3 space-y-3">
+                  <div className="rounded-md border p-3 text-sm text-muted-foreground">
+                    {vm.analysisPanel.contextSummary}
+                  </div>
+                  <div className="rounded-md border p-3 text-sm text-muted-foreground">
+                    {vm.taskPanel.lifecycleSummary}
+                  </div>
+                </div>
+              </details>
             </CardContent>
           </Card>
         </div>
 
         <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Object Inspector</CardTitle>
-              <CardDescription>地图对象的结构化摘要</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-2 flex items-center justify-between">
+          <details className="rounded-lg border bg-card shadow-sm">
+            <summary className="cursor-pointer list-none px-6 py-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-base font-semibold text-foreground">Object Inspector</p>
+                  <p className="text-sm text-muted-foreground">地图对象的结构化摘要</p>
+                </div>
                 {pickedFeature ? (
                   <Badge variant="outline">{pickedFeature.layerName}</Badge>
                 ) : (
                   <Badge variant="outline">No Selection</Badge>
                 )}
               </div>
-
+            </summary>
+            <div className="px-6 pb-6">
               {pickedFeature ? (
                 <div className="grid gap-2 text-xs text-muted-foreground sm:grid-cols-2">
                   <div className="rounded-md border bg-background p-2">
@@ -884,12 +814,9 @@ export function WorkbenchMapInteractive({
                     <p className="mt-1">{pickedFeature.updatedAt}</p>
                   </div>
                   <div className="rounded-md border bg-background p-2 sm:col-span-2">
-                    <p className="font-medium text-foreground">
-                      Clicked Coordinate
-                    </p>
+                    <p className="font-medium text-foreground">Clicked Coordinate</p>
                     <p className="mt-1">
-                      Lng {pickedFeature.lng.toFixed(5)} · Lat{" "}
-                      {pickedFeature.lat.toFixed(5)}
+                      Lng {pickedFeature.lng.toFixed(5)} · Lat {pickedFeature.lat.toFixed(5)}
                     </p>
                   </div>
                 </div>
@@ -923,8 +850,8 @@ export function WorkbenchMapInteractive({
                   ) : null}
                 </div>
               ) : null}
-            </CardContent>
-          </Card>
+            </div>
+          </details>
         </div>
       </div>
     </div>
