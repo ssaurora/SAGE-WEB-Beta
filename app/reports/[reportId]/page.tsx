@@ -11,8 +11,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { reportId } = await params;
   return {
-    title: `Report ${reportId}`,
-    description: "View and download analysis report",
+    title: `Result ${reportId}`,
+    description: "View and download analysis result",
   };
 }
 

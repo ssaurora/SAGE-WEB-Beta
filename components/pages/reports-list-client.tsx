@@ -105,7 +105,7 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-sm text-muted-foreground">Total Reports</p>
+              <p className="text-sm text-muted-foreground">Total Results</p>
               <p className="mt-1 text-2xl font-bold">{vm.reports.length}</p>
             </div>
           </CardContent>
@@ -231,9 +231,9 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
       {/* Reports Table */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Reports</CardTitle>
+          <CardTitle className="text-base">Results</CardTitle>
           <CardDescription>
-            Displaying {filteredReports.length} of {vm.reports.length} reports
+            Displaying {filteredReports.length} of {vm.reports.length} results
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -241,7 +241,7 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
             <div className="rounded-md border border-dashed p-8 text-center">
               <FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
               <p className="mt-2 text-sm text-muted-foreground">
-                No reports found matching your filters
+                No results found matching your filters
               </p>
             </div>
           ) : (

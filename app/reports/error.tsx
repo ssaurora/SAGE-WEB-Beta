@@ -15,10 +15,10 @@ export default function ReportsError({ error, reset }: ReportsErrorProps) {
 
   return (
     <PageErrorState
-      title="Reports load failed"
-      description="报告列表暂时不可用，请稍后重试。"
+      title="Results load failed"
+      description="结果列表暂时不可用，请稍后重试。"
       actionHref="/reports"
-      actionLabel="Back to Reports"
+      actionLabel="Back to Results"
       onRetry={reset}
     />
   );
