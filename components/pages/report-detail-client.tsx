@@ -111,7 +111,7 @@ export function ReportDetailClient({ vm }: { vm: ReportDetailViewModel }) {
                 Scene
               </p>
               <Link
-                href={`/scenes/${vm.sceneId}`}
+                href={`/scenes/${vm.sceneId}?from=result-detail&taskId=${vm.taskId}`}
                 className="mt-1 text-sm font-medium hover:underline"
               >
                 {vm.sceneId}
@@ -126,7 +126,7 @@ export function ReportDetailClient({ vm }: { vm: ReportDetailViewModel }) {
                 Task
               </p>
               <Link
-                href={`/task-governance/${vm.taskId}`}
+                href={`/task-governance/${vm.taskId}?from=result-detail&taskId=${vm.taskId}`}
                 className="mt-1 text-sm font-medium hover:underline"
               >
                 {vm.taskId}
@@ -257,7 +257,7 @@ export function ReportDetailClient({ vm }: { vm: ReportDetailViewModel }) {
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           <Link href="/reports">
-            <Button variant="outline">← Back to Reports</Button>
+            <Button variant="outline">← Back to Results</Button>
           </Link>
           <Button variant="outline">
             <Share2 className="mr-2 h-4 w-4" />

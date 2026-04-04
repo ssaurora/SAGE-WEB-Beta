@@ -158,7 +158,9 @@ export function SceneResultsPanel({
                   {item.resultId === recommendedResultId ? (
                     <Badge variant="secondary">Recommended</Badge>
                   ) : null}
-                  <Link href={`/scenes/${sceneId}/results/${item.resultId}`}>
+                  <Link
+                    href={`/scenes/${sceneId}/results/${item.resultId}?from=results&taskId=${item.fromTaskId}`}
+                  >
                     <Badge variant="outline">Open Detail</Badge>
                   </Link>
                 </div>

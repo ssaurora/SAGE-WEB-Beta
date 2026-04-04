@@ -249,7 +249,7 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
               {filteredReports.map((report) => (
                 <Link
                   key={report.id}
-                  href={`/reports/${report.id}`}
+                  href={`/reports/${report.id}?from=results&taskId=${report.taskId}`}
                   className="block"
                 >
                   <div className="rounded-lg border p-3 hover:bg-muted/50 transition-colors">

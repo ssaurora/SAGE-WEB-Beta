@@ -594,7 +594,7 @@ export function WorkbenchMapInteractive({
               任务已完成，建议立即进入 Results 查看结果摘要与解释。
             </p>
             <Link
-              href={`/scenes/${sceneId}/results`}
+              href={`/scenes/${sceneId}/results?from=workbench&taskId=${contextTaskId ?? ""}`}
               className="mt-3 inline-flex"
             >
               <Button size="sm">View Results</Button>
