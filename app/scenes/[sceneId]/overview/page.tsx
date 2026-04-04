@@ -133,7 +133,7 @@ export default async function SceneOverviewPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Evidence Zone</CardTitle>
+          <CardTitle className="text-base">Context Evidence</CardTitle>
           <CardDescription>
             地图预览与活动记录作为辅助证据，不与主动作竞争首屏焦点。
           </CardDescription>
