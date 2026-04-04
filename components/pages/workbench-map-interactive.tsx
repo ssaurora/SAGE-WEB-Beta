@@ -811,25 +811,21 @@ export function WorkbenchMapInteractive({
         )}
 
         {pickedFeature ? (
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-3 text-sm">
             {pickedFeature.taskId ? (
               <Link
                 href={`/task-governance/${pickedFeature.taskId}?from=workbench&taskId=${pickedFeature.taskId}`}
-                className="inline-block"
+                className="text-primary underline-offset-4 hover:underline"
               >
-                <Button size="sm" variant="outline">
-                  Open Task Governance
-                </Button>
+                Related Task Governance
               </Link>
             ) : null}
             {pickedFeature.resultId ? (
               <Link
                 href={`/scenes/${sceneId}/results/${pickedFeature.resultId}?from=workbench&taskId=${pickedFeature.taskId ?? ""}`}
-                className="inline-block"
+                className="text-primary underline-offset-4 hover:underline"
               >
-                <Button size="sm" variant="secondary">
-                  Open Result Detail
-                </Button>
+                Related Result Detail
               </Link>
             ) : null}
           </div>
