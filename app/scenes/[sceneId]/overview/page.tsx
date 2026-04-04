@@ -37,6 +37,33 @@ export default async function SceneOverviewPage({
     );
   }
 
+  const taskState = vm.latestTask.state;
+  const isInputRecoveryState =
+    taskState === "Waiting for Required Input" ||
+    taskState === "Failed";
+  const isRuntimeState = taskState === "Running";
+  const isCompletedState = taskState === "Completed";
+
+  const primaryAction = isCompletedState
+    ? {
+        href: `/scenes/${sceneId}/results?from=overview&taskId=${vm.latestTask.id}`,
+        label: "查看 Results",
+      }
+    : isRuntimeState
+      ? {
+          href: `/task-governance/${vm.latestTask.id}?from=overview&taskId=${vm.latestTask.id}`,
+          label: "查看 Governance",
+        }
+      : isInputRecoveryState
+        ? {
+            href: `/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`,
+            label: "进入 Workbench",
+          }
+        : {
+            href: `/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`,
+            label: "进入 Workbench",
+          };
+
   return (
     <div className="space-y-4">
       <Card>
@@ -51,22 +78,8 @@ export default async function SceneOverviewPage({
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Link
-                href={`/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`}
-              >
-                <Button size="sm">进入 Workbench</Button>
-              </Link>
-              <Link href={`/scenes/${sceneId}/task-runs?from=overview`}>
-                <Button size="sm" variant="outline">
-                  查看 Task Runs
-                </Button>
-              </Link>
-              <Link
-                href={`/scenes/${sceneId}/results?from=overview&taskId=${vm.latestTask.id}`}
-              >
-                <Button size="sm" variant="secondary">
-                  查看 Results
-                </Button>
+              <Link href={primaryAction.href}>
+                <Button size="sm">{primaryAction.label}</Button>
               </Link>
             </div>
           </div>
@@ -90,10 +103,14 @@ export default async function SceneOverviewPage({
             <div className="rounded-lg border bg-muted/30 p-3">
               <p className="text-xs text-muted-foreground">Next Action</p>
               <p className="mt-1 text-sm font-semibold">
-                {vm.pendingActions[0] ?? "进入 Workbench 继续分析"}
+                {primaryAction.label}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                优先处理当前阻塞项，再进入运行与结果链路。
+                {isCompletedState
+                  ? "当前任务已完成，优先进入结果消费链路。"
+                  : isRuntimeState
+                    ? "当前任务处于运行链路，优先进入治理查看执行进展。"
+                    : "优先处理输入与阻塞项，再进入运行与结果链路。"}
               </p>
             </div>
 
@@ -142,18 +159,56 @@ export default async function SceneOverviewPage({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Pending Actions</CardTitle>
-            <CardDescription>场景当前待处理事项</CardDescription>
+            <CardTitle className="text-base">Auxiliary Links</CardTitle>
+            <CardDescription>非主流程入口降级为辅助导航</CardDescription>
           </CardHeader>
-          <CardContent>
-            <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+          <CardContent className="space-y-2 text-sm">
+            <Link
+              href={`/scenes/${sceneId}/workbench?from=overview&taskId=${vm.latestTask.id}`}
+              className="block text-primary underline-offset-4 hover:underline"
+            >
+              Workbench
+            </Link>
+            <Link
+              href={`/task-governance/${vm.latestTask.id}?from=overview&taskId=${vm.latestTask.id}`}
+              className="block text-primary underline-offset-4 hover:underline"
+            >
+              Task Governance
+            </Link>
+            <Link
+              href={`/scenes/${sceneId}/results?from=overview&taskId=${vm.latestTask.id}`}
+              className="block text-primary underline-offset-4 hover:underline"
+            >
+              Results
+            </Link>
+            <Link
+              href={`/scenes/${sceneId}/task-runs?from=overview`}
+              className="block text-primary underline-offset-4 hover:underline"
+            >
+              Task Runs
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Pending Actions</CardTitle>
+          <CardDescription>折叠后的待处理事项，仅作证据参考</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <details className="rounded-md border p-3">
+            <summary className="cursor-pointer text-sm font-medium text-foreground">
+              展开待处理事项
+            </summary>
+            <ul className="mt-3 list-disc space-y-2 pl-4 text-sm text-muted-foreground">
               {vm.pendingActions.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
+          </details>
           </CardContent>
         </Card>
-      </div>
 
       <Card>
         <CardHeader>
