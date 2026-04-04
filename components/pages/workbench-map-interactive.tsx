@@ -19,7 +19,10 @@ import { InputsPanelInteractive } from "@/components/pages/inputs-panel-interact
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
 import type { WorkbenchPageViewModel } from "@/lib/contracts/scene";
-import { getTaskStateLabel, getTaskStateVariant } from "@/lib/status/task-state";
+import {
+  getTaskStateLabel,
+  getTaskStateVariant,
+} from "@/lib/status/task-state";
 import type {
   OptionalInputItem,
   RequiredInputItem,

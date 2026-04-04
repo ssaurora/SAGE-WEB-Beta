@@ -98,7 +98,11 @@ export default async function SceneResultsPage({
         sceneName={sceneId}
         sceneHref={`/scenes/${sceneId}/overview`}
         taskId={taskId}
-        taskHref={taskId ? `/task-governance/${taskId}?from=results&taskId=${taskId}` : undefined}
+        taskHref={
+          taskId
+            ? `/task-governance/${taskId}?from=results&taskId=${taskId}`
+            : undefined
+        }
         stateLabel={getTaskStateLabel(vm.latestState)}
         stateVariant={getTaskStateVariant(vm.latestState)}
         currentView="Results"

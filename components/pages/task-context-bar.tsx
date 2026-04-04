@@ -8,12 +8,7 @@ type TaskContextBarProps = {
   taskId?: string;
   taskHref?: string;
   stateLabel?: string;
-  stateVariant?:
-    | "default"
-    | "secondary"
-    | "destructive"
-    | "outline"
-    | null;
+  stateVariant?: "default" | "secondary" | "destructive" | "outline" | null;
   currentView: string;
   roleLabel?: string;
   modeLabel?: string;
