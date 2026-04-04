@@ -1,1 +1,78 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Workbench</title><link rel="stylesheet" href="./style.css"/></head><body><div class="app"><aside class="side"><div class="logo">SAGE · Redesign</div><nav class="nav"><a href="./scene-overview.html">Overview</a><a class="active" href="./workbench.html">Workbench</a><a href="./task-governance.html">Governance</a><a href="./results.html">Results</a></nav></aside><main class="main"><header class="top"><div class="title">Workbench · Water Yield · scene-001</div><div class="top-actions"><span class="badge warn">Waiting Input</span><button class="btn">Fix Input</button><button class="btn primary">Run Analysis</button></div></header><section class="content grid-3"><div class="panel"><h3>Inputs / Layers</h3><div class="body list"><div class="item"><strong>Required Inputs Ready: 3 / 5</strong><p class="muted">LULC Raster 缺失</p></div><div class="item">Study Area <span class="badge ok">Bound</span></div><div class="item">Precipitation <span class="badge ok">Bound</span></div><div class="item">LULC Raster <span class="badge err">Missing</span></div><div class="item">Biophysical CSV <span class="badge">Unbound</span></div></div></div><div class="panel"><h3>Map Canvas（唯一中心）</h3><div class="body"><div class="map">GIS Working Canvas</div></div></div><div class="panel"><h3>状态与下一步</h3><div class="body list"><div class="item"><div class="label">Current Stage</div><div class="value" style="font-size:14px">VALIDATING_INPUTS</div></div><div class="item"><div class="label">Action</div><p class="muted">上传并绑定 LULC 后可运行。</p></div><div class="item"><button class="btn primary">Upload Asset</button> <button class="btn">Open Governance</button></div></div></div></section></main></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workbench</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <div class="logo">SAGE · Redesign</div>
+        <nav class="nav">
+          <a href="./scene-overview.html">Overview</a
+          ><a class="active" href="./workbench.html">Workbench</a
+          ><a href="./task-governance.html">Governance</a
+          ><a href="./results.html">Results</a>
+        </nav>
+      </aside>
+      <main class="main">
+        <header class="top">
+          <div class="title">Workbench · Water Yield · scene-001</div>
+          <div class="top-actions">
+            <span class="badge warn">Waiting Input</span
+            ><button class="btn">Fix Input</button
+            ><button class="btn primary">Run Analysis</button>
+          </div>
+        </header>
+        <section class="content grid-3">
+          <div class="panel">
+            <h3>Inputs / Layers</h3>
+            <div class="body list">
+              <div class="item">
+                <strong>Required Inputs Ready: 3 / 5</strong>
+                <p class="muted">LULC Raster 缺失</p>
+              </div>
+              <div class="item">
+                Study Area <span class="badge ok">Bound</span>
+              </div>
+              <div class="item">
+                Precipitation <span class="badge ok">Bound</span>
+              </div>
+              <div class="item">
+                LULC Raster <span class="badge err">Missing</span>
+              </div>
+              <div class="item">
+                Biophysical CSV <span class="badge">Unbound</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Map Canvas（唯一中心）</h3>
+            <div class="body"><div class="map">GIS Working Canvas</div></div>
+          </div>
+          <div class="panel">
+            <h3>状态与下一步</h3>
+            <div class="body list">
+              <div class="item">
+                <div class="label">Current Stage</div>
+                <div class="value" style="font-size: 14px">
+                  VALIDATING_INPUTS
+                </div>
+              </div>
+              <div class="item">
+                <div class="label">Action</div>
+                <p class="muted">上传并绑定 LULC 后可运行。</p>
+              </div>
+              <div class="item">
+                <button class="btn primary">Upload Asset</button>
+                <button class="btn">Open Governance</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,1 +1,82 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Tasks</title><link rel="stylesheet" href="./style.css"/></head><body><div class="app"><aside class="side"><div class="logo">SAGE · Redesign</div><nav class="nav"><a href="./scenes.html">Scenes</a><a class="active" href="./tasks.html">Tasks</a><a href="./task-governance.html">Task Governance</a></nav></aside><main class="main"><header class="top"><div class="title">Tasks · 可治理视图</div><div class="top-actions"><button class="btn">All</button><button class="btn">Running</button><button class="btn">Failed</button></div></header><section class="content grid-2"><div class="panel"><h3>Task Queue</h3><div class="body"><table class="table"><thead><tr><th>Task</th><th>Scene</th><th>State</th><th>Updated</th></tr></thead><tbody><tr><td>task-001</td><td>scene-001</td><td><span class="badge warn">Running</span></td><td>10:40</td></tr><tr><td>task-002</td><td>scene-001</td><td><span class="badge">Waiting Input</span></td><td>09:55</td></tr><tr><td>task-004</td><td>scene-003</td><td><span class="badge err">Failed</span></td><td>14:12</td></tr></tbody></table></div></div><div class="panel"><h3>Now to Resolve</h3><div class="body list"><div class="item"><strong>task-002</strong><p class="muted">缺失 LULC Raster，建议先补输入。</p></div><div class="item"><strong>task-004</strong><p class="muted">可恢复失败，建议切换 runtime profile 后重试。</p></div></div></div></section></main></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <div class="logo">SAGE · Redesign</div>
+        <nav class="nav">
+          <a href="./scenes.html">Scenes</a
+          ><a class="active" href="./tasks.html">Tasks</a
+          ><a href="./task-governance.html">Task Governance</a>
+        </nav>
+      </aside>
+      <main class="main">
+        <header class="top">
+          <div class="title">Tasks · 可治理视图</div>
+          <div class="top-actions">
+            <button class="btn">All</button><button class="btn">Running</button
+            ><button class="btn">Failed</button>
+          </div>
+        </header>
+        <section class="content grid-2">
+          <div class="panel">
+            <h3>Task Queue</h3>
+            <div class="body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Scene</th>
+                    <th>State</th>
+                    <th>Updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>task-001</td>
+                    <td>scene-001</td>
+                    <td><span class="badge warn">Running</span></td>
+                    <td>10:40</td>
+                  </tr>
+                  <tr>
+                    <td>task-002</td>
+                    <td>scene-001</td>
+                    <td><span class="badge">Waiting Input</span></td>
+                    <td>09:55</td>
+                  </tr>
+                  <tr>
+                    <td>task-004</td>
+                    <td>scene-003</td>
+                    <td><span class="badge err">Failed</span></td>
+                    <td>14:12</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Now to Resolve</h3>
+            <div class="body list">
+              <div class="item">
+                <strong>task-002</strong>
+                <p class="muted">缺失 LULC Raster，建议先补输入。</p>
+              </div>
+              <div class="item">
+                <strong>task-004</strong>
+                <p class="muted">
+                  可恢复失败，建议切换 runtime profile 后重试。
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

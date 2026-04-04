@@ -1,1 +1,79 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Assets</title><link rel="stylesheet" href="./style.css"/></head><body><div class="app"><aside class="side"><div class="logo">SAGE · Redesign</div><nav class="nav"><a href="./scenes.html">Scenes</a><a class="active" href="./assets.html">Assets</a><a href="./asset-detail.html">Asset Detail</a></nav></aside><main class="main"><header class="top"><div class="title">Assets · 复用与绑定</div><div class="top-actions"><button class="btn">Scene Filter</button><button class="btn primary">Upload Asset</button></div></header><section class="content grid-2"><div class="panel"><h3>Asset Inventory</h3><div class="body"><table class="table"><thead><tr><th>Asset</th><th>Type</th><th>Status</th><th>Scene</th></tr></thead><tbody><tr><td>watershed_boundary.geojson</td><td>Vector</td><td><span class="badge ok">Bound</span></td><td>scene-001</td></tr><tr><td>lulc_2024.tif</td><td>Raster</td><td><span class="badge err">Missing</span></td><td>scene-001</td></tr><tr><td>biophysical.csv</td><td>Table</td><td><span class="badge">Unbound</span></td><td>scene-001</td></tr></tbody></table></div></div><div class="panel"><h3>Asset Role</h3><div class="body list"><div class="item"><strong>当前阻塞资产</strong><p class="muted">lulc_2024.tif 缺失，影响 task-002 恢复。</p></div><div class="item"><button class="btn primary">Open Asset Detail</button></div></div></div></section></main></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assets</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="side">
+        <div class="logo">SAGE · Redesign</div>
+        <nav class="nav">
+          <a href="./scenes.html">Scenes</a
+          ><a class="active" href="./assets.html">Assets</a
+          ><a href="./asset-detail.html">Asset Detail</a>
+        </nav>
+      </aside>
+      <main class="main">
+        <header class="top">
+          <div class="title">Assets · 复用与绑定</div>
+          <div class="top-actions">
+            <button class="btn">Scene Filter</button
+            ><button class="btn primary">Upload Asset</button>
+          </div>
+        </header>
+        <section class="content grid-2">
+          <div class="panel">
+            <h3>Asset Inventory</h3>
+            <div class="body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Scene</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>watershed_boundary.geojson</td>
+                    <td>Vector</td>
+                    <td><span class="badge ok">Bound</span></td>
+                    <td>scene-001</td>
+                  </tr>
+                  <tr>
+                    <td>lulc_2024.tif</td>
+                    <td>Raster</td>
+                    <td><span class="badge err">Missing</span></td>
+                    <td>scene-001</td>
+                  </tr>
+                  <tr>
+                    <td>biophysical.csv</td>
+                    <td>Table</td>
+                    <td><span class="badge">Unbound</span></td>
+                    <td>scene-001</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Asset Role</h3>
+            <div class="body list">
+              <div class="item">
+                <strong>当前阻塞资产</strong>
+                <p class="muted">lulc_2024.tif 缺失，影响 task-002 恢复。</p>
+              </div>
+              <div class="item">
+                <button class="btn primary">Open Asset Detail</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
