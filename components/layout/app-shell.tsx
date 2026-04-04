@@ -12,7 +12,8 @@ function getSectionLabel(pathname: string): string {
   if (pathname.startsWith("/scenes/")) return "Scene Workspace";
   if (pathname.startsWith("/task-governance")) return "Task Governance";
   if (pathname.startsWith("/assets")) return "Assets";
-  if (pathname.startsWith("/results") || pathname.startsWith("/reports")) return "Results";
+  if (pathname.startsWith("/results") || pathname.startsWith("/reports"))
+    return "Results";
   if (pathname.startsWith("/settings")) return "Settings";
   return "Scenes";
 }

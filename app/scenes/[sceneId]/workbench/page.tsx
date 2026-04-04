@@ -44,7 +44,11 @@ export default async function SceneWorkbenchPage({
         sceneName={vm.header.sceneName}
         sceneHref={`/scenes/${sceneId}/overview`}
         taskId={taskId}
-        taskHref={taskId ? `/task-governance/${taskId}?from=workbench&taskId=${taskId}` : undefined}
+        taskHref={
+          taskId
+            ? `/task-governance/${taskId}?from=workbench&taskId=${taskId}`
+            : undefined
+        }
         stateLabel={vm.header.currentState}
         stateVariant={getTaskStateVariant(vm.header.currentState)}
         currentView="Workbench"

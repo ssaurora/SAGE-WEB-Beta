@@ -13,7 +13,9 @@ interface ScenesListPageProps {
 
 export function ScenesListClient({ items }: ScenesListPageProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState<"All" | "Active" | "Archived">("Active");
+  const [filterStatus, setFilterStatus] = useState<
+    "All" | "Active" | "Archived"
+  >("Active");
 
   const filteredItems = useMemo(() => {
     let result = items;
@@ -32,12 +34,15 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
     }
 
     return [...result].sort(
-      (a, b) => new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime(),
+      (a, b) =>
+        new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime(),
     );
   }, [items, searchQuery, filterStatus]);
 
   const activeCount = items.filter((item) => item.status === "Active").length;
-  const archivedCount = items.filter((item) => item.status === "Archived").length;
+  const archivedCount = items.filter(
+    (item) => item.status === "Archived",
+  ).length;
 
   return (
     <div className="space-y-4">
@@ -62,7 +67,9 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
             />
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as "All" | "Active" | "Archived")}
+              onChange={(e) =>
+                setFilterStatus(e.target.value as "All" | "Active" | "Archived")
+              }
               className="h-10 rounded-md border border-input bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             >
               <option value="All">All Status</option>
@@ -93,19 +100,32 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredItems.map((scene) => (
-            <Card key={scene.sceneId} className="group h-full transition-all hover:border-primary hover:shadow-lg">
+            <Card
+              key={scene.sceneId}
+              className="group h-full transition-all hover:border-primary hover:shadow-lg"
+            >
               <CardContent className="space-y-4 p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 space-y-1">
-                    <p className="text-base font-semibold group-hover:text-primary">{scene.name}</p>
-                    <p className="text-sm text-muted-foreground">{scene.analysisTheme}</p>
+                    <p className="text-base font-semibold group-hover:text-primary">
+                      {scene.name}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {scene.analysisTheme}
+                    </p>
                   </div>
-                  <Badge variant={scene.status === "Active" ? "secondary" : "outline"}>
+                  <Badge
+                    variant={
+                      scene.status === "Active" ? "secondary" : "outline"
+                    }
+                  >
                     {scene.status === "Active" ? "活跃" : "归档"}
                   </Badge>
                 </div>
 
-                <p className="text-xs text-muted-foreground">最后修改：{scene.lastModified}</p>
+                <p className="text-xs text-muted-foreground">
+                  最后修改：{scene.lastModified}
+                </p>
 
                 <Link href={`/scenes/${scene.sceneId}/overview`}>
                   <Button size="sm" className="w-full">

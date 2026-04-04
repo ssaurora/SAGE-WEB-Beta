@@ -56,9 +56,7 @@ export function SceneShell({
             </p>
             <h2 className="mt-2 text-2xl font-semibold">{sceneId}</h2>
           </div>
-          <p className="text-sm text-muted-foreground">
-            场景级工作容器。
-          </p>
+          <p className="text-sm text-muted-foreground">场景级工作容器。</p>
         </div>
       </div>
 
