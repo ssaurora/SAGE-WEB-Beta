@@ -69,7 +69,9 @@ export function TaskContextBar({
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          {fromLabel ? <Badge variant="outline">From: {fromLabel}</Badge> : null}
+          {fromLabel ? (
+            <Badge variant="outline">From: {fromLabel}</Badge>
+          ) : null}
           {roleLabel ? <Badge variant="outline">{roleLabel}</Badge> : null}
           {modeLabel ? <Badge variant="outline">{modeLabel}</Badge> : null}
         </div>
