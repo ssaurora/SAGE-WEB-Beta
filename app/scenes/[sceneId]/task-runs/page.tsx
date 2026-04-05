@@ -9,7 +9,10 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneTaskRunsViewModel } from "@/lib/api/scene";
-import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
+import {
+  formatTaskContextFrom,
+  TASK_CONTEXT_FROM,
+} from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -24,6 +27,7 @@ export default async function SceneTaskRunsPage({
 }) {
   const { sceneId } = await params;
   const { from } = await searchParams;
+  const contextFromLabel = formatTaskContextFrom(from);
   let vm;
 
   try {
@@ -54,7 +58,7 @@ export default async function SceneTaskRunsPage({
         {from ? (
           <CardContent className="pt-0">
             <div className="rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
-              当前页面由 {from} 进入
+              当前页面由 {contextFromLabel ?? from} 进入
             </div>
           </CardContent>
         ) : null}
