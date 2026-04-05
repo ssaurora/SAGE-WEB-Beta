@@ -17,7 +17,6 @@ import {
 } from "@/components/pages/maplibre-canvas";
 import { InputsPanelInteractive } from "@/components/pages/inputs-panel-interactive";
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
-import { TaskContextBar } from "@/components/pages/task-context-bar";
 import type { WorkbenchPageViewModel } from "@/lib/contracts/scene";
 import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import {
@@ -849,24 +848,6 @@ export function WorkbenchMapInteractive({
 
   return (
     <div className="space-y-4">
-      <TaskContextBar
-        sceneName={vm.header.sceneName}
-        sceneHref={`/scenes/${sceneId}/overview`}
-        taskId={contextTaskId}
-        taskHref={
-          contextTaskId
-            ? `/task-governance/${contextTaskId}?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${contextTaskId}`
-            : undefined
-        }
-        stateLabel={getTaskStateLabel(workbenchState)}
-        stateVariant={getTaskStateVariant(workbenchState)}
-        currentView="Workbench"
-        roleLabel={role}
-        modeLabel={canEdit ? "Editable" : "Read Only"}
-        fromLabel={contextFrom}
-        summary={layoutLabel}
-      />
-
       <Card>
         <CardHeader className="pb-3">
           <div className="space-y-2">

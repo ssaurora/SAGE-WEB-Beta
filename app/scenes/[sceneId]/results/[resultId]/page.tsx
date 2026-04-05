@@ -49,6 +49,24 @@ export default async function SceneResultDetailPage({
 
       <Card>
         <CardHeader>
+          <CardTitle className="text-base">Decision Zone</CardTitle>
+          <CardDescription>
+            先看结论，再进入指标、映射与下载证据。
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="rounded-md border bg-muted/20 p-3 text-sm">
+            <p className="text-xs text-muted-foreground">Result Summary</p>
+            <p className="mt-1 font-medium">{vm.summary}</p>
+          </div>
+          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+            {vm.explanation}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <CardTitle>{vm.resultId}</CardTitle>
@@ -81,24 +99,6 @@ export default async function SceneResultDetailPage({
             </div>
           </div>
         </CardHeader>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Decision Zone</CardTitle>
-          <CardDescription>
-            先看结论，再进入指标、映射与下载证据。
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="rounded-md border bg-muted/20 p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Result Summary</p>
-            <p className="mt-1 font-medium">{vm.summary}</p>
-          </div>
-          <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-            {vm.explanation}
-          </div>
-        </CardContent>
       </Card>
 
       {from ? (

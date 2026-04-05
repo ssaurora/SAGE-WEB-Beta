@@ -113,25 +113,6 @@ export default async function SceneResultsPage({
 
       <Card>
         <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <CardTitle>Scene Results</CardTitle>
-                <Badge variant={getTaskStateVariant(vm.latestState)}>
-                  {getTaskStateLabel(vm.latestState)}
-                </Badge>
-              </div>
-              <CardDescription>
-                {vm.sceneId} · 结论优先的结果判断与消费入口
-              </CardDescription>
-            </div>
-            <Badge variant="outline">Total Results: {vm.items.length}</Badge>
-          </div>
-        </CardHeader>
-      </Card>
-
-      <Card>
-        <CardHeader>
           <CardTitle className="text-base">Decision Zone</CardTitle>
           <CardDescription>先判断去向，再进入具体结果证据。</CardDescription>
         </CardHeader>
