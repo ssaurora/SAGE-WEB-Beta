@@ -50,7 +50,7 @@ export default async function SceneTaskRunsPage({
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Scene Task Runs</CardTitle>
+          <CardTitle>场景任务运行</CardTitle>
           <CardDescription>
             {vm.sceneId} · 场景任务运行记录与状态联动
           </CardDescription>
@@ -88,7 +88,7 @@ export default async function SceneTaskRunsPage({
               </div>
               <div className="mt-3 flex items-center justify-between">
                 <p className="text-xs text-muted-foreground">
-                  Updated at: {task.updatedAt}
+                  更新时间：{task.updatedAt}
                 </p>
                 <Link
                   href={`/task-governance/${task.taskId}?from=${TASK_CONTEXT_FROM.TaskRuns}&taskId=${task.taskId}`}

@@ -95,7 +95,7 @@ export default async function SceneAssetsPage({
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Scene Assets</CardTitle>
+          <CardTitle>场景资产</CardTitle>
           <CardDescription>
             {vm.sceneId} · 场景资源清单与阻塞资产入口
           </CardDescription>
@@ -105,7 +105,7 @@ export default async function SceneAssetsPage({
             href={`/assets?sceneId=${vm.sceneId}&from=${TASK_CONTEXT_FROM.SceneAssets}`}
             className="text-sm font-medium text-primary hover:underline"
           >
-            Open Global Assets (prefilled by scene)
+            打开全局资产（已按场景预填）
           </Link>
         </CardContent>
       </Card>
@@ -113,17 +113,17 @@ export default async function SceneAssetsPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">
-            Current Scene Asset Status
+            当前场景资产状态
           </CardTitle>
           <CardDescription>先判断是否存在阻塞，再处理资产清单</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Total</p>
+            <p className="text-xs text-muted-foreground">总数</p>
             <p className="mt-1 font-semibold">{vm.items.length}</p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Missing</p>
+            <p className="text-xs text-muted-foreground">缺失</p>
             <p className="mt-1 font-semibold">{missingCount}</p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
@@ -134,14 +134,14 @@ export default async function SceneAssetsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Asset List</CardTitle>
+          <CardTitle className="text-base">资产列表</CardTitle>
           <CardDescription>资产清册、类型、绑定状态与可见性</CardDescription>
         </CardHeader>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Assets</CardTitle>
+          <CardTitle className="text-base">资产明细</CardTitle>
           <CardDescription>资产清册、类型、绑定状态与可见性</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -172,12 +172,12 @@ export default async function SceneAssetsPage({
                 </div>
               </div>
               <div className="mt-3 flex items-center justify-between">
-                <p className="text-xs text-muted-foreground">Asset detail</p>
+                <p className="text-xs text-muted-foreground">资产详情</p>
                 <Link
                   href={`/assets/${item.assetId}?from=${TASK_CONTEXT_FROM.SceneAssets}&sceneId=${vm.sceneId}`}
                   className="text-sm font-medium text-primary hover:underline"
                 >
-                  Open Asset Detail
+                  查看资产详情
                 </Link>
               </div>
             </div>

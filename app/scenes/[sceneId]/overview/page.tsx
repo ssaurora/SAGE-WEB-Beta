@@ -153,8 +153,8 @@ export default async function SceneOverviewPage({
       <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Map Preview</CardTitle>
-            <CardDescription>Scene extent preview</CardDescription>
+            <CardTitle className="text-base">地图预览</CardTitle>
+            <CardDescription>场景范围预览</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border bg-background p-2">
@@ -168,7 +168,7 @@ export default async function SceneOverviewPage({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Auxiliary Links</CardTitle>
+            <CardTitle className="text-base">辅助入口</CardTitle>
             <CardDescription>非主流程入口降级为辅助导航</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
@@ -176,25 +176,25 @@ export default async function SceneOverviewPage({
               href={`/scenes/${sceneId}/workbench?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
-              Workbench
+              工作台
             </Link>
             <Link
               href={`/task-governance/${vm.latestTask.id}?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
-              Task Governance
+              任务治理
             </Link>
             <Link
               href={`/scenes/${sceneId}/results?from=${TASK_CONTEXT_FROM.Overview}&taskId=${vm.latestTask.id}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
-              Results
+              结果列表
             </Link>
             <Link
               href={`/scenes/${sceneId}/task-runs?from=${TASK_CONTEXT_FROM.Overview}`}
               className="block text-primary underline-offset-4 hover:underline"
             >
-              Task Runs
+              任务运行
             </Link>
           </CardContent>
         </Card>
@@ -202,7 +202,7 @@ export default async function SceneOverviewPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Pending Actions</CardTitle>
+          <CardTitle className="text-base">待处理事项</CardTitle>
           <CardDescription>折叠后的待处理事项，仅作证据参考</CardDescription>
         </CardHeader>
         <CardContent>
@@ -221,7 +221,7 @@ export default async function SceneOverviewPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Recent Activities</CardTitle>
+          <CardTitle className="text-base">最近活动</CardTitle>
           <CardDescription>最近场景活动</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">

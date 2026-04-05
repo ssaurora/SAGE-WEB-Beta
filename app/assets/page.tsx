@@ -44,15 +44,15 @@ export default async function AssetsPage({
           </CardHeader>
           <CardContent className="grid gap-3 pt-0 sm:grid-cols-3">
             <div className="rounded-md border bg-muted/20 p-3 text-sm">
-              <p className="text-xs text-muted-foreground">Total Assets</p>
+              <p className="text-xs text-muted-foreground">资产总数</p>
               <p className="mt-1 font-semibold">{assets.length}</p>
             </div>
             <div className="rounded-md border bg-muted/20 p-3 text-sm">
-              <p className="text-xs text-muted-foreground">Bound</p>
+              <p className="text-xs text-muted-foreground">已绑定</p>
               <p className="mt-1 font-semibold">{boundCount}</p>
             </div>
             <div className="rounded-md border bg-muted/20 p-3 text-sm">
-              <p className="text-xs text-muted-foreground">Missing</p>
+              <p className="text-xs text-muted-foreground">缺失</p>
               <p className="mt-1 font-semibold">{missingCount}</p>
             </div>
           </CardContent>
@@ -72,10 +72,10 @@ export default async function AssetsPage({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Asset Inventory</CardTitle>
+            <CardTitle className="text-base">资产清册</CardTitle>
             <CardDescription>
               资产明细、筛选与绑定关系（
-              {sceneId ? `scene ${sceneId}` : "all scenes"}）。
+              {sceneId ? `场景 ${sceneId}` : "全部场景"}）。
             </CardDescription>
           </CardHeader>
           <CardContent>

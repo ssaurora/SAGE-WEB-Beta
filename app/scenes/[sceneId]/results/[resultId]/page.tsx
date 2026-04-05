@@ -48,7 +48,7 @@ export default async function SceneResultDetailPage({
         taskHref={`/task-governance/${vm.fromTaskId}?from=${TASK_CONTEXT_FROM.ResultDetail}&taskId=${vm.fromTaskId}`}
         currentView="Result Detail"
         fromLabel={from}
-        summary={`From task ${vm.fromTaskId}`}
+        summary={`来自任务 ${vm.fromTaskId}`}
       />
 
       <Card>
@@ -75,7 +75,7 @@ export default async function SceneResultDetailPage({
             <div>
               <CardTitle>{vm.resultId}</CardTitle>
               <CardDescription>
-                from {vm.fromTaskId} · {vm.generatedAt}
+                来源任务 {vm.fromTaskId} · {vm.generatedAt}
               </CardDescription>
             </div>
             <div className="flex gap-2">
@@ -120,7 +120,7 @@ export default async function SceneResultDetailPage({
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Indicators</CardTitle>
+            <CardTitle className="text-base">指标摘要</CardTitle>
             <CardDescription>指标摘要与趋势</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -143,7 +143,7 @@ export default async function SceneResultDetailPage({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Input / Output Mapping</CardTitle>
+            <CardTitle className="text-base">输入 / 输出映射</CardTitle>
             <CardDescription>输入与输出映射关系</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -162,7 +162,7 @@ export default async function SceneResultDetailPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Downloadable Artifacts</CardTitle>
+          <CardTitle className="text-base">可下载产物</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           {vm.downloadableArtifacts.map((artifact) => (
