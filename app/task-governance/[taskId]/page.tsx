@@ -108,7 +108,7 @@ export default async function TaskGovernancePage({
 
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
             <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-              Next Action
+              Primary Action
             </p>
             <p className="mt-1">{nextActionText}</p>
           </div>
@@ -116,7 +116,7 @@ export default async function TaskGovernancePage({
           <div className="grid gap-3 lg:grid-cols-[1.2fr_0.8fr]">
             <div className="rounded-md border p-3 text-sm text-muted-foreground">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Why this status
+                Decision Evidence
               </p>
               <p className="mt-1">
                 {vm.failureSummary
@@ -128,7 +128,7 @@ export default async function TaskGovernancePage({
             </div>
             <div className="rounded-md border p-3 text-sm text-muted-foreground">
               <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                Primary decision
+                Decision Outcome
               </p>
               <p className="mt-1">
                 {isFailedRecoverable

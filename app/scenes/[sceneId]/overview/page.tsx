@@ -106,7 +106,7 @@ export default async function SceneOverviewPage({
         <CardContent className="space-y-3 pt-0">
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-lg border bg-muted/30 p-3">
-              <p className="text-xs text-muted-foreground">Current State</p>
+              <p className="text-xs text-muted-foreground">Decision Status</p>
               <div className="mt-1 flex items-center gap-2">
                 <p className="text-sm font-semibold">{vm.latestTask.id}</p>
                 <Badge variant={getTaskStateVariant(vm.latestTask.state)}>
@@ -119,7 +119,7 @@ export default async function SceneOverviewPage({
             </div>
 
             <div className="rounded-lg border bg-muted/30 p-3">
-              <p className="text-xs text-muted-foreground">Next Action</p>
+              <p className="text-xs text-muted-foreground">Primary Action</p>
               <p className="mt-1 text-sm font-semibold">
                 {primaryAction.label}
               </p>
@@ -133,7 +133,7 @@ export default async function SceneOverviewPage({
             </div>
 
             <div className="rounded-lg border bg-muted/30 p-3">
-              <p className="text-xs text-muted-foreground">Latest Result</p>
+              <p className="text-xs text-muted-foreground">Decision Target</p>
               <p className="mt-1 text-sm font-semibold">
                 {vm.latestResult.reportId}
               </p>

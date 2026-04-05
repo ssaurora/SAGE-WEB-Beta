@@ -56,7 +56,7 @@ export default async function SceneResultDetailPage({
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Result Summary</p>
+            <p className="text-xs text-muted-foreground">Decision Summary</p>
             <p className="mt-1 font-medium">{vm.summary}</p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">

@@ -118,25 +118,25 @@ export default async function SceneResultsPage({
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-4">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Latest State</p>
+            <p className="text-xs text-muted-foreground">Decision Status</p>
             <p className="mt-1 font-semibold">
               {getTaskStateLabel(vm.latestState)}
             </p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Latest Result</p>
+            <p className="text-xs text-muted-foreground">Decision Target</p>
             <p className="mt-1 font-semibold">
               {latestResult?.resultId ?? "-"}
             </p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
-            <p className="text-xs text-muted-foreground">Recommended</p>
+            <p className="text-xs text-muted-foreground">Recommended Target</p>
             <p className="mt-1 font-semibold">
               {recommendedResult?.resultId ?? "None"}
             </p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
-            <p className="text-xs">Primary Decision</p>
+            <p className="text-xs">Decision Rationale</p>
             <p className="mt-1 text-foreground">{primaryDecisionAction.hint}</p>
           </div>
         </CardContent>
