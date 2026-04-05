@@ -12,7 +12,10 @@ import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneResultsPanel } from "@/components/pages/scene-results-panel";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { getSceneResultsViewModel } from "@/lib/api/scene";
-import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
+import {
+  formatTaskContextFrom,
+  TASK_CONTEXT_FROM,
+} from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -55,6 +58,7 @@ export default async function SceneResultsPage({
     latestResult && latestResult.explanationReady && latestResult.mapLayerReady
       ? latestResult
       : undefined;
+  const contextFromLabel = formatTaskContextFrom(from);
 
   const primaryDecisionAction = (() => {
     if (!latestResult) {
@@ -150,10 +154,10 @@ export default async function SceneResultsPage({
       {taskId ? (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Context Filter Applied</CardTitle>
+            <CardTitle className="text-base">Context Notes</CardTitle>
             <CardDescription>
               已按任务 {taskId} 预筛选
-              {from ? ` · from ${from}` : ""}
+              {contextFromLabel ? ` · from ${contextFromLabel}` : ""}
             </CardDescription>
           </CardHeader>
         </Card>

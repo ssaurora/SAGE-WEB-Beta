@@ -10,7 +10,10 @@ import {
 } from "@/components/ui/card";
 import { getSceneResultDetailViewModel } from "@/lib/api/scene";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
-import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
+import {
+  formatTaskContextFrom,
+  TASK_CONTEXT_FROM,
+} from "@/lib/navigation/task-context";
 
 function trendLabel(trend: "up" | "down" | "flat") {
   if (trend === "up") return "↑ 上升";
@@ -34,6 +37,7 @@ export default async function SceneResultDetailPage({
   const { sceneId, resultId } = await params;
   const { from, taskId, resultId: linkedResultId } = await searchParams;
   const vm = await getSceneResultDetailViewModel(sceneId, resultId);
+  const contextFromLabel = formatTaskContextFrom(from);
 
   return (
     <div className="space-y-4">
@@ -104,9 +108,9 @@ export default async function SceneResultDetailPage({
       {from ? (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Navigation Context</CardTitle>
+            <CardTitle className="text-base">Context Notes</CardTitle>
             <CardDescription>
-              当前详情页由 {from} 进入
+              当前详情页由 {contextFromLabel ?? from} 进入
               {taskId ? ` · task ${taskId}` : ""}
             </CardDescription>
           </CardHeader>

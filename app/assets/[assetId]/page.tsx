@@ -10,7 +10,10 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getAssetDetailViewModel } from "@/lib/api/asset";
-import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
+import {
+  formatTaskContextFrom,
+  TASK_CONTEXT_FROM,
+} from "@/lib/navigation/task-context";
 
 function bindStatusLabel(status: "Bound" | "Unbound" | "Missing") {
   if (status === "Bound") return "已绑定";
@@ -33,6 +36,7 @@ export default async function AssetDetailPage({
 }) {
   const { assetId } = await params;
   const { from, sceneId } = await searchParams;
+  const contextFromLabel = formatTaskContextFrom(from);
   let vm;
 
   try {
@@ -102,9 +106,9 @@ export default async function AssetDetailPage({
       {from ? (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Navigation Context</CardTitle>
+            <CardTitle className="text-base">Context Notes</CardTitle>
             <CardDescription>
-              当前资产详情由 {from} 进入
+              当前资产详情由 {contextFromLabel ?? from} 进入
               {sceneId ? ` · scene ${sceneId}` : ""}
             </CardDescription>
           </CardHeader>

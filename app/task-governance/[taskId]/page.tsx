@@ -7,7 +7,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getTaskGovernanceViewModel } from "@/lib/api/task";
-import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
+import {
+  formatTaskContextFrom,
+  TASK_CONTEXT_FROM,
+} from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -28,6 +31,7 @@ export default async function TaskGovernancePage({
   const { taskId } = await params;
   const { from, taskId: contextTaskId } = await searchParams;
   const vm = await getTaskGovernanceViewModel(taskId);
+  const contextFromLabel = formatTaskContextFrom(from);
   const isWaitingInput = vm.currentState === "Waiting for Required Input";
   const isActionRequired = vm.currentState === "Action Required";
   const isRunning = vm.currentState === "Running";
@@ -88,8 +92,8 @@ export default async function TaskGovernancePage({
           </div>
           <CardDescription>
             {vm.sceneId} · 任务治理与审计摘要
-            {from
-              ? ` · via ${from}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
+            {contextFromLabel
+              ? ` · via ${contextFromLabel}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
               : ""}
           </CardDescription>
         </CardHeader>
