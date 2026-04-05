@@ -68,7 +68,7 @@ export default async function SceneAssetsPage({
     return (
       <div className="space-y-4">
         <DataStateCard
-          title="Scene assets load failed"
+          title="场景资产加载失败"
           description="场景资产暂时不可用，请稍后重试。"
           tone="error"
           actionHref={`/scenes/${sceneId}/assets`}
@@ -89,7 +89,7 @@ export default async function SceneAssetsPage({
       ? `当前缺失 ${missingCount} 个关键资产，会直接阻塞本场景任务。`
       : unboundCount > 0
         ? `当前有 ${unboundCount} 个未绑定资产，建议先完成绑定再继续运行。`
-        : "当前无阻塞资产，可返回 Workbench 继续执行。";
+        : "当前无阻塞资产，可返回工作台继续执行。";
 
   return (
     <div className="space-y-4">
@@ -112,9 +112,7 @@ export default async function SceneAssetsPage({
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
-            当前场景资产状态
-          </CardTitle>
+          <CardTitle className="text-base">当前场景资产状态</CardTitle>
           <CardDescription>先判断是否存在阻塞，再处理资产清单</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-3">

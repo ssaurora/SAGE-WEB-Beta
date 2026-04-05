@@ -17,7 +17,7 @@ export default async function TasksPage() {
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Tasks</CardTitle>
+            <CardTitle>任务列表</CardTitle>
             <CardDescription>
               任务状态与可恢复性总览（支持搜索与快速筛选）
             </CardDescription>
@@ -32,7 +32,7 @@ export default async function TasksPage() {
     return (
       <div className="space-y-4">
         <DataStateCard
-          title="Tasks load failed"
+          title="任务加载失败"
           description="任务列表暂时不可用，请稍后重试或刷新页面。"
           tone="error"
           actionHref="/tasks"

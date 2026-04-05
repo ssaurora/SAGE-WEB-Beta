@@ -11,7 +11,7 @@ export default function TasksError({
 }) {
   return (
     <PageErrorState
-      title="Tasks page error"
+      title="任务页面异常"
       description={error.message || "任务页加载失败，请重试。"}
       actionHref="/tasks"
       actionLabel="返回任务列表"

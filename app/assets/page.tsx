@@ -31,13 +31,13 @@ export default async function AssetsPage({
         ? `当前缺失 ${missingCount} 个关键资产，建议优先修复来源或重新上传。`
         : unboundCount > 0
           ? `当前有 ${unboundCount} 个未绑定资产，建议按任务上下文完成绑定。`
-          : "当前无阻塞资产，可返回 Workbench 或 Governance 继续任务链路。";
+          : "当前无阻塞资产，可返回工作台或治理页继续任务链路。";
 
     return (
       <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle>Assets</CardTitle>
+            <CardTitle>资产</CardTitle>
             <CardDescription>
               全局资产池：跨场景资产清册与治理入口
             </CardDescription>
@@ -60,7 +60,7 @@ export default async function AssetsPage({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Current Asset Status</CardTitle>
+            <CardTitle className="text-base">当前资产状态</CardTitle>
             <CardDescription>基于当前资产状态的实时判断</CardDescription>
           </CardHeader>
           <CardContent>
@@ -92,7 +92,7 @@ export default async function AssetsPage({
     return (
       <div className="space-y-4">
         <DataStateCard
-          title="Assets load failed"
+          title="资产加载失败"
           description="资产列表暂时不可用，请稍后重试。"
           tone="error"
           actionHref="/assets"

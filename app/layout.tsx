@@ -4,7 +4,7 @@ import { AppShell } from "@/components/layout/app-shell";
 
 export const metadata: Metadata = {
   title: "SAGE-WEB",
-  description: "Scene-first analysis workbench",
+  description: "以场景为主线的分析工作台",
 };
 
 export default function RootLayout({

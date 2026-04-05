@@ -18,7 +18,7 @@ export default function TaskGovernanceError({
 
   return (
     <PageErrorState
-      title="Governance load failed"
+      title="治理页加载失败"
       description="任务治理页暂时不可用，请稍后重试。"
       actionHref="/tasks"
       actionLabel="返回任务列表"

@@ -14,7 +14,7 @@ export default function SettingsPage() {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Settings</CardTitle>
+          <CardTitle>设置</CardTitle>
           <CardDescription>
             权限与可见性配置中心，用于切换角色并查看默认可见性策略。
           </CardDescription>

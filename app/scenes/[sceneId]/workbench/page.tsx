@@ -28,7 +28,7 @@ export default async function SceneWorkbenchPage({
     return (
       <div className="space-y-4">
         <DataStateCard
-          title="Workbench load failed"
+          title="工作台加载失败"
           description="工作台暂时不可用，请稍后重试。"
           tone="error"
           actionHref={`/scenes/${sceneId}/workbench`}
@@ -53,7 +53,7 @@ export default async function SceneWorkbenchPage({
         stateVariant={getTaskStateVariant(vm.header.currentState)}
         currentView="Workbench"
         fromLabel={from}
-        summary={`${vm.header.analysisType} · Required Inputs Ready: ${vm.header.requiredInputsReady}`}
+        summary={`${vm.header.analysisType} · 必需输入就绪：${vm.header.requiredInputsReady}`}
       />
 
       <Card>
@@ -72,7 +72,7 @@ export default async function SceneWorkbenchPage({
             </Badge>
           </div>
           <CardDescription>
-            {vm.header.sceneName} · Required Inputs Ready:{" "}
+            {vm.header.sceneName} · 必需输入就绪：
             {vm.header.requiredInputsReady}
           </CardDescription>
         </CardHeader>

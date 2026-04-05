@@ -18,7 +18,7 @@ export default function SceneResultsError({
 
   return (
     <PageErrorState
-      title="Results load failed"
+      title="结果加载失败"
       description="结果列表暂时不可用，请稍后重试。"
       actionHref="/tasks"
       actionLabel="返回任务列表"

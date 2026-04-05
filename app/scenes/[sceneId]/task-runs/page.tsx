@@ -36,7 +36,7 @@ export default async function SceneTaskRunsPage({
     return (
       <div className="space-y-4">
         <DataStateCard
-          title="Task Runs load failed"
+          title="任务运行加载失败"
           description="任务运行记录暂时不可用，请稍后重试。"
           tone="error"
           actionHref={`/scenes/${sceneId}/task-runs`}

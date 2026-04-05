@@ -18,7 +18,7 @@ export default function SceneResultDetailError({
 
   return (
     <PageErrorState
-      title="Result detail failed"
+      title="结果详情加载失败"
       description="结果详情暂时不可用，请稍后重试。"
       actionHref="/scenes"
       actionLabel="返回场景列表"

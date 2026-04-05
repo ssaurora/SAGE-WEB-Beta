@@ -18,7 +18,7 @@ export default function SceneOverviewError({
 
   return (
     <PageErrorState
-      title="Overview load failed"
+      title="概览加载失败"
       description="场景概览暂时不可用，请稍后重试。"
       actionHref="/scenes"
       actionLabel="返回场景列表"

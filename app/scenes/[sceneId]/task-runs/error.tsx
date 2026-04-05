@@ -15,7 +15,7 @@ export default function TaskRunsError({ error, reset }: TaskRunsErrorProps) {
 
   return (
     <PageErrorState
-      title="Task Runs load failed"
+      title="任务运行加载失败"
       description="任务运行记录暂时不可用，请稍后重试。"
       actionHref="/tasks"
       actionLabel="返回任务列表"
