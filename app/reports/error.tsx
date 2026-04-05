@@ -18,7 +18,7 @@ export default function ReportsError({ error, reset }: ReportsErrorProps) {
       title="Results load failed"
       description="结果列表暂时不可用，请稍后重试。"
       actionHref="/results"
-      actionLabel="Back to Results"
+      actionLabel="返回结果列表"
       onRetry={reset}
     />
   );

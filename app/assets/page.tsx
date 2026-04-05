@@ -96,7 +96,7 @@ export default async function AssetsPage({
           description="资产列表暂时不可用，请稍后重试。"
           tone="error"
           actionHref="/assets"
-          actionLabel="Retry"
+          actionLabel="重试"
         />
       </div>
     );

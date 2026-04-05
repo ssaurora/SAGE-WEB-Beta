@@ -14,7 +14,7 @@ export default function ScenesError({
       title="Scenes page error"
       description={error.message || "场景页加载失败，请重试。"}
       actionHref="/scenes"
-      actionLabel="Back to Scenes"
+      actionLabel="返回场景列表"
       onRetry={reset}
     />
   );

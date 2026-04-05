@@ -21,7 +21,7 @@ export default function TaskGovernanceError({
       title="Governance load failed"
       description="任务治理页暂时不可用，请稍后重试。"
       actionHref="/tasks"
-      actionLabel="Back to Tasks"
+      actionLabel="返回任务列表"
       onRetry={reset}
     />
   );

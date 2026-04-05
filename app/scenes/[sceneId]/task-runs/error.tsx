@@ -18,7 +18,7 @@ export default function TaskRunsError({ error, reset }: TaskRunsErrorProps) {
       title="Task Runs load failed"
       description="任务运行记录暂时不可用，请稍后重试。"
       actionHref="/tasks"
-      actionLabel="Back to Tasks"
+      actionLabel="返回任务列表"
       onRetry={reset}
     />
   );

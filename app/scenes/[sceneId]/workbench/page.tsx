@@ -32,7 +32,7 @@ export default async function SceneWorkbenchPage({
           description="工作台暂时不可用，请稍后重试。"
           tone="error"
           actionHref={`/scenes/${sceneId}/workbench`}
-          actionLabel="Retry"
+          actionLabel="重试"
         />
       </div>
     );

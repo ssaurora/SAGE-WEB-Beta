@@ -72,7 +72,7 @@ export default async function SceneAssetsPage({
           description="场景资产暂时不可用，请稍后重试。"
           tone="error"
           actionHref={`/scenes/${sceneId}/assets`}
-          actionLabel="Retry"
+          actionLabel="重试"
         />
       </div>
     );

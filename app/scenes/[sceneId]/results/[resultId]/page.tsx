@@ -83,21 +83,21 @@ export default async function SceneResultDetailPage({
                 href={`/task-governance/${vm.fromTaskId}?from=${TASK_CONTEXT_FROM.ResultDetail}&taskId=${vm.fromTaskId}`}
               >
                 <Button size="sm" variant="outline">
-                  Open Task Governance
+                  查看任务治理
                 </Button>
               </Link>
               <Link
                 href={`/results/${linkedResultId ?? vm.resultId}?from=${TASK_CONTEXT_FROM.ResultDetail}&taskId=${vm.fromTaskId}&resultId=${vm.resultId}`}
               >
                 <Button size="sm" variant="outline">
-                  Open Result Detail
+                  查看结果详情
                 </Button>
               </Link>
               <Link
                 href={`/scenes/${vm.sceneId}/results${taskId ? `?taskId=${taskId}&from=${from ?? TASK_CONTEXT_FROM.ResultDetail}` : ""}`}
               >
                 <Button size="sm" variant="secondary">
-                  Back to Results
+                  返回结果列表
                 </Button>
               </Link>
             </div>

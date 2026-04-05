@@ -21,7 +21,7 @@ export default function SceneResultDetailError({
       title="Result detail failed"
       description="结果详情暂时不可用，请稍后重试。"
       actionHref="/scenes"
-      actionLabel="Back to Scenes"
+      actionLabel="返回场景列表"
       onRetry={reset}
     />
   );

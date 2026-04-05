@@ -21,7 +21,7 @@ export default function SceneResultsError({
       title="Results load failed"
       description="结果列表暂时不可用，请稍后重试。"
       actionHref="/tasks"
-      actionLabel="Back to Tasks"
+      actionLabel="返回任务列表"
       onRetry={reset}
     />
   );

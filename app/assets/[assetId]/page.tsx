@@ -79,14 +79,14 @@ export default async function AssetDetailPage({
                 href={`/assets${sceneId ? `?sceneId=${sceneId}&from=${TASK_CONTEXT_FROM.AssetDetail}` : ""}`}
               >
                 <Button size="sm" variant="outline">
-                  Back to Assets
+                  返回资产列表
                 </Button>
               </Link>
               <Link
                 href={`/scenes/${vm.sceneId}/assets?from=${TASK_CONTEXT_FROM.AssetDetail}`}
               >
                 <Button size="sm" variant="outline">
-                  Open Scene Assets
+                  查看场景资产
                 </Button>
               </Link>
               {vm.lastTaskId ? (
@@ -94,7 +94,7 @@ export default async function AssetDetailPage({
                   href={`/task-governance/${vm.lastTaskId}?from=${TASK_CONTEXT_FROM.AssetDetail}&taskId=${vm.lastTaskId}`}
                 >
                   <Button size="sm" variant="secondary">
-                    Open Task Governance
+                    查看任务治理
                   </Button>
                 </Link>
               ) : null}

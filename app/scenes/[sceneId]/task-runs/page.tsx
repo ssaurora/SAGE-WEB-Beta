@@ -40,7 +40,7 @@ export default async function SceneTaskRunsPage({
           description="任务运行记录暂时不可用，请稍后重试。"
           tone="error"
           actionHref={`/scenes/${sceneId}/task-runs`}
-          actionLabel="Retry"
+          actionLabel="重试"
         />
       </div>
     );

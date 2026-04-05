@@ -36,7 +36,7 @@ export default async function TasksPage() {
           description="任务列表暂时不可用，请稍后重试或刷新页面。"
           tone="error"
           actionHref="/tasks"
-          actionLabel="Retry"
+          actionLabel="重试"
         />
       </div>
     );

@@ -14,7 +14,7 @@ export default function TasksError({
       title="Tasks page error"
       description={error.message || "任务页加载失败，请重试。"}
       actionHref="/tasks"
-      actionLabel="Back to Tasks"
+      actionLabel="返回任务列表"
       onRetry={reset}
     />
   );

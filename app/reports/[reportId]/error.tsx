@@ -21,7 +21,7 @@ export default function ReportDetailError({
       title="Report detail failed"
       description="报告详情暂时不可用，请稍后重试。"
       actionHref="/results"
-      actionLabel="Back to Reports"
+      actionLabel="返回结果列表"
       onRetry={reset}
     />
   );
