@@ -73,8 +73,12 @@ export default async function TaskGovernancePage({
 
       <Card>
         <CardHeader>
+          <div className="space-y-1">
+            <CardTitle className="text-base">Decision Zone</CardTitle>
+            <CardDescription>先判断任务去向，再进入治理证据与恢复动作。</CardDescription>
+          </div>
           <div className="flex flex-wrap items-center gap-2">
-            <CardTitle>{vm.taskId}</CardTitle>
+            <p className="text-lg font-semibold">{vm.taskId}</p>
             <Badge variant={getTaskStateVariant(vm.currentState)}>
               {getTaskStateLabel(vm.currentState)}
             </Badge>

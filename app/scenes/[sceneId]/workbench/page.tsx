@@ -22,7 +22,6 @@ export default async function SceneWorkbenchPage({
   const { sceneId } = await params;
   const { from, taskId } = await searchParams;
   let vm;
-
   try {
     vm = await getSceneWorkbenchViewModel(sceneId);
   } catch {
@@ -59,8 +58,14 @@ export default async function SceneWorkbenchPage({
 
       <Card>
         <CardHeader className="pb-4">
+          <div className="space-y-1">
+            <CardTitle className="text-base">Decision Zone</CardTitle>
+            <CardDescription>
+              先确认当前运行状态，再进入工作台交互与证据区。
+            </CardDescription>
+          </div>
           <div className="flex flex-wrap items-center gap-2">
-            <CardTitle className="text-lg">{vm.header.analysisType}</CardTitle>
+            <p className="text-lg font-semibold">{vm.header.analysisType}</p>
             <Badge variant="outline">{vm.header.modelName}</Badge>
             <Badge variant={getTaskStateVariant(vm.header.currentState)}>
               {vm.header.currentState}

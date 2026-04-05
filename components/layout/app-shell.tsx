@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useAppRole } from "@/components/pages/app-role";
 import { primaryNav } from "@/config/navigation";
 import { cn } from "@/lib/utils";
-import { Package } from "lucide-react";
 
 function getSectionLabel(pathname: string): string {
   if (pathname.startsWith("/scenes/")) return "Scene Workspace";
@@ -58,19 +57,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <div className="min-w-0">
         <header className="flex items-center justify-between border-b bg-background/95 px-6 py-3 backdrop-blur lg:px-8">
-          <div className="flex items-center gap-3">
-            <Package className="h-5 w-5 text-muted-foreground" />
-            <div>
-              <span className="text-sm font-semibold text-foreground">
-                SAGE-WEB Beta
-              </span>
-              <p className="text-xs text-muted-foreground">
-                Scene-first analysis workspace
-              </p>
-            </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Section</p>
+            <p className="text-sm font-semibold text-foreground">
+              {sectionLabel}
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline">{sectionLabel}</Badge>
             <Badge variant="secondary">{role}</Badge>
             <Badge variant={role === "Viewer" ? "outline" : "default"}>
               {modeLabel}

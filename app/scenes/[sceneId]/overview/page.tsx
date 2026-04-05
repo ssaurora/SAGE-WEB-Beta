@@ -80,6 +80,10 @@ export default async function SceneOverviewPage({
 
       <Card>
         <CardHeader>
+            <div className="space-y-1">
+              <CardTitle className="text-base">Decision Zone</CardTitle>
+              <CardDescription>先判断当前状态，再进入下一步主链路。</CardDescription>
+            </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
