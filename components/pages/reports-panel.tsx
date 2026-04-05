@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import type { ReportListItemDto } from "@/lib/contracts/report";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 type ReportsPanelProps = {
   items: ReportListItemDto[];
@@ -93,7 +94,9 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
                   {item.time}
                 </p>
               </div>
-              <Link href={`/results/${item.reportId}?from=results`}>
+              <Link
+                href={`/results/${item.reportId}?from=${TASK_CONTEXT_FROM.Results}`}
+              >
                 <Badge variant="outline">Open Report Detail</Badge>
               </Link>
             </div>

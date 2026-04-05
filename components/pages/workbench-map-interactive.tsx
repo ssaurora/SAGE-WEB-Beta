@@ -19,6 +19,7 @@ import { InputsPanelInteractive } from "@/components/pages/inputs-panel-interact
 import { canEditWorkbench, useAppRole } from "@/components/pages/app-role";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
 import type { WorkbenchPageViewModel } from "@/lib/contracts/scene";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -534,7 +535,7 @@ export function WorkbenchMapInteractive({
             </p>
             {contextTaskId ? (
               <Link
-                href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
+                href={`/task-governance/${contextTaskId}?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${contextTaskId}`}
                 className="mt-3 inline-flex"
               >
                 <Button size="sm">Fix and Resume</Button>
@@ -576,7 +577,7 @@ export function WorkbenchMapInteractive({
             </div>
             {contextTaskId ? (
               <Link
-                href={`/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`}
+                href={`/task-governance/${contextTaskId}?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${contextTaskId}`}
                 className="mt-3 inline-flex"
               >
                 <Button size="sm" variant="outline">
@@ -594,7 +595,7 @@ export function WorkbenchMapInteractive({
               任务已完成，建议立即进入 Results 查看结果摘要与解释。
             </p>
             <Link
-              href={`/scenes/${sceneId}/results?from=workbench&taskId=${contextTaskId ?? ""}`}
+              href={`/scenes/${sceneId}/results?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${contextTaskId ?? ""}`}
               className="mt-3 inline-flex"
             >
               <Button size="sm">View Results</Button>
@@ -826,7 +827,7 @@ export function WorkbenchMapInteractive({
           <div className="mt-3 flex flex-wrap gap-3 text-sm">
             {pickedFeature.taskId ? (
               <Link
-                href={`/task-governance/${pickedFeature.taskId}?from=workbench&taskId=${pickedFeature.taskId}`}
+                href={`/task-governance/${pickedFeature.taskId}?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${pickedFeature.taskId}`}
                 className="text-primary underline-offset-4 hover:underline"
               >
                 Related Task Governance
@@ -834,7 +835,7 @@ export function WorkbenchMapInteractive({
             ) : null}
             {pickedFeature.resultId ? (
               <Link
-                href={`/scenes/${sceneId}/results/${pickedFeature.resultId}?from=workbench&taskId=${pickedFeature.taskId ?? ""}`}
+                href={`/scenes/${sceneId}/results/${pickedFeature.resultId}?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${pickedFeature.taskId ?? ""}`}
                 className="text-primary underline-offset-4 hover:underline"
               >
                 Related Result Detail
@@ -854,7 +855,7 @@ export function WorkbenchMapInteractive({
         taskId={contextTaskId}
         taskHref={
           contextTaskId
-            ? `/task-governance/${contextTaskId}?from=workbench&taskId=${contextTaskId}`
+            ? `/task-governance/${contextTaskId}?from=${TASK_CONTEXT_FROM.Workbench}&taskId=${contextTaskId}`
             : undefined
         }
         stateLabel={getTaskStateLabel(workbenchState)}

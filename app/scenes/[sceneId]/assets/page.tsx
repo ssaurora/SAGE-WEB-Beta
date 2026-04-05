@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneAssetsViewModel } from "@/lib/api/scene";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 function getAssetTypeColor(type: "Vector" | "Raster" | "Table" | "Document") {
   switch (type) {
@@ -101,7 +102,7 @@ export default async function SceneAssetsPage({
         </CardHeader>
         <CardContent className="pt-0">
           <Link
-            href={`/assets?sceneId=${vm.sceneId}&from=scene-assets`}
+            href={`/assets?sceneId=${vm.sceneId}&from=${TASK_CONTEXT_FROM.SceneAssets}`}
             className="text-sm font-medium text-primary hover:underline"
           >
             Open Global Assets (prefilled by scene)
@@ -173,7 +174,7 @@ export default async function SceneAssetsPage({
               <div className="mt-3 flex items-center justify-between">
                 <p className="text-xs text-muted-foreground">Asset detail</p>
                 <Link
-                  href={`/assets/${item.assetId}?from=scene-assets&sceneId=${vm.sceneId}`}
+                  href={`/assets/${item.assetId}?from=${TASK_CONTEXT_FROM.SceneAssets}&sceneId=${vm.sceneId}`}
                   className="text-sm font-medium text-primary hover:underline"
                 >
                   Open Asset Detail

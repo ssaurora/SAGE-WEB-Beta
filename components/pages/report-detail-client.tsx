@@ -21,6 +21,7 @@ import {
   FileText,
 } from "lucide-react";
 import type { ReportDetailViewModel } from "@/lib/contracts/report";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 const statusVariant = (
   status: "Draft" | "Published" | "Archived",
@@ -111,7 +112,7 @@ export function ReportDetailClient({ vm }: { vm: ReportDetailViewModel }) {
                 Scene
               </p>
               <Link
-                href={`/scenes/${vm.sceneId}?from=result-detail&taskId=${vm.taskId}`}
+                href={`/scenes/${vm.sceneId}?from=${TASK_CONTEXT_FROM.ResultDetail}&taskId=${vm.taskId}`}
                 className="mt-1 text-sm font-medium hover:underline"
               >
                 {vm.sceneId}
@@ -126,7 +127,7 @@ export function ReportDetailClient({ vm }: { vm: ReportDetailViewModel }) {
                 Task
               </p>
               <Link
-                href={`/task-governance/${vm.taskId}?from=result-detail&taskId=${vm.taskId}`}
+                href={`/task-governance/${vm.taskId}?from=${TASK_CONTEXT_FROM.ResultDetail}&taskId=${vm.taskId}`}
                 className="mt-1 text-sm font-medium hover:underline"
               >
                 {vm.taskId}

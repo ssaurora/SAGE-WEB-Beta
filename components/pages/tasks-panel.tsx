@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import type { TaskListItem } from "@/lib/contracts/task";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -175,7 +176,7 @@ export function TasksPanel({ tasks }: TasksPanelProps) {
                 Updated at: {task.updatedAt}
               </p>
               <Link
-                href={`/task-governance/${task.id}?from=tasks&taskId=${task.id}`}
+                          href={`/task-governance/${task.id}?from=${TASK_CONTEXT_FROM.Tasks}&taskId=${task.id}`}
                 className="text-sm font-medium text-primary hover:underline"
               >
                 查看治理详情

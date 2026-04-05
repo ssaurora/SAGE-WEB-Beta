@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { FileText, Search, Filter, Download } from "lucide-react";
 import type { ReportListViewModel } from "@/lib/contracts/report";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 const statusVariant = (
   status: "Draft" | "Published" | "Archived",
@@ -249,7 +250,7 @@ export function ReportsListClient({ vm }: { vm: ReportListViewModel }) {
               {filteredReports.map((report) => (
                 <Link
                   key={report.id}
-                  href={`/results/${report.id}?from=results&taskId=${report.taskId}`}
+                  href={`/results/${report.id}?from=${TASK_CONTEXT_FROM.Results}&taskId=${report.taskId}`}
                   className="block"
                 >
                   <div className="rounded-lg border p-3 hover:bg-muted/50 transition-colors">

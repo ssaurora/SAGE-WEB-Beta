@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { DataStateCard } from "@/components/pages/data-state-card";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import type {
   AssetBindStatus,
   AssetDataType,
@@ -207,7 +208,7 @@ export function AssetsPanel({
                 Last Task: {item.lastTaskId ?? "-"}
               </p>
               <Link
-                href={`/assets/${item.assetId}?from=assets&sceneId=${item.sceneId}`}
+                href={`/assets/${item.assetId}?from=${TASK_CONTEXT_FROM.Assets}&sceneId=${item.sceneId}`}
                 className="text-sm font-medium text-primary hover:underline"
               >
                 Open Asset Detail

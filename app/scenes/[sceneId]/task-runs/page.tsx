@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { getSceneTaskRunsViewModel } from "@/lib/api/scene";
+import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import {
   getTaskStateLabel,
   getTaskStateVariant,
@@ -86,7 +87,7 @@ export default async function SceneTaskRunsPage({
                   Updated at: {task.updatedAt}
                 </p>
                 <Link
-                  href={`/task-governance/${task.taskId}?from=task-runs&taskId=${task.taskId}`}
+                  href={`/task-governance/${task.taskId}?from=${TASK_CONTEXT_FROM.TaskRuns}&taskId=${task.taskId}`}
                   className="text-sm font-medium text-primary hover:underline"
                 >
                   查看治理详情
