@@ -39,25 +39,11 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
     );
   }, [items, searchQuery, filterStatus]);
 
-  const activeCount = items.filter((item) => item.status === "Active").length;
-  const archivedCount = items.filter(
-    (item) => item.status === "Archived",
-  ).length;
-
   return (
     <div className="space-y-4">
       <Card>
-        <CardHeader className="pb-3">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap gap-2">
-              <Link href="/scenes/scene-001/overview">
-                <Button size="sm">+ Create Scene</Button>
-              </Link>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-3 md:grid-cols-[1.4fr_0.8fr_0.8fr]">
+        <CardContent className="pt-6">
+          <div className="grid gap-3 md:grid-cols-[1.4fr_0.8fr_auto]">
             <input
               type="text"
               placeholder="Search scenes"
@@ -76,17 +62,11 @@ export function ScenesListClient({ items }: ScenesListPageProps) {
               <option value="Active">Active</option>
               <option value="Archived">Archived</option>
             </select>
-            <div className="rounded-md border bg-muted/30 px-3 py-2 text-sm">
-              <p className="text-xs text-muted-foreground">Active / Archived</p>
-              <p className="font-semibold">
-                {activeCount} / {archivedCount}
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-md border bg-muted/20 px-3 py-2 text-sm">
-            <p className="text-xs text-muted-foreground">Visible</p>
-            <p className="font-semibold">{filteredItems.length}</p>
+            <Link href="/scenes/scene-001/overview">
+              <Button size="sm" className="h-10 w-full md:w-auto">
+                + Create Scene
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>

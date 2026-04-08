@@ -11,8 +11,7 @@ function getSectionLabel(pathname: string): string {
   if (pathname.startsWith("/scenes/")) return "Scene Workspace";
   if (pathname.startsWith("/task-governance")) return "Task Governance";
   if (pathname.startsWith("/assets")) return "Assets";
-  if (pathname.startsWith("/results") || pathname.startsWith("/reports"))
-    return "Results";
+  if (pathname.startsWith("/results")) return "Results";
   if (pathname.startsWith("/settings")) return "Settings";
   return "Scenes";
 }
@@ -56,12 +55,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="min-w-0">
-        <header className="flex items-center justify-between border-b bg-background/95 px-6 py-3 backdrop-blur lg:px-8">
-          <div>
-            <p className="text-xs text-muted-foreground">Section</p>
-            <p className="text-sm font-semibold text-foreground">
-              {sectionLabel}
-            </p>
+        <header className="flex items-center justify-between border-b bg-background px-6 py-2.5 lg:px-8">
+          <div className="text-xs font-medium text-muted-foreground">
+            {sectionLabel}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="secondary">{role}</Badge>
