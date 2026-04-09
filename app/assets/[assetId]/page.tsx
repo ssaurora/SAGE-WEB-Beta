@@ -61,6 +61,7 @@ export default async function AssetDetailPage({
       : vm.bindStatus === "Unbound"
         ? "当前资产可用但未绑定，建议按最近任务上下文完成绑定。"
         : "当前资产已绑定且可用，可继续查看关系链路或返回任务执行。";
+  const resultArtifactId = vm.usedBy.resultId ?? vm.usedBy.reportId ?? "-";
 
   return (
     <div className="space-y-4">
@@ -215,9 +216,7 @@ export default async function AssetDetailPage({
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
             <p className="text-xs">Result Artifact</p>
-            <p className="mt-1 font-medium text-foreground">
-              {vm.usedBy.reportId ?? "-"}
-            </p>
+            <p className="mt-1 font-medium text-foreground">{resultArtifactId}</p>
           </div>
         </CardContent>
       </Card>

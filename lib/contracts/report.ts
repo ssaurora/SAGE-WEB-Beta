@@ -3,12 +3,14 @@ export type ReportStatus = "Draft" | "Published" | "Archived";
 export type ReportFormat = "PDF" | "XLSX" | "JSON";
 
 export type ReportListItemDto = {
-  reportId: string;
+  resultId: string;
+  reportId?: string;
   sceneId: string;
   taskId?: string;
   analysisType: string;
   modelName: string;
   time: string;
+  resultName?: string;
   reportName?: string;
   status?: ReportStatus;
   format?: ReportFormat;
@@ -18,13 +20,14 @@ export type ReportListItemDto = {
 };
 
 export type ReportDetailDto = {
-  reportId: string;
+  resultId: string;
+  reportId?: string;
   sceneId: string;
   taskId: string;
-  resultId: string;
   analysisType: string;
   modelName: string;
   time: string;
+  resultName?: string;
   reportName?: string;
   status?: ReportStatus;
   format?: ReportFormat;

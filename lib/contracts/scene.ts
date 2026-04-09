@@ -19,7 +19,8 @@ export type SceneOverviewPageViewModel = {
     progressText: string;
   };
   latestResult: {
-    reportId: string;
+    resultId: string;
+    reportId?: string;
     summary: string;
     available: boolean;
   };

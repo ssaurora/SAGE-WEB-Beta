@@ -10,8 +10,11 @@ export function toReportsListViewModel(
 ): ReportListViewModel {
   return {
     reports: reports.map((item) => ({
-      id: item.reportId,
-      name: item.reportName ?? `${item.analysisType} Report`,
+      id: item.resultId ?? item.reportId ?? "result-unknown",
+      name:
+        item.resultName ??
+        item.reportName ??
+        `${item.analysisType} Result`,
       sceneId: item.sceneId,
       taskId: item.taskId ?? "task-unknown",
       analysisType: item.analysisType,
@@ -27,9 +30,13 @@ export function toReportsListViewModel(
 export function toReportDetailViewModel(
   detail: ReportDetailDto,
 ): ReportDetailViewModel {
+  const resultId = detail.resultId ?? detail.reportId ?? "result-unknown";
   return {
-    id: detail.reportId,
-    name: detail.reportName ?? `${detail.analysisType} Report`,
+    id: resultId,
+    name:
+      detail.resultName ??
+      detail.reportName ??
+      `${detail.analysisType} Result`,
     sceneId: detail.sceneId,
     taskId: detail.taskId,
     analysisType: detail.analysisType,
@@ -65,7 +72,7 @@ export function toReportDetailViewModel(
     ],
     metadata: {
       Model: detail.modelName,
-      Result: detail.resultId,
+      Result: resultId,
       Manifest: detail.manifestSummary,
     },
   };

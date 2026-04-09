@@ -5,12 +5,14 @@ import type {
 
 export const reportListMock: ReportListItemDto[] = [
   {
+    resultId: "result-2026-001",
     reportId: "report-2026-001",
     sceneId: "scene-001",
     taskId: "task-000",
     analysisType: "Water Yield",
     modelName: "InVEST water_yield",
     time: "2026-04-02 17:25",
+    resultName: "Water Yield Baseline Result",
     reportName: "Water Yield Baseline Report",
     status: "Published",
     format: "PDF",
@@ -19,12 +21,14 @@ export const reportListMock: ReportListItemDto[] = [
     resultSummary: "中游子流域水量贡献高，北侧坡地建议优先治理。",
   },
   {
+    resultId: "result-2026-002",
     reportId: "report-2026-002",
     sceneId: "scene-002",
     taskId: "task-003",
     analysisType: "Sediment Delivery",
     modelName: "InVEST SDR",
     time: "2026-04-01 16:10",
+    resultName: "Sediment Delivery Risk Result",
     reportName: "Sediment Delivery Risk Report",
     status: "Published",
     format: "PDF",
@@ -33,12 +37,14 @@ export const reportListMock: ReportListItemDto[] = [
     resultSummary: "高侵蚀风险区集中于南部坡耕地。",
   },
   {
+    resultId: "result-2026-003",
     reportId: "report-2026-003",
     sceneId: "scene-003",
     taskId: "task-004",
     analysisType: "Habitat Quality",
     modelName: "InVEST habitat_quality",
     time: "2026-03-29 11:40",
+    resultName: "Habitat Quality Assessment Result",
     reportName: "Habitat Quality Assessment",
     status: "Draft",
     format: "JSON",
@@ -49,14 +55,15 @@ export const reportListMock: ReportListItemDto[] = [
 ];
 
 export const reportDetailMockMap: Record<string, ReportDetailDto> = {
-  "report-2026-001": {
+  "result-2026-001": {
+    resultId: "result-2026-001",
     reportId: "report-2026-001",
     sceneId: "scene-001",
     taskId: "task-000",
-    resultId: "result-2026-001",
     analysisType: "Water Yield",
     modelName: "InVEST water_yield",
     time: "2026-04-02 17:25",
+    resultName: "Water Yield Baseline Result",
     reportName: "Water Yield Baseline Report",
     status: "Published",
     format: "PDF",
@@ -80,14 +87,15 @@ export const reportDetailMockMap: Record<string, ReportDetailDto> = {
     manifestSummary:
       "analysisType=Water Yield; model=InVEST water_yield; inputs=3/3 ready; runtimeProfile=standard-cpu",
   },
-  "report-2026-002": {
+  "result-2026-002": {
+    resultId: "result-2026-002",
     reportId: "report-2026-002",
     sceneId: "scene-002",
     taskId: "task-003",
-    resultId: "result-2026-002",
     analysisType: "Sediment Delivery",
     modelName: "InVEST SDR",
     time: "2026-04-01 16:10",
+    resultName: "Sediment Delivery Risk Result",
     reportName: "Sediment Delivery Risk Report",
     status: "Published",
     format: "PDF",
@@ -107,14 +115,15 @@ export const reportDetailMockMap: Record<string, ReportDetailDto> = {
     manifestSummary:
       "analysisType=Sediment Delivery; model=InVEST SDR; inputs=4/4 ready; runtimeProfile=standard-cpu",
   },
-  "report-2026-003": {
+  "result-2026-003": {
+    resultId: "result-2026-003",
     reportId: "report-2026-003",
     sceneId: "scene-003",
     taskId: "task-004",
-    resultId: "result-2026-003",
     analysisType: "Habitat Quality",
     modelName: "InVEST habitat_quality",
     time: "2026-03-29 11:40",
+    resultName: "Habitat Quality Assessment Result",
     reportName: "Habitat Quality Assessment",
     status: "Draft",
     format: "JSON",
