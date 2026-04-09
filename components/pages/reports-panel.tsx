@@ -75,13 +75,13 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
 
       <p className="text-xs text-muted-foreground">
         当前显示 <span className="font-semibold">{filteredItems.length}</span>{" "}
-        条报告
+        条结果
       </p>
 
       {filteredItems.length === 0 ? (
         <DataStateCard
-          title="No reports matched"
-          description="没有符合当前筛选条件的报告，请调整筛选项后重试。"
+          title="No results matched"
+          description="没有符合当前筛选条件的结果，请调整筛选项后重试。"
         />
       ) : (
         filteredItems.map((item) => (
@@ -97,7 +97,7 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
               <Link
                 href={`/results/${item.reportId}?from=${TASK_CONTEXT_FROM.Results}`}
               >
-                <Badge variant="outline">Open Report Detail</Badge>
+                <Badge variant="outline">Open Result Detail</Badge>
               </Link>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">

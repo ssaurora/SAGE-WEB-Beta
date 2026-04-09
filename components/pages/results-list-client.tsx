@@ -48,7 +48,7 @@ export function ResultsListClient({ vm }: { vm: ResultListViewModel }) {
 	const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
 	const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
 	const [sortBy, setSortBy] = useState<"date" | "name">("date");
-	const results = vm.reports;
+	const results = vm.results;
 
 	const filteredResults = useMemo(() => {
 		let filtered = results;

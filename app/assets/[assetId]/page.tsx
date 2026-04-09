@@ -192,7 +192,7 @@ export default async function AssetDetailPage({
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Used By</CardTitle>
-          <CardDescription>场景 / 任务 / 结果 / 报告关联</CardDescription>
+          <CardDescription>场景 / 任务 / 结果关联</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
@@ -214,7 +214,7 @@ export default async function AssetDetailPage({
             </p>
           </div>
           <div className="rounded-md border p-3 text-sm text-muted-foreground">
-            <p className="text-xs">Report</p>
+            <p className="text-xs">Result Artifact</p>
             <p className="mt-1 font-medium text-foreground">
               {vm.usedBy.reportId ?? "-"}
             </p>

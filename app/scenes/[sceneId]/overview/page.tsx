@@ -44,6 +44,7 @@ export default async function SceneOverviewPage({
     taskState === "Waiting for Required Input" || taskState === "Failed";
   const isRuntimeState = taskState === "Running";
   const isCompletedState = taskState === "Completed";
+  const latestResultId = vm.latestResult.reportId;
 
   const primaryAction = isCompletedState
     ? {
@@ -134,9 +135,7 @@ export default async function SceneOverviewPage({
 
             <div className="rounded-lg border bg-muted/30 p-3">
               <p className="text-xs text-muted-foreground">Decision Target</p>
-              <p className="mt-1 text-sm font-semibold">
-                {vm.latestResult.reportId}
-              </p>
+              <p className="mt-1 text-sm font-semibold">{latestResultId}</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {vm.latestResult.summary}
               </p>

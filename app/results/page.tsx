@@ -26,7 +26,7 @@ async function getResultsViewModel(): Promise<ResultListViewModel> {
 
 export default async function ResultsPage() {
   const vm = await getResultsViewModel();
-  const results = vm.reports;
+  const results = vm.results;
   const publishedCount = results.filter(
     (item) => item.status === "Published",
   ).length;

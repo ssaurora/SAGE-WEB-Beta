@@ -16,7 +16,10 @@ export type ResultListItemDto = ReportListItemDto;
 export type ResultDetailDto = ReportDetailDto;
 
 export type ResultListItemViewModel = ReportListItemViewModel;
-export type ResultListViewModel = ReportListViewModel;
+export type ResultListViewModel = {
+  results: ResultListItemViewModel[];
+  reports?: ResultListItemViewModel[];
+};
 
 export type ResultDetailSectionViewModel = ReportDetailSectionViewModel;
 export type ResultDetailViewModel = ReportDetailViewModel;

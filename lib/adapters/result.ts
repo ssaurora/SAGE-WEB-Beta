@@ -12,7 +12,11 @@ import type {
 export function toResultsListViewModel(
   results: ResultListItemDto[],
 ): ResultListViewModel {
-  return toReportsListViewModel(results);
+  const reportVm = toReportsListViewModel(results);
+  return {
+    results: reportVm.reports,
+    reports: reportVm.reports,
+  };
 }
 
 export function toResultDetailViewModel(
