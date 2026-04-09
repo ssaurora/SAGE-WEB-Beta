@@ -48,9 +48,10 @@ export function ResultsListClient({ vm }: { vm: ResultListViewModel }) {
 	const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
 	const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
 	const [sortBy, setSortBy] = useState<"date" | "name">("date");
+	const results = vm.reports;
 
-	const filteredReports = useMemo(() => {
-		let filtered = vm.reports;
+	const filteredResults = useMemo(() => {
+		let filtered = results;
 
 		if (searchQuery.trim()) {
 			const query = searchQuery.toLowerCase();
@@ -81,18 +82,18 @@ export function ResultsListClient({ vm }: { vm: ResultListViewModel }) {
 		}
 
 		return filtered;
-	}, [vm.reports, searchQuery, selectedFormat, selectedStatus, sortBy]);
+	}, [results, searchQuery, selectedFormat, selectedStatus, sortBy]);
 
 	const formatStats = {
-		PDF: vm.reports.filter((r) => r.format === "PDF").length,
-		XLSX: vm.reports.filter((r) => r.format === "XLSX").length,
-		JSON: vm.reports.filter((r) => r.format === "JSON").length,
+		PDF: results.filter((r) => r.format === "PDF").length,
+		XLSX: results.filter((r) => r.format === "XLSX").length,
+		JSON: results.filter((r) => r.format === "JSON").length,
 	};
 
 	const statusStats = {
-		Published: vm.reports.filter((r) => r.status === "Published").length,
-		Draft: vm.reports.filter((r) => r.status === "Draft").length,
-		Archived: vm.reports.filter((r) => r.status === "Archived").length,
+		Published: results.filter((r) => r.status === "Published").length,
+		Draft: results.filter((r) => r.status === "Draft").length,
+		Archived: results.filter((r) => r.status === "Archived").length,
 	};
 
 	return (
@@ -102,7 +103,7 @@ export function ResultsListClient({ vm }: { vm: ResultListViewModel }) {
 					<CardContent className="pt-6">
 						<div className="text-center">
 							<p className="text-sm text-muted-foreground">Total Results</p>
-							<p className="mt-1 text-2xl font-bold">{vm.reports.length}</p>
+							<p className="mt-1 text-2xl font-bold">{results.length}</p>
 						</div>
 					</CardContent>
 				</Card>
@@ -223,11 +224,11 @@ export function ResultsListClient({ vm }: { vm: ResultListViewModel }) {
 				<CardHeader>
 					<CardTitle className="text-base">Results</CardTitle>
 					<CardDescription>
-						Displaying {filteredReports.length} of {vm.reports.length} results
+						Displaying {filteredResults.length} of {results.length} results
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					{filteredReports.length === 0 ? (
+					{filteredResults.length === 0 ? (
 						<div className="rounded-md border border-dashed p-8 text-center">
 							<FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
 							<p className="mt-2 text-sm text-muted-foreground">
@@ -236,10 +237,10 @@ export function ResultsListClient({ vm }: { vm: ResultListViewModel }) {
 						</div>
 					) : (
 						<div className="space-y-2">
-							{filteredReports.map((report) => (
+							{filteredResults.map((result) => (
 								<Link
-									key={report.id}
-									href={`/results/${report.id}?from=${TASK_CONTEXT_FROM.Results}&taskId=${report.taskId}`}
+									key={result.id}
+									href={`/results/${result.id}?from=${TASK_CONTEXT_FROM.Results}&taskId=${result.taskId}`}
 									className="block"
 								>
 									<div className="rounded-lg border p-3 transition-colors hover:bg-muted/50">
@@ -247,32 +248,32 @@ export function ResultsListClient({ vm }: { vm: ResultListViewModel }) {
 											<div className="min-w-0 flex-1">
 												<div className="flex flex-wrap items-center gap-2">
 													<FileText className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
-													<h3 className="truncate font-medium">{report.name}</h3>
-													<Badge variant={statusVariant(report.status)}>
-														{statusLabel(report.status)}
+													<h3 className="truncate font-medium">{result.name}</h3>
+													<Badge variant={statusVariant(result.status)}>
+														{statusLabel(result.status)}
 													</Badge>
 													<Badge variant="outline" className="text-xs">
-														{report.format}
+														{result.format}
 													</Badge>
 												</div>
 												<div className="mt-2 grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
 													<div>
 														<span className="font-medium">Scene:</span>{" "}
-														{report.sceneId}
+														{result.sceneId}
 													</div>
 													<div>
 														<span className="font-medium">Task:</span>{" "}
-														{report.taskId}
+														{result.taskId}
 													</div>
 													<div>
 														<span className="font-medium">Type:</span>{" "}
-														{report.analysisType}
+														{result.analysisType}
 													</div>
 												</div>
 												<div className="mt-1 text-xs text-muted-foreground">
-													Generated: {new Date(report.generatedAt).toLocaleString()}
-													{report.pageCount && ` · ${report.pageCount} pages`}
-													{report.fileSize && ` · ${report.fileSize}`}
+													Generated: {new Date(result.generatedAt).toLocaleString()}
+													{result.pageCount && ` · ${result.pageCount} pages`}
+													{result.fileSize && ` · ${result.fileSize}`}
 												</div>
 											</div>
 											<Button

@@ -8,14 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { InteractiveLayer } from "@/components/pages/workbench/types";
 
 type LayerGroup = "inputs" | "results";
-
-type InteractiveLayer = {
-  name: string;
-  visible: boolean;
-  opacity: number;
-};
 
 type WorkbenchLayersCardProps = {
   visibleCount: number;

@@ -26,10 +26,11 @@ async function getResultsViewModel(): Promise<ResultListViewModel> {
 
 export default async function ResultsPage() {
   const vm = await getResultsViewModel();
-  const publishedCount = vm.reports.filter(
+  const results = vm.reports;
+  const publishedCount = results.filter(
     (item) => item.status === "Published",
   ).length;
-  const latestResult = [...vm.reports].sort(
+  const latestResult = [...results].sort(
     (a, b) =>
       new Date(b.generatedAt).getTime() - new Date(a.generatedAt).getTime(),
   )[0];
@@ -50,7 +51,7 @@ export default async function ResultsPage() {
         <CardContent className="grid gap-3 sm:grid-cols-3">
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
             <p className="text-xs text-muted-foreground">Current State</p>
-            <p className="mt-1 font-semibold">{vm.reports.length} Results</p>
+            <p className="mt-1 font-semibold">{results.length} Results</p>
           </div>
           <div className="rounded-md border bg-muted/20 p-3 text-sm">
             <p className="text-xs text-muted-foreground">Published</p>

@@ -26,9 +26,9 @@ async function fetchJson<T>(path: string): Promise<T> {
 }
 
 export async function getReportListViewModel() {
-  return fetchJson<ReportListItemDto[]>("/api/reports");
+  return fetchJson<ReportListItemDto[]>("/api/results");
 }
 
 export async function getReportDetailViewModel(reportId: string) {
-  return fetchJson<ReportDetailDto>(`/api/reports/${reportId}`);
+  return fetchJson<ReportDetailDto>(`/api/results/${reportId}`);
 }
