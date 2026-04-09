@@ -766,6 +766,38 @@ export function WorkbenchMapInteractive({
     </div>
   );
 
+  const handleRequiredInputsChange = (updated: RequiredInputItem[]) => {
+    updated.forEach((item) => {
+      if (item.boundAssetId) {
+        applyBinding("required", item.name, item.expectedType, item.boundAssetId);
+      }
+    });
+  };
+
+  const handleOptionalInputsChange = (updated: OptionalInputItem[]) => {
+    updated.forEach((item) => {
+      if (item.boundAssetId) {
+        applyBinding("optional", item.name, item.expectedType, item.boundAssetId);
+      }
+    });
+  };
+
+  const handleUploadedAssetsChange = (assets: UploadedAsset[]) => {
+    assets.forEach(() => uploadAsset());
+  };
+
+  const renderInputsPanel = () => (
+    <InputsPanelInteractive
+      requiredInputs={requiredInputs}
+      optionalInputs={optionalInputs}
+      uploadedAssets={uploadedUnboundAssets}
+      isReadOnly={isInputReadOnly}
+      onRequiredInputsChange={handleRequiredInputsChange}
+      onOptionalInputsChange={handleOptionalInputsChange}
+      onUploadedAssetsChange={handleUploadedAssetsChange}
+    />
+  );
+
   const renderInputsCard = (mode: "expanded" | "collapsed") => (
     <Card>
       <CardHeader>
@@ -777,83 +809,41 @@ export function WorkbenchMapInteractive({
       </CardHeader>
       <CardContent>
         {mode === "expanded" ? (
-          <InputsPanelInteractive
-            requiredInputs={requiredInputs}
-            optionalInputs={optionalInputs}
-            uploadedAssets={uploadedUnboundAssets}
-            isReadOnly={isInputReadOnly}
-            onRequiredInputsChange={(updated) => {
-              updated.forEach((item) => {
-                if (item.boundAssetId) {
-                  applyBinding(
-                    "required",
-                    item.name,
-                    item.expectedType,
-                    item.boundAssetId,
-                  );
-                }
-              });
-            }}
-            onOptionalInputsChange={(updated) => {
-              updated.forEach((item) => {
-                if (item.boundAssetId) {
-                  applyBinding(
-                    "optional",
-                    item.name,
-                    item.expectedType,
-                    item.boundAssetId,
-                  );
-                }
-              });
-            }}
-            onUploadedAssetsChange={(assets) => {
-              assets.forEach(() => uploadAsset());
-            }}
-          />
+          renderInputsPanel()
         ) : (
           <details className="rounded-md border p-3">
             <summary className="cursor-pointer text-sm font-medium text-foreground">
               展开输入详情
             </summary>
-            <div className="mt-3">
-              <InputsPanelInteractive
-                requiredInputs={requiredInputs}
-                optionalInputs={optionalInputs}
-                uploadedAssets={uploadedUnboundAssets}
-                isReadOnly={isInputReadOnly}
-                onRequiredInputsChange={(updated) => {
-                  updated.forEach((item) => {
-                    if (item.boundAssetId) {
-                      applyBinding(
-                        "required",
-                        item.name,
-                        item.expectedType,
-                        item.boundAssetId,
-                      );
-                    }
-                  });
-                }}
-                onOptionalInputsChange={(updated) => {
-                  updated.forEach((item) => {
-                    if (item.boundAssetId) {
-                      applyBinding(
-                        "optional",
-                        item.name,
-                        item.expectedType,
-                        item.boundAssetId,
-                      );
-                    }
-                  });
-                }}
-                onUploadedAssetsChange={(assets) => {
-                  assets.forEach(() => uploadAsset());
-                }}
-              />
-            </div>
+            <div className="mt-3">{renderInputsPanel()}</div>
           </details>
         )}
       </CardContent>
     </Card>
+  );
+
+  const renderLayerGroup = (group: "inputs" | "results", title: string) => (
+    <div className="rounded-md border p-2">
+      <button
+        type="button"
+        onClick={() => toggleGroupCollapse(group)}
+        className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
+      >
+        <span>{title}</span>
+        <span>{collapsedGroups[group] ? "展开" : "收起"}</span>
+      </button>
+      {!collapsedGroups[group] ? (
+        <div className="mt-2 space-y-2">
+          {groupedLayers[group].map((layer) =>
+            renderLayerRow(
+              layer,
+              layers.findIndex((item) => item.name === layer.name),
+              layers.length,
+            ),
+          )}
+        </div>
+      ) : null}
+    </div>
   );
 
   const renderEvidenceCards = () => (
@@ -880,49 +870,8 @@ export function WorkbenchMapInteractive({
                 </Button>
               </div>
 
-              <div className="rounded-md border p-2">
-                <button
-                  type="button"
-                  onClick={() => toggleGroupCollapse("inputs")}
-                  className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                >
-                  <span>Input Layers</span>
-                  <span>{collapsedGroups.inputs ? "展开" : "收起"}</span>
-                </button>
-                {!collapsedGroups.inputs ? (
-                  <div className="mt-2 space-y-2">
-                    {groupedLayers.inputs.map((layer) =>
-                      renderLayerRow(
-                        layer,
-                        layers.findIndex((item) => item.name === layer.name),
-                        layers.length,
-                      ),
-                    )}
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="rounded-md border p-2">
-                <button
-                  type="button"
-                  onClick={() => toggleGroupCollapse("results")}
-                  className="flex w-full items-center justify-between text-left text-xs font-semibold uppercase tracking-wide text-primary"
-                >
-                  <span>Result Layers</span>
-                  <span>{collapsedGroups.results ? "展开" : "收起"}</span>
-                </button>
-                {!collapsedGroups.results ? (
-                  <div className="mt-2 space-y-2">
-                    {groupedLayers.results.map((layer) =>
-                      renderLayerRow(
-                        layer,
-                        layers.findIndex((item) => item.name === layer.name),
-                        layers.length,
-                      ),
-                    )}
-                  </div>
-                ) : null}
-              </div>
+              {renderLayerGroup("inputs", "Input Layers")}
+              {renderLayerGroup("results", "Result Layers")}
             </div>
           </details>
         </CardContent>
