@@ -847,7 +847,7 @@ export function WorkbenchMapInteractive({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-full min-h-0 flex-col gap-4 overflow-hidden">
       <Card>
         <CardHeader className="pb-3">
           <div className="space-y-2">
@@ -888,43 +888,59 @@ export function WorkbenchMapInteractive({
         </CardHeader>
       </Card>
 
-      {layoutMode === "input-recovery" ? (
-        <div className="grid gap-4 xl:grid-cols-[1.35fr_0.95fr]">
-          <div className="space-y-4">
-            {renderInputsCard("expanded")}
-            {renderEvidenceCards()}
+      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_360px] xl:gap-4">
+        <div className="min-h-0 space-y-4 overflow-auto pr-1">
+          {renderInputsCard("expanded")}
+        </div>
+
+        <div className="min-h-0 space-y-4 overflow-auto pr-1">
+          {renderMapCard()}
+        </div>
+
+        <div className="min-h-0 space-y-4 overflow-auto pr-1">
+          {renderStateFocusCard()}
+          {renderObjectInspector()}
+        </div>
+      </div>
+
+      <div className="hidden shrink-0 xl:block">
+        <details className="rounded-lg border bg-card" open>
+          <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground">
+            Evidence Console
+          </summary>
+          <div className="max-h-64 overflow-auto px-4 pb-4">
+            <div className="space-y-4">{renderEvidenceCards()}</div>
           </div>
-          <div className="space-y-4">
+        </details>
+      </div>
+
+      <div className="space-y-4 xl:hidden">
+        {renderMapCard()}
+
+        <details className="rounded-lg border bg-card p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            Inputs Console
+          </summary>
+          <div className="mt-3">{renderInputsCard("expanded")}</div>
+        </details>
+
+        <details className="rounded-lg border bg-card p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            Inspector Console
+          </summary>
+          <div className="mt-3 space-y-3">
             {renderStateFocusCard()}
-            {renderMapCard()}
             {renderObjectInspector()}
           </div>
-        </div>
-      ) : layoutMode === "result-transition" ? (
-        <div className="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
-          <div className="space-y-4">
-            {renderStateFocusCard()}
-            {renderEvidenceCards()}
-          </div>
-          <div className="space-y-4">
-            {renderMapCard()}
-            {renderInputsCard("collapsed")}
-            {renderObjectInspector()}
-          </div>
-        </div>
-      ) : (
-        <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-          <div className="space-y-4">
-            {renderStateFocusCard()}
-            {renderInputsCard("collapsed")}
-          </div>
-          <div className="space-y-4">
-            {renderMapCard()}
-            {renderEvidenceCards()}
-            {renderObjectInspector()}
-          </div>
-        </div>
-      )}
+        </details>
+
+        <details className="rounded-lg border bg-card p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            Evidence Console
+          </summary>
+          <div className="mt-3 space-y-3">{renderEvidenceCards()}</div>
+        </details>
+      </div>
     </div>
   );
 }

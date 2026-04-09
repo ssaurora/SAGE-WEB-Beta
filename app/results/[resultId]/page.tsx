@@ -40,7 +40,7 @@ export default async function ResultDetailPage({
   const vm = await getResultDetailViewModel(resultId);
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
       <TaskContextBar
         sceneName={vm.sceneId}
         sceneHref={`/scenes/${vm.sceneId}/overview`}
@@ -71,7 +71,9 @@ export default async function ResultDetailPage({
         </CardContent>
       </Card>
 
-      <ResultDetailClient vm={vm} />
+      <div className="min-h-0 flex-1 overflow-auto pr-1">
+        <ResultDetailClient vm={vm} />
+      </div>
     </div>
   );
 }

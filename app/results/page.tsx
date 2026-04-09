@@ -33,7 +33,7 @@ export default async function ResultsPage() {
   )[0];
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
       <TaskContextBar
         sceneName="Global Results"
         currentView="Results"
@@ -65,7 +65,67 @@ export default async function ResultsPage() {
         </CardContent>
       </Card>
 
-      <ResultsListClient vm={vm} />
+      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_360px] xl:gap-4">
+        <div className="min-h-0 overflow-auto pr-1">
+          <ResultsListClient vm={vm} />
+        </div>
+
+        <div className="min-h-0 overflow-auto pr-1">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Result Main View</CardTitle>
+              <CardDescription>当前全局结果消费主目标。</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="rounded-md border bg-muted/20 p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Latest Result</p>
+                <p className="mt-1 font-semibold">{latestResult?.id ?? "-"}</p>
+              </div>
+              <div className="rounded-md border bg-muted/20 p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Task</p>
+                <p className="mt-1 font-semibold">
+                  {latestResult?.taskId ?? "-"}
+                </p>
+              </div>
+              <div className="rounded-md border bg-muted/20 p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Scene</p>
+                <p className="mt-1 font-semibold">
+                  {latestResult?.sceneId ?? "-"}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="min-h-0 overflow-auto pr-1">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Result Inspector</CardTitle>
+              <CardDescription>格式、状态与消费提示。</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="rounded-md border p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Status</p>
+                <p className="mt-1 font-medium">{latestResult?.status ?? "-"}</p>
+              </div>
+              <div className="rounded-md border p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Format</p>
+                <p className="mt-1 font-medium">{latestResult?.format ?? "-"}</p>
+              </div>
+              <div className="rounded-md border p-3 text-sm text-muted-foreground">
+                <p className="text-xs">Primary Action</p>
+                <p className="mt-1 text-foreground">
+                  先在左侧筛选结果，再进入详情完成解释与导出。
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <div className="space-y-4 xl:hidden">
+        <ResultsListClient vm={vm} />
+      </div>
     </div>
   );
 }

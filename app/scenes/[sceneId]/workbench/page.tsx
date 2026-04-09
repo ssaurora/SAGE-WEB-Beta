@@ -39,7 +39,7 @@ export default async function SceneWorkbenchPage({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
       <TaskContextBar
         sceneName={vm.header.sceneName}
         sceneHref={`/scenes/${sceneId}/overview`}

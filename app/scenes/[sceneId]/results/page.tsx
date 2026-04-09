@@ -21,6 +21,15 @@ import {
   getTaskStateVariant,
 } from "@/lib/status/task-state";
 
+function readinessLabel(
+  mapLayerReady: boolean | undefined,
+  explanationReady: boolean | undefined,
+) {
+  if (!mapLayerReady) return "Map Layer Pending";
+  if (!explanationReady) return "Explanation Pending";
+  return "Ready for Consumption";
+}
+
 export default async function SceneResultsPage({
   params,
   searchParams,
@@ -98,7 +107,7 @@ export default async function SceneResultsPage({
   })();
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
       <TaskContextBar
         sceneName={sceneId}
         sceneHref={`/scenes/${sceneId}/overview`}
@@ -163,12 +172,86 @@ export default async function SceneResultsPage({
         </Card>
       ) : null}
 
-      <SceneResultsPanel
-        sceneId={vm.sceneId}
-        items={vm.items}
-        initialTaskFilter={taskId ?? ""}
-        contextFrom={from}
-      />
+      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_360px] xl:gap-4">
+        <div className="min-h-0 overflow-auto pr-1">
+          <SceneResultsPanel
+            sceneId={vm.sceneId}
+            items={vm.items}
+            initialTaskFilter={taskId ?? ""}
+            contextFrom={from}
+          />
+        </div>
+
+        <div className="min-h-0 overflow-auto pr-1">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Result Main View</CardTitle>
+              <CardDescription>当前优先消费目标与主结论。</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="rounded-md border bg-muted/20 p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Primary Target</p>
+                <p className="mt-1 font-semibold">
+                  {latestResult?.resultId ?? "-"}
+                </p>
+              </div>
+              <div className="rounded-md border bg-muted/20 p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Current Readiness</p>
+                <p className="mt-1 font-semibold">
+                  {readinessLabel(
+                    latestResult?.mapLayerReady,
+                    latestResult?.explanationReady,
+                  )}
+                </p>
+              </div>
+              <div className="rounded-md border bg-muted/20 p-3 text-sm text-muted-foreground">
+                <p className="text-xs">Summary</p>
+                <p className="mt-1 text-foreground">
+                  {latestResult?.summary ?? "暂无结果摘要"}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="min-h-0 overflow-auto pr-1">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Result Inspector</CardTitle>
+              <CardDescription>解释、映射与关联任务。</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="rounded-md border p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Explanation</p>
+                <p className="mt-1 font-medium">
+                  {latestResult?.explanationReady ? "Ready" : "Pending"}
+                </p>
+              </div>
+              <div className="rounded-md border p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Map Layer</p>
+                <p className="mt-1 font-medium">
+                  {latestResult?.mapLayerReady ? "Ready" : "Pending"}
+                </p>
+              </div>
+              <div className="rounded-md border p-3 text-sm">
+                <p className="text-xs text-muted-foreground">Related Task</p>
+                <p className="mt-1 font-medium">
+                  {latestResult?.fromTaskId ?? taskId ?? "-"}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <div className="space-y-4 xl:hidden">
+        <SceneResultsPanel
+          sceneId={vm.sceneId}
+          items={vm.items}
+          initialTaskFilter={taskId ?? ""}
+          contextFrom={from}
+        />
+      </div>
     </div>
   );
 }

@@ -62,7 +62,7 @@ export default async function TaskGovernancePage({
   })();
 
   return (
-    <div className="space-y-4">
+    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
       <TaskContextBar
         sceneName={vm.sceneId}
         sceneHref={`/scenes/${vm.sceneId}/overview`}
@@ -159,16 +159,56 @@ export default async function TaskGovernancePage({
         </CardContent>
       </Card>
 
-      <GovernanceEvidenceTabs
-        requiredActions={vm.requiredActions}
-        missingRequiredInputs={vm.missingRequiredInputs}
-        failureSummary={vm.failureSummary}
-        suggestedFixes={vm.suggestedFixes}
-        manifestSummary={vm.manifestSummary}
-        artifacts={vm.artifacts}
-        lifecycleEvents={vm.lifecycleEvents}
-        auditSummary={vm.auditSummary}
-      />
+      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[420px_minmax(0,1fr)] xl:gap-4">
+        <div className="min-h-0 overflow-auto pr-1">
+          <GovernanceRecoveryPanel
+            sceneId={vm.sceneId}
+            taskId={vm.taskId}
+            status={decisionStatus}
+            canResume={vm.canResume}
+            failureReason={vm.failureSummary}
+            missingInputs={vm.missingRequiredInputs}
+            invalidBindings={vm.requiredActions}
+            suggestedFix={vm.suggestedFixes[0]}
+          />
+        </div>
+
+        <div className="min-h-0 overflow-auto pr-1">
+          <GovernanceEvidenceTabs
+            requiredActions={vm.requiredActions}
+            missingRequiredInputs={vm.missingRequiredInputs}
+            failureSummary={vm.failureSummary}
+            suggestedFixes={vm.suggestedFixes}
+            manifestSummary={vm.manifestSummary}
+            artifacts={vm.artifacts}
+            lifecycleEvents={vm.lifecycleEvents}
+            auditSummary={vm.auditSummary}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-4 xl:hidden">
+        <GovernanceRecoveryPanel
+          sceneId={vm.sceneId}
+          taskId={vm.taskId}
+          status={decisionStatus}
+          canResume={vm.canResume}
+          failureReason={vm.failureSummary}
+          missingInputs={vm.missingRequiredInputs}
+          invalidBindings={vm.requiredActions}
+          suggestedFix={vm.suggestedFixes[0]}
+        />
+        <GovernanceEvidenceTabs
+          requiredActions={vm.requiredActions}
+          missingRequiredInputs={vm.missingRequiredInputs}
+          failureSummary={vm.failureSummary}
+          suggestedFixes={vm.suggestedFixes}
+          manifestSummary={vm.manifestSummary}
+          artifacts={vm.artifacts}
+          lifecycleEvents={vm.lifecycleEvents}
+          auditSummary={vm.auditSummary}
+        />
+      </div>
     </div>
   );
 }
