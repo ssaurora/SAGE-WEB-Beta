@@ -389,6 +389,109 @@ function WorkbenchStateFocusCard({
   );
 }
 
+type WorkbenchLayersCardProps = {
+  visibleCount: number;
+  onResetMapView: () => void;
+  inputLayersNode: ReactNode;
+  resultLayersNode: ReactNode;
+};
+
+function WorkbenchLayersCard({
+  visibleCount,
+  onResetMapView,
+  inputLayersNode,
+  resultLayersNode,
+}: WorkbenchLayersCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <CardTitle className="text-base">Layers</CardTitle>
+            <CardDescription>图层可见性与交互管理</CardDescription>
+          </div>
+          <Badge variant="outline">{visibleCount} visible</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <details className="rounded-md border p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            展开图层详细控制
+          </summary>
+          <div className="mt-3 space-y-3">
+            <div className="flex items-center justify-end">
+              <Button size="sm" variant="outline" onClick={onResetMapView}>
+                Reset View
+              </Button>
+            </div>
+
+            {inputLayersNode}
+            {resultLayersNode}
+          </div>
+        </details>
+      </CardContent>
+    </Card>
+  );
+}
+
+type WorkbenchNextStepsCardProps = {
+  suggestedNextSteps: string[];
+};
+
+function WorkbenchNextStepsCard({
+  suggestedNextSteps,
+}: WorkbenchNextStepsCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Next Steps</CardTitle>
+        <CardDescription>只保留有行动含义的建议</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+          {suggestedNextSteps.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+}
+
+type WorkbenchExecutionContextCardProps = {
+  contextSummary: string;
+  lifecycleSummary: string;
+};
+
+function WorkbenchExecutionContextCard({
+  contextSummary,
+  lifecycleSummary,
+}: WorkbenchExecutionContextCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Execution Context</CardTitle>
+        <CardDescription>context / lifecycle summary</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="mb-3 rounded-md border bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
+          {contextSummary}
+        </p>
+        <details className="rounded-md border p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            展开执行上下文
+          </summary>
+          <div className="mt-3 space-y-3">
+            <div className="rounded-md border p-3 text-sm text-muted-foreground">
+              {lifecycleSummary}
+            </div>
+          </div>
+        </details>
+      </CardContent>
+    </Card>
+  );
+}
+
 export function WorkbenchMapInteractive({
   vm,
   sceneId,
@@ -846,72 +949,23 @@ export function WorkbenchMapInteractive({
     </div>
   );
 
-  const renderEvidenceCards = () => (
+  const evidencePanel = (
     <>
-      <Card>
-        <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <CardTitle className="text-base">Layers</CardTitle>
-              <CardDescription>图层可见性与交互管理</CardDescription>
-            </div>
-            <Badge variant="outline">{visibleCount} visible</Badge>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <details className="rounded-md border p-3">
-            <summary className="cursor-pointer text-sm font-medium text-foreground">
-              展开图层详细控制
-            </summary>
-            <div className="mt-3 space-y-3">
-              <div className="flex items-center justify-end">
-                <Button size="sm" variant="outline" onClick={resetMapView}>
-                  Reset View
-                </Button>
-              </div>
+      <WorkbenchLayersCard
+        visibleCount={visibleCount}
+        onResetMapView={resetMapView}
+        inputLayersNode={renderLayerGroup("inputs", "Input Layers")}
+        resultLayersNode={renderLayerGroup("results", "Result Layers")}
+      />
 
-              {renderLayerGroup("inputs", "Input Layers")}
-              {renderLayerGroup("results", "Result Layers")}
-            </div>
-          </details>
-        </CardContent>
-      </Card>
+      <WorkbenchNextStepsCard
+        suggestedNextSteps={vm.analysisPanel.suggestedNextSteps}
+      />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Next Steps</CardTitle>
-          <CardDescription>只保留有行动含义的建议</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-            {vm.analysisPanel.suggestedNextSteps.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Execution Context</CardTitle>
-          <CardDescription>context / lifecycle summary</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="mb-3 rounded-md border bg-muted/20 px-3 py-2 text-sm text-muted-foreground">
-            {vm.analysisPanel.contextSummary}
-          </p>
-          <details className="rounded-md border p-3">
-            <summary className="cursor-pointer text-sm font-medium text-foreground">
-              展开执行上下文
-            </summary>
-            <div className="mt-3 space-y-3">
-              <div className="rounded-md border p-3 text-sm text-muted-foreground">
-                {vm.taskPanel.lifecycleSummary}
-              </div>
-            </div>
-          </details>
-        </CardContent>
-      </Card>
+      <WorkbenchExecutionContextCard
+        contextSummary={vm.analysisPanel.contextSummary}
+        lifecycleSummary={vm.taskPanel.lifecycleSummary}
+      />
     </>
   );
 
@@ -991,7 +1045,7 @@ export function WorkbenchMapInteractive({
             />
           </>
         }
-        evidencePanel={<>{renderEvidenceCards()}</>}
+        evidencePanel={evidencePanel}
       />
     </div>
   );
