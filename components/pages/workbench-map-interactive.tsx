@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,6 +48,68 @@ const legendColorMap: Record<string, string> = {
   "Precipitation 2025": "#22C55E",
   "Water Yield Result": "#A855F7",
 };
+
+type WorkbenchWorkspaceLayoutProps = {
+  centerPanel: ReactNode;
+  leftPanel: ReactNode;
+  rightPanel: ReactNode;
+  evidencePanel: ReactNode;
+};
+
+function WorkbenchWorkspaceLayout({
+  centerPanel,
+  leftPanel,
+  rightPanel,
+  evidencePanel,
+}: WorkbenchWorkspaceLayoutProps) {
+  return (
+    <>
+      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_360px] xl:gap-4">
+        <div className="min-h-0 space-y-4 overflow-auto pr-1">{leftPanel}</div>
+
+        <div className="min-h-0 space-y-4 overflow-auto pr-1">{centerPanel}</div>
+
+        <div className="min-h-0 space-y-4 overflow-auto pr-1">{rightPanel}</div>
+      </div>
+
+      <div className="hidden shrink-0 xl:block">
+        <details className="rounded-lg border bg-card" open>
+          <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground">
+            Evidence Console
+          </summary>
+          <div className="max-h-64 overflow-auto px-4 pb-4">
+            <div className="space-y-4">{evidencePanel}</div>
+          </div>
+        </details>
+      </div>
+
+      <div className="space-y-4 xl:hidden">
+        {centerPanel}
+
+        <details className="rounded-lg border bg-card p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            Inputs Console
+          </summary>
+          <div className="mt-3">{leftPanel}</div>
+        </details>
+
+        <details className="rounded-lg border bg-card p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            Inspector Console
+          </summary>
+          <div className="mt-3 space-y-3">{rightPanel}</div>
+        </details>
+
+        <details className="rounded-lg border bg-card p-3">
+          <summary className="cursor-pointer text-sm font-medium text-foreground">
+            Evidence Console
+          </summary>
+          <div className="mt-3 space-y-3">{evidencePanel}</div>
+        </details>
+      </div>
+    </>
+  );
+}
 
 export function WorkbenchMapInteractive({
   vm,
@@ -888,59 +950,17 @@ export function WorkbenchMapInteractive({
         </CardHeader>
       </Card>
 
-      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_360px] xl:gap-4">
-        <div className="min-h-0 space-y-4 overflow-auto pr-1">
-          {renderInputsCard("expanded")}
-        </div>
-
-        <div className="min-h-0 space-y-4 overflow-auto pr-1">
-          {renderMapCard()}
-        </div>
-
-        <div className="min-h-0 space-y-4 overflow-auto pr-1">
-          {renderStateFocusCard()}
-          {renderObjectInspector()}
-        </div>
-      </div>
-
-      <div className="hidden shrink-0 xl:block">
-        <details className="rounded-lg border bg-card" open>
-          <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-foreground">
-            Evidence Console
-          </summary>
-          <div className="max-h-64 overflow-auto px-4 pb-4">
-            <div className="space-y-4">{renderEvidenceCards()}</div>
-          </div>
-        </details>
-      </div>
-
-      <div className="space-y-4 xl:hidden">
-        {renderMapCard()}
-
-        <details className="rounded-lg border bg-card p-3">
-          <summary className="cursor-pointer text-sm font-medium text-foreground">
-            Inputs Console
-          </summary>
-          <div className="mt-3">{renderInputsCard("expanded")}</div>
-        </details>
-
-        <details className="rounded-lg border bg-card p-3">
-          <summary className="cursor-pointer text-sm font-medium text-foreground">
-            Inspector Console
-          </summary>
-          <div className="mt-3 space-y-3">
+      <WorkbenchWorkspaceLayout
+        leftPanel={renderInputsCard("expanded")}
+        centerPanel={renderMapCard()}
+        rightPanel={
+          <>
             {renderStateFocusCard()}
             {renderObjectInspector()}
-          </div>
-        </details>
-
-        <details className="rounded-lg border bg-card p-3">
-          <summary className="cursor-pointer text-sm font-medium text-foreground">
-            Evidence Console
-          </summary>
-          <div className="mt-3 space-y-3">{renderEvidenceCards()}</div>
-        </details>
-      </div>
+          </>
+        }
+        evidencePanel={<>{renderEvidenceCards()}</>}
+      />
     </div>
   );
 }
