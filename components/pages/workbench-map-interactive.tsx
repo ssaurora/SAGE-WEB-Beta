@@ -492,6 +492,105 @@ function WorkbenchExecutionContextCard({
   );
 }
 
+type WorkbenchInputsCardProps = {
+  requiredReadyCount: number;
+  requiredTotal: number;
+  requiredMissingCount: number;
+  invalidBindingCount: number;
+  inputsPanelNode: ReactNode;
+};
+
+function WorkbenchInputsCard({
+  requiredReadyCount,
+  requiredTotal,
+  requiredMissingCount,
+  invalidBindingCount,
+  inputsPanelNode,
+}: WorkbenchInputsCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Inputs</CardTitle>
+        <CardDescription>
+          Required Ready {requiredReadyCount}/{requiredTotal} · Missing{" "}
+          {requiredMissingCount} · Invalid {invalidBindingCount}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>{inputsPanelNode}</CardContent>
+    </Card>
+  );
+}
+
+type WorkbenchCurrentStateCardProps = {
+  workbenchState: string;
+  isFailed: boolean;
+  isCompleted: boolean;
+  layoutLabel: string;
+  stateHint: string;
+  contextFrom?: string;
+  contextTaskId?: string;
+  requiredReadyCount: number;
+  requiredTotal: number;
+  requiredMissingCount: number;
+  invalidBindingCount: number;
+  canEdit: boolean;
+  role: string;
+};
+
+function WorkbenchCurrentStateCard({
+  workbenchState,
+  isFailed,
+  isCompleted,
+  layoutLabel,
+  stateHint,
+  contextFrom,
+  contextTaskId,
+  requiredReadyCount,
+  requiredTotal,
+  requiredMissingCount,
+  invalidBindingCount,
+  canEdit,
+  role,
+}: WorkbenchCurrentStateCardProps) {
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <CardTitle className="text-base">Current State</CardTitle>
+            <Badge
+              variant={
+                isFailed ? "destructive" : isCompleted ? "secondary" : "outline"
+              }
+            >
+              {workbenchState}
+            </Badge>
+            <Badge variant="outline">{layoutLabel}</Badge>
+          </div>
+          <CardDescription>
+            {stateHint}
+            {contextFrom || contextTaskId
+              ? ` · via ${contextFrom ?? "external"}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
+              : ""}
+          </CardDescription>
+          <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+            <span>
+              Required Ready {requiredReadyCount}/{requiredTotal}
+            </span>
+            <span>· Missing {requiredMissingCount}</span>
+            <span>· Invalid {invalidBindingCount}</span>
+          </div>
+          {!canEdit ? (
+            <p className="text-xs text-muted-foreground">
+              Viewer 模式（{role}）下已禁用编辑操作。
+            </p>
+          ) : null}
+        </div>
+      </CardHeader>
+    </Card>
+  );
+}
+
 export function WorkbenchMapInteractive({
   vm,
   sceneId,
@@ -901,29 +1000,7 @@ export function WorkbenchMapInteractive({
     />
   );
 
-  const renderInputsCard = (mode: "expanded" | "collapsed") => (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">Inputs</CardTitle>
-        <CardDescription>
-          Required Ready {requiredReadyCount}/{requiredTotal} · Missing{" "}
-          {requiredMissingCount} · Invalid {invalidBindingCount}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {mode === "expanded" ? (
-          renderInputsPanel()
-        ) : (
-          <details className="rounded-md border p-3">
-            <summary className="cursor-pointer text-sm font-medium text-foreground">
-              展开输入详情
-            </summary>
-            <div className="mt-3">{renderInputsPanel()}</div>
-          </details>
-        )}
-      </CardContent>
-    </Card>
-  );
+  const inputsPanelNode = renderInputsPanel();
 
   const renderLayerGroup = (group: "inputs" | "results", title: string) => (
     <div className="rounded-md border p-2">
@@ -971,48 +1048,32 @@ export function WorkbenchMapInteractive({
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-4 overflow-hidden">
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="text-base">Current State</CardTitle>
-              <Badge
-                variant={
-                  isFailed
-                    ? "destructive"
-                    : isCompleted
-                      ? "secondary"
-                      : "outline"
-                }
-              >
-                {workbenchState}
-              </Badge>
-              <Badge variant="outline">{layoutLabel}</Badge>
-            </div>
-            <CardDescription>
-              {stateHint}
-              {contextFrom || contextTaskId
-                ? ` · via ${contextFrom ?? "external"}${contextTaskId ? ` / task ${contextTaskId}` : ""}`
-                : ""}
-            </CardDescription>
-            <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-              <span>
-                Required Ready {requiredReadyCount}/{requiredTotal}
-              </span>
-              <span>· Missing {requiredMissingCount}</span>
-              <span>· Invalid {invalidBindingCount}</span>
-            </div>
-            {!canEdit ? (
-              <p className="text-xs text-muted-foreground">
-                Viewer 模式（{role}）下已禁用编辑操作。
-              </p>
-            ) : null}
-          </div>
-        </CardHeader>
-      </Card>
+      <WorkbenchCurrentStateCard
+        workbenchState={workbenchState}
+        isFailed={isFailed}
+        isCompleted={isCompleted}
+        layoutLabel={layoutLabel}
+        stateHint={stateHint}
+        contextFrom={contextFrom}
+        contextTaskId={contextTaskId}
+        requiredReadyCount={requiredReadyCount}
+        requiredTotal={requiredTotal}
+        requiredMissingCount={requiredMissingCount}
+        invalidBindingCount={invalidBindingCount}
+        canEdit={canEdit}
+        role={role}
+      />
 
       <WorkbenchWorkspaceLayout
-        leftPanel={renderInputsCard("expanded")}
+        leftPanel={
+          <WorkbenchInputsCard
+            requiredReadyCount={requiredReadyCount}
+            requiredTotal={requiredTotal}
+            requiredMissingCount={requiredMissingCount}
+            invalidBindingCount={invalidBindingCount}
+            inputsPanelNode={inputsPanelNode}
+          />
+        }
         centerPanel={
           <WorkbenchMapCard
             layers={layers}
