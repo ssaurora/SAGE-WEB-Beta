@@ -20,6 +20,7 @@ import { GovernanceRecoveryPanel } from "@/components/pages/governance-recovery-
 import { GovernanceManifestTab } from "@/components/pages/governance-manifest-tab";
 import { GovernanceEvidenceTabs } from "@/components/pages/governance-evidence-tabs";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
+import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
 
 export default async function TaskGovernancePage({
   params,
@@ -62,7 +63,7 @@ export default async function TaskGovernancePage({
   })();
 
   return (
-    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
+    <ViewportWorkspace>
       <TaskContextBar
         sceneName={vm.sceneId}
         sceneHref={`/scenes/${vm.sceneId}/overview`}
@@ -209,6 +210,6 @@ export default async function TaskGovernancePage({
           auditSummary={vm.auditSummary}
         />
       </div>
-    </div>
+    </ViewportWorkspace>
   );
 }

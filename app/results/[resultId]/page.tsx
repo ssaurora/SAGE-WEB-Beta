@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
 import { getResultDetailViewModel as getResultDetailFromApi } from "@/lib/api/result";
 import { toResultDetailViewModel } from "@/lib/adapters/result";
 import type { ResultDetailViewModel } from "@/lib/contracts/result";
@@ -40,7 +41,7 @@ export default async function ResultDetailPage({
   const vm = await getResultDetailViewModel(resultId);
 
   return (
-    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
+    <ViewportWorkspace>
       <TaskContextBar
         sceneName={vm.sceneId}
         sceneHref={`/scenes/${vm.sceneId}/overview`}
@@ -74,6 +75,6 @@ export default async function ResultDetailPage({
       <div className="min-h-0 flex-1 overflow-auto pr-1">
         <ResultDetailClient vm={vm} />
       </div>
-    </div>
+    </ViewportWorkspace>
   );
 }

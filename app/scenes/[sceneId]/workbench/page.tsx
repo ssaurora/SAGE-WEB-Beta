@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { WorkbenchMapInteractive } from "@/components/pages/workbench-map-interactive";
+import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
 import { getSceneWorkbenchViewModel } from "@/lib/api/scene";
 import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 import { getTaskStateVariant } from "@/lib/status/task-state";
@@ -39,7 +40,7 @@ export default async function SceneWorkbenchPage({
   }
 
   return (
-    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
+    <ViewportWorkspace>
       <TaskContextBar
         sceneName={vm.header.sceneName}
         sceneHref={`/scenes/${sceneId}/overview`}
@@ -84,6 +85,6 @@ export default async function SceneWorkbenchPage({
         contextFrom={from}
         contextTaskId={taskId}
       />
-    </div>
+    </ViewportWorkspace>
   );
 }

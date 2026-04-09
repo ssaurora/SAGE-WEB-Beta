@@ -11,6 +11,7 @@ import {
 import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneResultsPanel } from "@/components/pages/scene-results-panel";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
+import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
 import { getSceneResultsViewModel } from "@/lib/api/scene";
 import {
   formatTaskContextFrom,
@@ -107,7 +108,7 @@ export default async function SceneResultsPage({
   })();
 
   return (
-    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
+    <ViewportWorkspace>
       <TaskContextBar
         sceneName={sceneId}
         sceneHref={`/scenes/${sceneId}/overview`}
@@ -252,6 +253,6 @@ export default async function SceneResultsPage({
           contextFrom={from}
         />
       </div>
-    </div>
+    </ViewportWorkspace>
   );
 }

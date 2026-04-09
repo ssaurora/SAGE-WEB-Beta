@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
 import { getResultListViewModel } from "@/lib/api/result";
 import { toResultsListViewModel } from "@/lib/adapters/result";
 import type { ResultListViewModel } from "@/lib/contracts/result";
@@ -33,7 +34,7 @@ export default async function ResultsPage() {
   )[0];
 
   return (
-    <div className="flex h-[calc(100vh-11rem)] min-h-[680px] flex-col gap-4 overflow-hidden">
+    <ViewportWorkspace>
       <TaskContextBar
         sceneName="Global Results"
         currentView="Results"
@@ -126,6 +127,6 @@ export default async function ResultsPage() {
       <div className="space-y-4 xl:hidden">
         <ResultsListClient vm={vm} />
       </div>
-    </div>
+    </ViewportWorkspace>
   );
 }

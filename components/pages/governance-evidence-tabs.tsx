@@ -22,13 +22,12 @@ type GovernanceEvidenceTabsProps = {
   auditSummary: string;
 };
 
-type TabKey = "blocking" | "manifest" | "artifacts" | "timeline" | "audit";
+type TabKey = "evidence" | "manifest" | "lifecycle" | "audit";
 
 const tabOptions: Array<{ key: TabKey; label: string }> = [
-  { key: "blocking", label: "Blocking" },
+  { key: "evidence", label: "Evidence" },
   { key: "manifest", label: "Manifest" },
-  { key: "artifacts", label: "Artifacts" },
-  { key: "timeline", label: "Timeline" },
+  { key: "lifecycle", label: "Lifecycle" },
   { key: "audit", label: "Audit" },
 ];
 
@@ -42,7 +41,7 @@ export function GovernanceEvidenceTabs({
   lifecycleEvents,
   auditSummary,
 }: GovernanceEvidenceTabsProps) {
-  const [activeTab, setActiveTab] = useState<TabKey>("blocking");
+  const [activeTab, setActiveTab] = useState<TabKey>("evidence");
 
   const timelinePreview = useMemo(
     () => lifecycleEvents.slice(0, 3),
@@ -67,7 +66,7 @@ export function GovernanceEvidenceTabs({
           ))}
         </div>
 
-        {activeTab === "blocking" ? (
+        {activeTab === "evidence" ? (
           <div className="space-y-4">
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
@@ -124,6 +123,21 @@ export function GovernanceEvidenceTabs({
                 <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
                   {suggestedFixes.map((fix) => (
                     <li key={fix}>{fix}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                Artifacts
+              </p>
+              {artifacts.length === 0 ? (
+                <p className="text-sm text-muted-foreground">暂无工件</p>
+              ) : (
+                <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+                  {artifacts.map((item) => (
+                    <li key={item}>{item}</li>
                   ))}
                 </ul>
               )}
@@ -221,28 +235,11 @@ export function GovernanceEvidenceTabs({
           </div>
         ) : null}
 
-        {activeTab === "artifacts" ? (
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-              Artifacts
-            </p>
-            {artifacts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">暂无工件</p>
-            ) : (
-              <ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-                {artifacts.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ) : null}
-
-        {activeTab === "timeline" ? (
+        {activeTab === "lifecycle" ? (
           <div className="space-y-3">
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
-                Timeline Preview
+                Lifecycle Preview
               </p>
               <div className="space-y-2">
                 {timelinePreview.map((event) => (
@@ -258,7 +255,7 @@ export function GovernanceEvidenceTabs({
             {hasMoreTimeline ? (
               <details className="rounded-md border p-3">
                 <summary className="cursor-pointer text-sm font-medium text-foreground">
-                  查看完整时间线
+                  查看完整生命周期
                 </summary>
                 <div className="mt-3 space-y-2">
                   {lifecycleEvents.map((event) => (
