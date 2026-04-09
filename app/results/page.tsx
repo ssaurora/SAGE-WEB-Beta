@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
+import { TriPaneWorkspace } from "@/components/layout/pane-workspace";
 import { getResultListViewModel } from "@/lib/api/result";
 import { toResultsListViewModel } from "@/lib/adapters/result";
 import type { ResultListViewModel } from "@/lib/contracts/result";
@@ -66,12 +67,9 @@ export default async function ResultsPage() {
         </CardContent>
       </Card>
 
-      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_360px] xl:gap-4">
-        <div className="min-h-0 overflow-auto pr-1">
-          <ResultsListClient vm={vm} />
-        </div>
-
-        <div className="min-h-0 overflow-auto pr-1">
+      <TriPaneWorkspace
+        leftPane={<ResultsListClient vm={vm} />}
+        centerPane={
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Result Main View</CardTitle>
@@ -96,9 +94,8 @@ export default async function ResultsPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
-
-        <div className="min-h-0 overflow-auto pr-1">
+        }
+        rightPane={
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Result Inspector</CardTitle>
@@ -121,8 +118,8 @@ export default async function ResultsPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        }
+      />
 
       <div className="space-y-4 xl:hidden">
         <ResultsListClient vm={vm} />

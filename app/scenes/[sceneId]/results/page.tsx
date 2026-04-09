@@ -12,6 +12,7 @@ import { DataStateCard } from "@/components/pages/data-state-card";
 import { SceneResultsPanel } from "@/components/pages/scene-results-panel";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
+import { TriPaneWorkspace } from "@/components/layout/pane-workspace";
 import { getSceneResultsViewModel } from "@/lib/api/scene";
 import {
   formatTaskContextFrom,
@@ -173,17 +174,16 @@ export default async function SceneResultsPage({
         </Card>
       ) : null}
 
-      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[320px_minmax(0,1fr)_360px] xl:gap-4">
-        <div className="min-h-0 overflow-auto pr-1">
+      <TriPaneWorkspace
+        leftPane={
           <SceneResultsPanel
             sceneId={vm.sceneId}
             items={vm.items}
             initialTaskFilter={taskId ?? ""}
             contextFrom={from}
           />
-        </div>
-
-        <div className="min-h-0 overflow-auto pr-1">
+        }
+        centerPane={
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Result Main View</CardTitle>
@@ -213,9 +213,8 @@ export default async function SceneResultsPage({
               </div>
             </CardContent>
           </Card>
-        </div>
-
-        <div className="min-h-0 overflow-auto pr-1">
+        }
+        rightPane={
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Result Inspector</CardTitle>
@@ -242,8 +241,8 @@ export default async function SceneResultsPage({
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        }
+      />
 
       <div className="space-y-4 xl:hidden">
         <SceneResultsPanel

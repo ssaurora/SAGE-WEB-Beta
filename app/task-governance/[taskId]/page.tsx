@@ -21,6 +21,7 @@ import { GovernanceManifestTab } from "@/components/pages/governance-manifest-ta
 import { GovernanceEvidenceTabs } from "@/components/pages/governance-evidence-tabs";
 import { TaskContextBar } from "@/components/pages/task-context-bar";
 import { ViewportWorkspace } from "@/components/layout/viewport-workspace";
+import { SplitPaneWorkspace } from "@/components/layout/pane-workspace";
 
 export default async function TaskGovernancePage({
   params,
@@ -160,8 +161,8 @@ export default async function TaskGovernancePage({
         </CardContent>
       </Card>
 
-      <div className="hidden min-h-0 flex-1 xl:grid xl:grid-cols-[420px_minmax(0,1fr)] xl:gap-4">
-        <div className="min-h-0 overflow-auto pr-1">
+      <SplitPaneWorkspace
+        leftPane={
           <GovernanceRecoveryPanel
             sceneId={vm.sceneId}
             taskId={vm.taskId}
@@ -172,9 +173,8 @@ export default async function TaskGovernancePage({
             invalidBindings={vm.requiredActions}
             suggestedFix={vm.suggestedFixes[0]}
           />
-        </div>
-
-        <div className="min-h-0 overflow-auto pr-1">
+        }
+        rightPane={
           <GovernanceEvidenceTabs
             requiredActions={vm.requiredActions}
             missingRequiredInputs={vm.missingRequiredInputs}
@@ -185,8 +185,8 @@ export default async function TaskGovernancePage({
             lifecycleEvents={vm.lifecycleEvents}
             auditSummary={vm.auditSummary}
           />
-        </div>
-      </div>
+        }
+      />
 
       <div className="space-y-4 xl:hidden">
         <GovernanceRecoveryPanel
