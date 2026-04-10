@@ -44,7 +44,7 @@ export default async function SceneOverviewPage({
     taskState === "Waiting for Required Input" || taskState === "Failed";
   const isRuntimeState = taskState === "Running";
   const isCompletedState = taskState === "Completed";
-  const latestResultId = vm.latestResult.resultId ?? vm.latestResult.reportId;
+  const latestResultId = vm.latestResult.resultId;
 
   const primaryAction = isCompletedState
     ? {
