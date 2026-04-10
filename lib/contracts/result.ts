@@ -52,7 +52,6 @@ export type ResultListItemViewModel = {
 
 export type ResultListViewModel = {
   results: ResultListItemViewModel[];
-  reports?: ResultListItemViewModel[];
 };
 
 export type ResultDetailSectionViewModel = {

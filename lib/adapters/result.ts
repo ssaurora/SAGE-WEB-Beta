@@ -23,7 +23,6 @@ export function toResultsListViewModel(
 
   return {
     results: mapped,
-    reports: mapped,
   };
 }
 

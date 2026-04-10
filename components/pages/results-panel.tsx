@@ -109,5 +109,3 @@ export function ResultsPanel({ items }: ResultsPanelProps) {
     </div>
   );
 }
-
-export { ResultsPanel as ReportsPanel };
