@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { reportDetailMockMap } from "@/lib/mock/report";
+import { resultDetailMockMap } from "@/lib/mock/result";
 
 export async function GET(
   _request: Request,
@@ -7,8 +7,8 @@ export async function GET(
 ) {
   const { resultId } = await context.params;
   const result =
-    reportDetailMockMap[resultId] ??
-    Object.values(reportDetailMockMap).find(
+    resultDetailMockMap[resultId] ??
+    Object.values(resultDetailMockMap).find(
       (item) => item.reportId === resultId,
     );
 
