@@ -9,11 +9,8 @@ export function toResultsListViewModel(
   results: ResultListItemDto[],
 ): ResultListViewModel {
   const mapped = results.map((item) => ({
-    id: item.resultId ?? item.reportId ?? "result-unknown",
-    name:
-      item.resultName ??
-      item.reportName ??
-      `${item.analysisType} Result`,
+    id: item.resultId,
+    name: item.resultName ?? `${item.analysisType} Result`,
     sceneId: item.sceneId,
     taskId: item.taskId ?? "task-unknown",
     analysisType: item.analysisType,
@@ -33,14 +30,11 @@ export function toResultsListViewModel(
 export function toResultDetailViewModel(
   detail: ResultDetailDto,
 ): ResultDetailViewModel {
-  const resultId = detail.resultId ?? detail.reportId ?? "result-unknown";
+  const resultId = detail.resultId;
 
   return {
     id: resultId,
-    name:
-      detail.resultName ??
-      detail.reportName ??
-      `${detail.analysisType} Result`,
+    name: detail.resultName ?? `${detail.analysisType} Result`,
     sceneId: detail.sceneId,
     taskId: detail.taskId,
     analysisType: detail.analysisType,
