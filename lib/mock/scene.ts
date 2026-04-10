@@ -41,7 +41,6 @@ export const sceneOverviewMock: SceneOverviewPageViewModel = {
   },
   latestResult: {
     resultId: "result-2026-001",
-    reportId: "report-2026-001",
     summary: "上次运行已生成水量分布图和分区摘要。",
     available: true,
   },

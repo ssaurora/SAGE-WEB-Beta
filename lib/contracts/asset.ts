@@ -23,7 +23,6 @@ export type AssetDetailViewModel = AssetListItemViewModel & {
     sceneId: string;
     taskId?: string;
     resultId?: string;
-    reportId?: string;
   };
   auditSummary: string;
 };

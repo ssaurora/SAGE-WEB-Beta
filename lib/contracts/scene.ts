@@ -20,7 +20,6 @@ export type SceneOverviewPageViewModel = {
   };
   latestResult: {
     resultId: string;
-    reportId?: string;
     summary: string;
     available: boolean;
   };
