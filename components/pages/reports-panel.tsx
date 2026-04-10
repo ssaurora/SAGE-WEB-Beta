@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { DataStateCard } from "@/components/pages/data-state-card";
-import type { ReportListItemDto } from "@/lib/contracts/report";
+import type { ResultListItemDto } from "@/lib/contracts/result";
 import { TASK_CONTEXT_FROM } from "@/lib/navigation/task-context";
 
 type ReportsPanelProps = {
-  items: ReportListItemDto[];
+  items: ResultListItemDto[];
 };
 
 export function ReportsPanel({ items }: ReportsPanelProps) {
@@ -85,17 +85,17 @@ export function ReportsPanel({ items }: ReportsPanelProps) {
         />
       ) : (
         filteredItems.map((item) => (
-          <div key={item.resultId ?? item.reportId} className="rounded-md border p-4">
+          <div key={item.resultId} className="rounded-md border p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold">{item.resultId ?? item.reportId}</p>
+                <p className="text-sm font-semibold">{item.resultId}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {item.sceneId} · {item.analysisType} · {item.modelName} ·{" "}
                   {item.time}
                 </p>
               </div>
               <Link
-                href={`/results/${item.resultId ?? item.reportId}?from=${TASK_CONTEXT_FROM.Results}`}
+                href={`/results/${item.resultId}?from=${TASK_CONTEXT_FROM.Results}`}
               >
                 <Badge variant="outline">Open Result Detail</Badge>
               </Link>

@@ -2,144 +2,32 @@ import type {
   ReportDetailDto,
   ReportListItemDto,
 } from "@/lib/contracts/report";
+import {
+  legacyReportIdToResultIdMap,
+  resultDetailMockMap,
+  resultListMock,
+} from "@/lib/mock/result";
 
-export const reportListMock: ReportListItemDto[] = [
-  {
-    resultId: "result-2026-001",
-    reportId: "report-2026-001",
-    sceneId: "scene-001",
-    taskId: "task-000",
-    analysisType: "Water Yield",
-    modelName: "InVEST water_yield",
-    time: "2026-04-02 17:25",
-    resultName: "Water Yield Baseline Result",
-    reportName: "Water Yield Baseline Report",
-    status: "Published",
-    format: "PDF",
-    pageCount: 22,
-    fileSize: "3.4 MB",
-    resultSummary: "中游子流域水量贡献高，北侧坡地建议优先治理。",
-  },
-  {
-    resultId: "result-2026-002",
-    reportId: "report-2026-002",
-    sceneId: "scene-002",
-    taskId: "task-003",
-    analysisType: "Sediment Delivery",
-    modelName: "InVEST SDR",
-    time: "2026-04-01 16:10",
-    resultName: "Sediment Delivery Risk Result",
-    reportName: "Sediment Delivery Risk Report",
-    status: "Published",
-    format: "PDF",
-    pageCount: 18,
-    fileSize: "2.7 MB",
-    resultSummary: "高侵蚀风险区集中于南部坡耕地。",
-  },
-  {
-    resultId: "result-2026-003",
-    reportId: "report-2026-003",
-    sceneId: "scene-003",
-    taskId: "task-004",
-    analysisType: "Habitat Quality",
-    modelName: "InVEST habitat_quality",
-    time: "2026-03-29 11:40",
-    resultName: "Habitat Quality Assessment Result",
-    reportName: "Habitat Quality Assessment",
-    status: "Draft",
-    format: "JSON",
-    pageCount: 12,
-    fileSize: "1.1 MB",
-    resultSummary: "生态质量热点分布在湿地与林地交错区域。",
-  },
-];
+const toLegacyReportId = (resultId: string) =>
+  resultId.startsWith("result-") ? resultId.replace("result-", "report-") : resultId;
 
-export const reportDetailMockMap: Record<string, ReportDetailDto> = {
-  "result-2026-001": {
-    resultId: "result-2026-001",
-    reportId: "report-2026-001",
-    sceneId: "scene-001",
-    taskId: "task-000",
-    analysisType: "Water Yield",
-    modelName: "InVEST water_yield",
-    time: "2026-04-02 17:25",
-    resultName: "Water Yield Baseline Result",
-    reportName: "Water Yield Baseline Report",
-    status: "Published",
-    format: "PDF",
-    pageCount: 22,
-    fileSize: "3.4 MB",
-    generatedBy: "system@mock",
-    downloadUrl: "/mock-downloads/report-2026-001.pdf",
-    resultSummary: "中游子流域水量贡献高，北侧坡地建议优先治理。",
-    metrics: [
-      { name: "总水量", value: "1.26e8 m³" },
-      { name: "高产水区占比", value: "34.2%" },
-      { name: "低产水区占比", value: "18.7%" },
-    ],
-    explanation:
-      "结果显示中游区域对总产水贡献显著，建议优先在北侧坡地实施地表径流抑制与植被恢复策略。",
-    exports: [
-      "report-2026-001.pdf",
-      "water_yield_2026_001.tif",
-      "sub_basin_stats_2026_001.csv",
-    ],
-    manifestSummary:
-      "analysisType=Water Yield; model=InVEST water_yield; inputs=3/3 ready; runtimeProfile=standard-cpu",
-  },
-  "result-2026-002": {
-    resultId: "result-2026-002",
-    reportId: "report-2026-002",
-    sceneId: "scene-002",
-    taskId: "task-003",
-    analysisType: "Sediment Delivery",
-    modelName: "InVEST SDR",
-    time: "2026-04-01 16:10",
-    resultName: "Sediment Delivery Risk Result",
-    reportName: "Sediment Delivery Risk Report",
-    status: "Published",
-    format: "PDF",
-    pageCount: 18,
-    fileSize: "2.7 MB",
-    generatedBy: "system@mock",
-    downloadUrl: "/mock-downloads/report-2026-002.pdf",
-    resultSummary: "高侵蚀风险区集中于南部坡耕地。",
-    metrics: [
-      { name: "泥沙输出量", value: "3.7e5 t" },
-      { name: "高风险区占比", value: "22.4%" },
-      { name: "低风险区占比", value: "41.8%" },
-    ],
-    explanation:
-      "南部坡耕地在降雨事件下泥沙输出量高，建议实施缓冲带与坡改梯措施。",
-    exports: ["report-2026-002.pdf", "sdr_risk_2026_002.tif"],
-    manifestSummary:
-      "analysisType=Sediment Delivery; model=InVEST SDR; inputs=4/4 ready; runtimeProfile=standard-cpu",
-  },
-  "result-2026-003": {
-    resultId: "result-2026-003",
-    reportId: "report-2026-003",
-    sceneId: "scene-003",
-    taskId: "task-004",
-    analysisType: "Habitat Quality",
-    modelName: "InVEST habitat_quality",
-    time: "2026-03-29 11:40",
-    resultName: "Habitat Quality Assessment Result",
-    reportName: "Habitat Quality Assessment",
-    status: "Draft",
-    format: "JSON",
-    pageCount: 12,
-    fileSize: "1.1 MB",
-    generatedBy: "system@mock",
-    downloadUrl: "/mock-downloads/report-2026-003.json",
-    resultSummary: "生态质量热点分布在湿地与林地交错区域。",
-    metrics: [
-      { name: "高质量栖息地占比", value: "29.5%" },
-      { name: "中质量栖息地占比", value: "46.1%" },
-      { name: "低质量栖息地占比", value: "24.4%" },
-    ],
-    explanation: "湿地与林地交错带形成连续生态廊道，应优先纳入保护与修复规划。",
-    exports: ["report-2026-003.pdf", "habitat_quality_2026_003.tif"],
-    manifestSummary:
-      "analysisType=Habitat Quality; model=InVEST habitat_quality; inputs=5/5 ready; runtimeProfile=standard-cpu",
-  },
-};
+export const reportListMock: ReportListItemDto[] = resultListMock.map((item) => ({
+  ...item,
+  reportId: toLegacyReportId(item.resultId),
+  reportName: item.resultName,
+}));
+
+const detailEntries = Object.values(resultDetailMockMap).map((item) => {
+  const legacyId = toLegacyReportId(item.resultId);
+  const detail: ReportDetailDto = {
+    ...item,
+    reportId: legacyId,
+    reportName: item.resultName,
+  };
+  return [item.resultId, detail] as const;
+});
+
+export const reportDetailMockMap: Record<string, ReportDetailDto> =
+  Object.fromEntries(detailEntries);
+
+export { legacyReportIdToResultIdMap };

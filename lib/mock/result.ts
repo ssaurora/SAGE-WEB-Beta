@@ -1,62 +1,139 @@
-import {
-  reportDetailMockMap,
-  reportListMock,
-} from "@/lib/mock/report";
 import type {
   ResultDetailDto,
   ResultListItemDto,
 } from "@/lib/contracts/result";
 
-export const resultListMock: ResultListItemDto[] = reportListMock.map((item) => ({
-  resultId: item.resultId,
-  sceneId: item.sceneId,
-  taskId: item.taskId,
-  analysisType: item.analysisType,
-  modelName: item.modelName,
-  time: item.time,
-  resultName: item.resultName ?? item.reportName,
-  status: item.status,
-  format: item.format,
-  pageCount: item.pageCount,
-  fileSize: item.fileSize,
-  resultSummary: item.resultSummary,
-}));
+export const resultListMock: ResultListItemDto[] = [
+  {
+    resultId: "result-2026-001",
+    sceneId: "scene-001",
+    taskId: "task-000",
+    analysisType: "Water Yield",
+    modelName: "InVEST water_yield",
+    time: "2026-04-02 17:25",
+    resultName: "Water Yield Baseline Result",
+    status: "Published",
+    format: "PDF",
+    pageCount: 22,
+    fileSize: "3.4 MB",
+    resultSummary: "中游子流域水量贡献高，北侧坡地建议优先治理。",
+  },
+  {
+    resultId: "result-2026-002",
+    sceneId: "scene-002",
+    taskId: "task-003",
+    analysisType: "Sediment Delivery",
+    modelName: "InVEST SDR",
+    time: "2026-04-01 16:10",
+    resultName: "Sediment Delivery Risk Result",
+    status: "Published",
+    format: "PDF",
+    pageCount: 18,
+    fileSize: "2.7 MB",
+    resultSummary: "高侵蚀风险区集中于南部坡耕地。",
+  },
+  {
+    resultId: "result-2026-003",
+    sceneId: "scene-003",
+    taskId: "task-004",
+    analysisType: "Habitat Quality",
+    modelName: "InVEST habitat_quality",
+    time: "2026-03-29 11:40",
+    resultName: "Habitat Quality Assessment Result",
+    status: "Draft",
+    format: "JSON",
+    pageCount: 12,
+    fileSize: "1.1 MB",
+    resultSummary: "生态质量热点分布在湿地与林地交错区域。",
+  },
+];
 
-const detailEntries = Object.values(reportDetailMockMap).map((item) => {
-  const result: ResultDetailDto = {
-    resultId: item.resultId,
-    sceneId: item.sceneId,
-    taskId: item.taskId,
-    analysisType: item.analysisType,
-    modelName: item.modelName,
-    time: item.time,
-    resultName: item.resultName ?? item.reportName,
-    status: item.status,
-    format: item.format,
-    pageCount: item.pageCount,
-    fileSize: item.fileSize,
-    generatedBy: item.generatedBy,
-    downloadUrl: item.downloadUrl,
-    resultSummary: item.resultSummary,
-    metrics: item.metrics,
-    explanation: item.explanation,
-    exports: item.exports,
-    manifestSummary: item.manifestSummary,
-  };
+export const resultDetailMockMap: Record<string, ResultDetailDto> = {
+  "result-2026-001": {
+    resultId: "result-2026-001",
+    sceneId: "scene-001",
+    taskId: "task-000",
+    analysisType: "Water Yield",
+    modelName: "InVEST water_yield",
+    time: "2026-04-02 17:25",
+    resultName: "Water Yield Baseline Result",
+    status: "Published",
+    format: "PDF",
+    pageCount: 22,
+    fileSize: "3.4 MB",
+    generatedBy: "system@mock",
+    downloadUrl: "/mock-downloads/report-2026-001.pdf",
+    resultSummary: "中游子流域水量贡献高，北侧坡地建议优先治理。",
+    metrics: [
+      { name: "总水量", value: "1.26e8 m³" },
+      { name: "高产水区占比", value: "34.2%" },
+      { name: "低产水区占比", value: "18.7%" },
+    ],
+    explanation:
+      "结果显示中游区域对总产水贡献显著，建议优先在北侧坡地实施地表径流抑制与植被恢复策略。",
+    exports: [
+      "report-2026-001.pdf",
+      "water_yield_2026_001.tif",
+      "sub_basin_stats_2026_001.csv",
+    ],
+    manifestSummary:
+      "analysisType=Water Yield; model=InVEST water_yield; inputs=3/3 ready; runtimeProfile=standard-cpu",
+  },
+  "result-2026-002": {
+    resultId: "result-2026-002",
+    sceneId: "scene-002",
+    taskId: "task-003",
+    analysisType: "Sediment Delivery",
+    modelName: "InVEST SDR",
+    time: "2026-04-01 16:10",
+    resultName: "Sediment Delivery Risk Result",
+    status: "Published",
+    format: "PDF",
+    pageCount: 18,
+    fileSize: "2.7 MB",
+    generatedBy: "system@mock",
+    downloadUrl: "/mock-downloads/report-2026-002.pdf",
+    resultSummary: "高侵蚀风险区集中于南部坡耕地。",
+    metrics: [
+      { name: "泥沙输出量", value: "3.7e5 t" },
+      { name: "高风险区占比", value: "22.4%" },
+      { name: "低风险区占比", value: "41.8%" },
+    ],
+    explanation:
+      "南部坡耕地在降雨事件下泥沙输出量高，建议实施缓冲带与坡改梯措施。",
+    exports: ["report-2026-002.pdf", "sdr_risk_2026_002.tif"],
+    manifestSummary:
+      "analysisType=Sediment Delivery; model=InVEST SDR; inputs=4/4 ready; runtimeProfile=standard-cpu",
+  },
+  "result-2026-003": {
+    resultId: "result-2026-003",
+    sceneId: "scene-003",
+    taskId: "task-004",
+    analysisType: "Habitat Quality",
+    modelName: "InVEST habitat_quality",
+    time: "2026-03-29 11:40",
+    resultName: "Habitat Quality Assessment Result",
+    status: "Draft",
+    format: "JSON",
+    pageCount: 12,
+    fileSize: "1.1 MB",
+    generatedBy: "system@mock",
+    downloadUrl: "/mock-downloads/report-2026-003.json",
+    resultSummary: "生态质量热点分布在湿地与林地交错区域。",
+    metrics: [
+      { name: "高质量栖息地占比", value: "29.5%" },
+      { name: "中质量栖息地占比", value: "46.1%" },
+      { name: "低质量栖息地占比", value: "24.4%" },
+    ],
+    explanation: "湿地与林地交错带形成连续生态廊道，应优先纳入保护与修复规划。",
+    exports: ["report-2026-003.pdf", "habitat_quality_2026_003.tif"],
+    manifestSummary:
+      "analysisType=Habitat Quality; model=InVEST habitat_quality; inputs=5/5 ready; runtimeProfile=standard-cpu",
+  },
+};
 
-  return [result.resultId, result] as const;
-});
-
-export const resultDetailMockMap: Record<string, ResultDetailDto> =
-  Object.fromEntries(detailEntries);
-
-export const legacyReportIdToResultIdMap: Record<string, string> =
-  Object.values(reportDetailMockMap).reduce<Record<string, string>>(
-    (acc, item) => {
-      if (item.reportId) {
-        acc[item.reportId] = item.resultId;
-      }
-      return acc;
-    },
-    {},
-  );
+export const legacyReportIdToResultIdMap: Record<string, string> = {
+  "report-2026-001": "result-2026-001",
+  "report-2026-002": "result-2026-002",
+  "report-2026-003": "result-2026-003",
+};

@@ -1,85 +1,31 @@
-export type ReportStatus = "Draft" | "Published" | "Archived";
+import type {
+  ResultDetailDto,
+  ResultDetailSectionViewModel,
+  ResultDetailViewModel,
+  ResultFormat,
+  ResultListItemDto,
+  ResultListItemViewModel,
+  ResultStatus,
+} from "@/lib/contracts/result";
 
-export type ReportFormat = "PDF" | "XLSX" | "JSON";
+export type ReportStatus = ResultStatus;
+export type ReportFormat = ResultFormat;
 
-export type ReportListItemDto = {
-  resultId: string;
+export type ReportListItemDto = ResultListItemDto & {
   reportId?: string;
-  sceneId: string;
-  taskId?: string;
-  analysisType: string;
-  modelName: string;
-  time: string;
-  resultName?: string;
   reportName?: string;
-  status?: ReportStatus;
-  format?: ReportFormat;
-  pageCount?: number;
-  fileSize?: string;
-  resultSummary: string;
 };
 
-export type ReportDetailDto = {
-  resultId: string;
+export type ReportDetailDto = ResultDetailDto & {
   reportId?: string;
-  sceneId: string;
-  taskId: string;
-  analysisType: string;
-  modelName: string;
-  time: string;
-  resultName?: string;
   reportName?: string;
-  status?: ReportStatus;
-  format?: ReportFormat;
-  pageCount?: number;
-  fileSize?: string;
-  generatedBy?: string;
-  downloadUrl?: string;
-  resultSummary: string;
-  metrics: Array<{ name: string; value: string }>;
-  explanation: string;
-  exports: string[];
-  manifestSummary: string;
 };
 
-export type ReportListItemViewModel = {
-  id: string;
-  name: string;
-  sceneId: string;
-  taskId: string;
-  analysisType: string;
-  generatedAt: string;
-  status: ReportStatus;
-  format: ReportFormat;
-  pageCount?: number;
-  fileSize?: string;
-};
+export type ReportListItemViewModel = ResultListItemViewModel;
 
 export type ReportListViewModel = {
   reports: ReportListItemViewModel[];
 };
 
-export type ReportDetailSectionViewModel = {
-  id: string;
-  title: string;
-  description?: string;
-  contentPreview?: string;
-};
-
-export type ReportDetailViewModel = {
-  id: string;
-  name: string;
-  sceneId: string;
-  taskId: string;
-  analysisType: string;
-  generatedAt: string;
-  status: ReportStatus;
-  format: ReportFormat;
-  pageCount?: number;
-  fileSize?: string;
-  generatedBy?: string;
-  description?: string;
-  sections: ReportDetailSectionViewModel[];
-  metadata?: Record<string, string>;
-  downloadUrl?: string;
-};
+export type ReportDetailSectionViewModel = ResultDetailSectionViewModel;
+export type ReportDetailViewModel = ResultDetailViewModel;
