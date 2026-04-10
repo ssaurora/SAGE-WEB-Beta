@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import {
-  legacyReportIdToResultIdMap,
+  legacyResultAliasToResultIdMap,
   resultDetailMockMap,
 } from "@/lib/mock/result";
 
@@ -12,7 +12,7 @@ export async function GET(
   const normalizedResultId =
     resultId in resultDetailMockMap
       ? resultId
-      : legacyReportIdToResultIdMap[resultId];
+      : legacyResultAliasToResultIdMap[resultId];
   const result = normalizedResultId
     ? resultDetailMockMap[normalizedResultId]
     : undefined;

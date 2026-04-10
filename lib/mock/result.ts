@@ -132,8 +132,10 @@ export const resultDetailMockMap: Record<string, ResultDetailDto> = {
   },
 };
 
-export const legacyReportIdToResultIdMap: Record<string, string> = {
+export const legacyResultAliasToResultIdMap: Record<string, string> = {
   "report-2026-001": "result-2026-001",
   "report-2026-002": "result-2026-002",
   "report-2026-003": "result-2026-003",
 };
+
+export const legacyReportIdToResultIdMap = legacyResultAliasToResultIdMap;
