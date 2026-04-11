@@ -601,26 +601,26 @@ AssetDetailPageViewModel
 
 ---
 
-## 3.7 Reports 页面
+## 3.7 Results 页面
 
 ### 顶层对象
 
-`ReportsPageViewModel`
+`ResultsPageViewModel`
 
 ### 建议结构
 
 ```text
-ReportsPageViewModel
+ResultsPageViewModel
 - filters
-- report_items[]
+- result_items[]
 - empty_state
 ```
 
-### ReportListItemViewModel
+### ResultListItemViewModel
 
 ```text
-ReportListItemViewModel
-- report_id
+ResultListItemViewModel
+- result_id
 - scene_name
 - analysis_type
 - model_name
@@ -629,11 +629,11 @@ ReportListItemViewModel
 - export_available
 ```
 
-### ReportDetailPageViewModel
+### ResultDetailPageViewModel
 
 ```text
-ReportDetailPageViewModel
-- report_summary
+ResultDetailPageViewModel
+- result_summary
 - result_map
 - metrics
 - explanation
@@ -643,10 +643,10 @@ ReportDetailPageViewModel
 - exports[]
 ```
 
-#### ReportSummaryViewModel
+#### ResultSummaryViewModel
 
 ```text
-ReportSummaryViewModel
+ResultSummaryViewModel
 - analysis_type
 - model_name
 - key_parameter_summary

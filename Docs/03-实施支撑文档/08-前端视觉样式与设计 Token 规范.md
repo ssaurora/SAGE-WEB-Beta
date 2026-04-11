@@ -347,7 +347,7 @@ Workbench 和 Governance 页面尤其应控制阴影，保持克制。
     
 - Assets 列表
     
-- Reports 列表
+- Results 列表
     
 
 规范建议：
