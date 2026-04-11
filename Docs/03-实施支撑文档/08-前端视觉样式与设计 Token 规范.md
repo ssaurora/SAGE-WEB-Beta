@@ -81,7 +81,7 @@ UI 的信息层级要通过以下方式建立：
 
 ### 3.2 工作台优先于页面美观
 
-对于 Workbench / Governance / Report Detail：
+对于 Workbench / Governance / Result Detail：
 
 - 首先保证信息可读
     
@@ -289,7 +289,7 @@ Workbench 和 Governance 页面尤其应控制阴影，保持克制。
 - Warning / Error 状态要醒目但不能全页泛红
     
 
-## 6.4 Report Detail
+## 6.4 Result Detail
 
 风格重点：
 

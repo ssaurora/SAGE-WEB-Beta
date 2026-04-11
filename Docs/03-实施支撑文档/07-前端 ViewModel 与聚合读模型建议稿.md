@@ -766,7 +766,7 @@ MetricCardViewModel
     
 - Asset detail aggregate
     
-- Report detail aggregate
+- Result detail aggregate
     
 
 相比大量碎片接口，这更适合你的产品形态。
@@ -781,7 +781,7 @@ MetricCardViewModel
     
 3. 再定义 `ReportDetailPageViewModel`
     
-4. 然后补齐 Scene / Assets / Reports 列表级对象
+4. 然后补齐 Scene / Assets / Results 列表级对象
     
 5. 最后再扩展高级模式与审计模式字段
     

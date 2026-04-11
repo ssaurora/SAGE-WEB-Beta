@@ -8,15 +8,15 @@
 
 ## 1. 统一契约层
 
-- [ ] 固化 Reports DTO → ViewModel 适配器边界。
+- [ ] 固化 Results DTO → ViewModel 适配器边界。
 - [ ] 固化 Scene Overview / Results / Governance 的返回字段边界。
 - [ ] 明确 mock API 到真实后端的替换点。
 - [ ] 汇总一份字段映射对照表，避免联调时页面层改动扩散。
 
 ## 2. 全链路走查
 
-- [ ] Scene 创建 → Overview → Workbench → Task Governance → Results → Reports 全链路人工走查。
-- [ ] 校验每个跳转是否携带上下文参数（from / taskId / resultId / reportId）。
+- [ ] Scene 创建 → Overview → Workbench → Task Governance → Results 全链路人工走查。
+- [ ] 校验每个跳转是否携带上下文参数（from / taskId / resultId）。
 - [ ] 校验回溯入口是否准确返回上游页面。
 - [ ] 校验失败恢复路径是否能回到 Workbench。
 
